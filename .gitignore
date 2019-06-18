@@ -30,3 +30,9 @@
 *.exe
 *.out
 *.app
+
+# Debug folder
+Debug
+.vs
+Samples/sampleCode.cpp
+Tests

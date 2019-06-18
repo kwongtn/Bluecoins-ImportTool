@@ -1,0 +1,38 @@
+http://www.bluecoinsapp.com/import-guide/
+
+https://github.com/nlohmann/json
+http://rapidjson.org/md_doc_tutorial.html
+
+
+
+Standard Version
+Type                      : Income("I"), Expense("E"), Transfer("T")
+Date                      : MM/DD/YYYY HH:MM
+Item Name                 : Item Name / Payee
+Amount                    : Number (*?.??)
+Parent Category (Account) : Utilities, Education etc.
+Category (Account)        : University Books, Electricity etc.
+Account Type (Monentary)  : Bank, Credit Card, Cash etc.
+Account (Monentary)       : Savings, Wallet etc.
+Notes                     : <Anything>
+Label                     : "Import <date>"
+Status                    : Reconciled("R"), Cleared("C"), <None>
+
+Advanced Version
+Type                      : Income("I"), Expense("E"), Transfer("T")
+Date                      : MM/DD/YYYY HH:MM
+Item Name                 : Item Name / Payee
+Amount                    : Number
+*Currency                 : USD, MYR etc. (If blank default currency.)
+*Conversion Rate          : Equates to 1 unit of default currency. (
+                            Eg. Default is USD (MYR:USD 4.2:1, or 1 USD = 4.20 MYR)
+                            Conversion rate for MYR is 4.20
+                            )
+Parent Category (Account) : Utilities, Education etc.
+Category (Account)        : University Books, Electricity etc.
+Account Type (Monentary)  : Bank, Credit Card, Cash etc.
+Account (Monentary)       : Savings, Wallet etc.
+Notes                     : <Anything>
+Label                     : "Import <date>"
+Status                    : Reconciled("R"), Cleared("C"), <None>
+

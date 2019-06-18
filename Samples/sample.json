@@ -1,0 +1,89 @@
+{
+    "Comments" : [
+        "Delete when using, each section is described in the following sections",
+        {"jsonType" : [
+            "To tell the program whether the hierarchy is a Simple Type or Advanced type, as described in http://www.bluecoinsapp.com/import-guide/ "
+        ]},
+        {"presetLists" : [
+            {
+                "type" : "We use 'e' for objects describing expenses, 'i' for objects describing income and 'a' for objects describing accounts.",
+                "transacCatList->transacCat" : "Account Main Category.",
+                "transacCatList->transacChild" : "Account subcategory.",
+                "accTypeList->accType" : "Account type (Bank, Cash etc.)",
+                "accTypeList->accChild" : [
+                    "This will be dependant on type of json file",
+                    {
+                        "simple" : "List of sub accounts",
+                        "advanced->childName" : "Sub account name",
+                        "advanced->currency" : "Currency of account"
+                    } 
+                ]
+            }
+        ]},{
+            "sample" : [
+                {
+                    "jsonType" : "Simple",
+                    "presetLists":[
+                        {
+                            "type" : "e / i",
+                            "transacCatList" : [
+                                {
+                                    "transacCat" : "Category1",
+                                    "transacChild" : [
+                                        "Child1.1",
+                                        "Child1.2"
+                                    ]
+                                }
+                            ]
+                        },{    
+                            "type" : "a",
+                            "accTypeList" : [
+                                {
+                                    "accType" : "Category1",
+                                    "accChildList" : [
+                                        "Child1.1",
+                                        "Child1.2"
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+            
+            
+                {
+                    "jsonType" : "Advanced",
+                    "presetLists":[
+                        {
+                            "type" : "e / i",
+                            "transacCatList" : [
+                                {
+                                    "transacCat" : "Category1",
+                                    "transacChild" : [
+                                        "Child1.1",
+                                        "Child1.2"
+                                    ]
+                                }
+                            ]
+                        },{    
+                            "type" : "a",
+                            "accTypeList" : [
+                                {
+                                    "accType" : "Category1",
+                                    "accChildList" : [
+                                        {
+                                            "childName" : "Child1.1",
+                                            "currency" : "MYR"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+                
+
+            ]
+        }
+    ]
+}
