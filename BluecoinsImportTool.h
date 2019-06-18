@@ -18,7 +18,7 @@ using namespace std;
 json properties;
 
 // Used to store current entry before writing into file.
-json entries;
+json entry;
 
 // Some arbituary introduction to the program during launch.
 void introduction() {
@@ -169,8 +169,8 @@ void outArray(string type, string cat = " ") {
 
 // Outputs all elements one level below according to the index number.
 // Also provides index number in the process.
-void outArray(int type = 10000, int cat = 10000) {
-	int i = 0;
+// *Does not output bank accounts unless specified.
+void outArray(int i = 0, int type = 10000, int cat = 10000) {
 	if (type == 10000) { // If type is unspecified show all types.
 		while (i < properties["presetLists"].size()) {
 			cout << left << setw(5) << i << returnString(properties["presetLists"][i]["type"]) << endl;
@@ -218,9 +218,11 @@ int mainMenu() {
 	int i = 3,
 		selection;
 	string menuItem[][2] = { 
-		{"0","Load File"}, 
-		{"1", "Unload File"}, 
-		{"2", "New Entry"} };
+		{"0","Load File"},
+		{"1", "Unload File"},
+		{"2", "View All Entries"},
+		{"3", "New Entry"} 
+	};
 		
 
 	line(50, '-');
@@ -237,6 +239,43 @@ int mainMenu() {
 	return selection;
 }
 
+bool entryInput() {
+	int i, j;
 
+	// User input : Type of Transaction *No logic for transfer yet.
+	outArray();
+	cout << "Type? ";
+	cin >> i;
+	entry["type"] = properties["presetLists"][i]["type"];
+
+	// User input : Expense / Income Parent Category
+	outArray(i);
+
+	// User input : Expense / Income Category
+	outArray(i, j);
+
+	// User input : Account Type
+
+	// User input : Account
+
+	// User input : Year
+	// User input : Month
+	// User input : Day
+	// User input : Hour
+	// User input : Mins
+
+	// User input : Amount
+
+	// User input : Short Description
+
+	// User input : Notes (No multi-line)
+
+	// User input : Status
+
+	// System generate : Label
+
+
+
+}
 
 // TODO: Reference additional headers your program requires here.

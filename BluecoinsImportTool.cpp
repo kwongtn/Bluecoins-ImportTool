@@ -22,10 +22,16 @@ int main() {
 			// Unload a file.
 			break;
 		}
-		case 2 : {
+		case 2: {
+			outAllProperties();
+			break;
+		}
+		case 3 : {
 			// Creates a new entry.
 			break;
 		}
+
+
 		default:
 			break;
 		}
