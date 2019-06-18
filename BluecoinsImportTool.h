@@ -43,7 +43,7 @@ void readFile() {
 		getline(cin, filename);
 
 		if (filename == "d") {
-			filename = "D:\\WinLibrary\\Documents\\BlueCoins Import Tool\\ktn.json";
+			filename = "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\ktn.json";
 		}
 
 		jsonFile.open(filename);

@@ -5,7 +5,7 @@
 
 int main() {
 	readFile();
-	system("pause");
+	
 	system("cls");
 	//outAllProperties();
 
