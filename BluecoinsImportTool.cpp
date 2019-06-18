@@ -3,26 +3,40 @@
 
 #include "BluecoinsImportTool.h"
 
+const int menusize = 5;
+
+
 int main() {
 	readFile();
 	
-	system("cls");
+	while (true) {
+		system("cls");
+		cout << "Next action?" << endl;
+		int selection = mainMenu();
+		switch (selection) {
+		case 0 : {
+			// Open a file.
+			break;
+		}
+		case 1 : {
+			// Unload a file.
+			break;
+		}
+		case 2 : {
+			// Creates a new entry.
+			break;
+		}
+		default:
+			break;
+		}
+	}
+	
+	
 	//outAllProperties();
 
+
+
 	// testbed
-	while (true) {
-		string outvar1, outvar2;
-		cout << "Outvar? ";
-		getline(cin, outvar1);
-		getline(cin, outvar2);
-		outArray(outvar1, outvar2);
-	}
-	outArray();
-	outArray(0);
-	outArray(1, 2);
-	outArray(100);
-	outArray(100, 2);
-	outArray(1, 100);
 
 
 

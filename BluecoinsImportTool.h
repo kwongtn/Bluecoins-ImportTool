@@ -14,7 +14,11 @@ using json = nlohmann::json;
 
 using namespace std;
 
+// Used to store all properties in the json file.
 json properties;
+
+// Used to store current entry before writing into file.
+json entries;
 
 // Some arbituary introduction to the program during launch.
 void introduction() {
@@ -61,6 +65,7 @@ void readFile() {
 
 	cout << "File succesfully imported." << endl;
 
+	jsonFile.close();
 }
 
 // Returns the json string without the quotes
@@ -106,7 +111,7 @@ void outArray(string type, string cat = " ") {
 	int i = 0;
 	bool found0 = false;
 
-	if (type == " ") { // If type is unspecified show all types.
+	if (type == " ") { // If type is space show all types.
 		while (i < properties["presetLists"].size()) {
 			cout << returnString(properties["presetLists"][i]["type"]) << endl;
 			i++;
@@ -209,7 +214,28 @@ void outArray(int type = 10000, int cat = 10000) {
 	}
 }
 
+int mainMenu() {
+	int i = 3,
+		selection;
+	string menuItem[][2] = { 
+		{"0","Load File"}, 
+		{"1", "Unload File"}, 
+		{"2", "New Entry"} };
+		
 
+	line(50, '-');
+	cout << left << setw(5) << "ID" << "Details" << endl;
+	line(50, '-');
+
+	for (int j = 0; j < 3; j++) {
+		cout << left << setw(5) << menuItem[j][0] << menuItem[j][1] << endl;
+	}
+
+	cout << "Your Selection? : ";
+	cin >> selection;
+
+	return selection;
+}
 
 
 
