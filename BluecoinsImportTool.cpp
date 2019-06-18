@@ -10,6 +10,14 @@ int main() {
 	//outAllProperties();
 
 	// testbed
+	while (true) {
+		string outvar1, outvar2;
+		cout << "Outvar? ";
+		getline(cin, outvar1);
+		getline(cin, outvar2);
+		outArray(outvar1, outvar2);
+	}
+	outArray();
 	outArray(0);
 	outArray(1, 2);
 	outArray(100);
