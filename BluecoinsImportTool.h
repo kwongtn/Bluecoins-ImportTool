@@ -243,6 +243,7 @@ bool entryInput() {
 	int i, j;
 
 	// User input : Type of Transaction *No logic for transfer yet.
+	// To decide whether to use json for entry or simple variables.
 	outArray();
 	cout << "Type? ";
 	cin >> i;
@@ -258,11 +259,32 @@ bool entryInput() {
 
 	// User input : Account
 
-	// User input : Year
-	// User input : Month
-	// User input : Day
-	// User input : Hour
-	// User input : Mins
+	// Date & time input :
+		unsigned short int year = 0,
+			month = 0,
+			day = 0,
+			hour = 0,
+			mins = 0;
+
+		// User input : Year
+		cout << "Year? ";
+		cin >> year;
+
+		// User input : Month
+		cout << "Month? ";
+		cin >> month;
+
+		// User input : Day
+		cout << "Day? ";
+		cin >> day;
+
+		// User input : Hour
+		cout << "Hour? ";
+		cin >> hour;
+
+		// User input : Mins
+		cout << "Mins? ";
+		cin >> mins;
 
 	// User input : Amount
 
@@ -274,7 +296,7 @@ bool entryInput() {
 
 	// System generate : Label
 
-
+	// Review entry, then press key to commit into file.
 
 }
 
