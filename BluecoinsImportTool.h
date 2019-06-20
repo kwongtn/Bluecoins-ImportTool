@@ -18,7 +18,27 @@ using namespace std;
 json properties;
 
 // Used to store current entry before writing into file.
-json entry;
+struct ENTRY {
+	string type;			// Transaction category.
+	string transCat;		// Transaction parent.
+	string transChild;		// Transaction child.
+	string accCat;			// Account category.
+	string accChild;		// Account child.
+	unsigned short int		// Date & time.
+		year = 0,
+		month = 0,
+		day = 0,
+		hour = 0,
+		mins = 0;
+	double amount = 0;
+	string title;			// Title of transaction.
+	string notes;
+	char status = '\0';
+	string label;
+
+};
+
+ENTRY entry;
 
 // Some arbituary introduction to the program during launch.
 void introduction() {
@@ -254,46 +274,27 @@ int mainMenu() {
 	return selection;
 }
 
-struct ENTRY {
-	string type;			// Transaction category.
-	string transCat;		// Transaction parent.
-	string transChild;		// Transaction child.
-	string accCat;			// Account category.
-	string accChild;		// Account child.
-	unsigned short int		// Date & time.
-		year = 0,
-		month = 0,
-		day = 0,
-		hour = 0,
-		mins = 0;
-	double amount = 0;
-	string title;			// Title of transaction.
-	string notes;
-	char status;
-	string label;
-
-};
-
-void outDate(ENTRY i) {
+// Outputs date in human readable format.
+void outDate() {
 	cout << "Date (YYYY/MM/DD): "
-		<< right << i.year << "/"
-		<< setfill('0') << setw(2) << i.month
-		<< setfill('0') << setw(2) << i.day
+		<< right << entry.year << "/"
+		<< setfill('0') << setw(2) << entry.month
+		<< setfill('0') << setw(2) << entry.day
 		<< endl;
 
 	cout << "Time (HH:MM): "
-		<< setfill('0') << setw(2) << i.hour
-		<< setfill('0') << setw(2) << i.mins
+		<< setfill('0') << setw(2) << entry.hour
+		<< setfill('0') << setw(2) << entry.mins
 		<< endl;
 }
 
 bool entryInput() {
 	// Integer for expense, income category parent and child.
 	int
-		i = 0,
-		j = 0;
+		i = 0, // To describe type of transaction
+		j = 0, // To describe parent
+		k = 0; // To describe child
 
-	ENTRY entry;
 	bool illegal = true;
 
 	// User input : Type of Transaction *No logic for transfer yet.
@@ -303,22 +304,23 @@ bool entryInput() {
 
 		cout << endl << "Type? ";
 		cin >> i;
-		entry.type = returnString(properties["presetLists"][i]["type"]);
-		cout << "Type: " << entry.type << endl;
 
 		if ((i == 1) || (i == 2) || (i == 5)) {
 			illegal = false;
 		} else {
 			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
 		}
-
 	}
+	entry.type = returnString(properties["presetLists"][i]["type"]);
 
 	// User input : Expense / Income Parent Category
-	illegal == true;
+	illegal = true;
 	while (illegal) {
 		cout << "Type: " << entry.type << endl;
 		outArray(false, i);
+
 		cout << "Category? ";
 		cin >> j;
 
@@ -326,18 +328,78 @@ bool entryInput() {
 			illegal = false;
 		} else {
 			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
 		}
 
 	}
+	entry.transCat = returnString(properties["presetLists"][i]["catList"][j]["cat"]);
 
 	// User input : Expense / Income Category
-	outArray(false, i, j);
+	illegal = true;
+	while (illegal) {
+		cout << "Type: " << entry.type << endl;
+		cout << "Category: " << entry.transCat << endl;
+		outArray(false, i, j);
+
+		cout << "Category Child? ";
+		cin >> k;
+
+		if ((k < properties["presetLists"][i]["catList"][j]["child"].size()) && (k >= 0)) {
+			illegal = false;
+		} else {
+			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
+		}
+
+	}
+	entry.transChild = returnString(properties["presetLists"][i]["catList"][j]["child"][k]);
 
 	// User input : Account Type
+	illegal = true;
+	while (illegal) {
+		cout << "Type: " << entry.type << endl;
+		cout << "Category: " << entry.transCat << endl;
+		cout << "Category Child: " << entry.transChild << endl;
+		outArray(true, 0);
 
+		cout << "Account Type? ";
+		cin >> j;
+
+		if ((k < properties["presetLists"][0]["catList"].size()) && (k >= 0)) {
+			illegal = false;
+		} else {
+			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
+		}
+
+	}
+	entry.accCat = returnString(properties["presetLists"][0]["catList"][j]["cat"]);
 
 	// User input : Account
+	illegal = true;
+	while (illegal) {
+		cout << "Type: " << entry.type << endl;
+		cout << "Category: " << entry.transCat << endl;
+		cout << "Category Child: " << entry.transChild << endl;
+		cout << "Account Type: " << entry.accCat << endl;
+		outArray(true, 0, j);
 
+		cout << "Account Child? ";
+		cin >> k;
+
+		if ((k < properties["presetLists"][0]["catList"][j]["child"].size()) && (k >= 0)) {
+			illegal = false;
+		} else {
+			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
+		}
+
+	}
+	entry.accChild = returnString(properties["presetLists"][0]["catList"][j]["child"][k]);
 
 	// Date & time input :
 	// ==================================================
@@ -363,7 +425,7 @@ bool entryInput() {
 	// ==================================================
 
 	// User input : Amount
-	outDate(entry);
+	outDate();
 	cout << "Amount? ";
 	cin >> entry.amount;
 
@@ -380,7 +442,7 @@ bool entryInput() {
 	// User input : Status
 	cout << "Status? ";
 	attrib();
-	char statusSelect;
+	char statusSelect = '\0';
 	cout << left << setw(5) << "R" << "Reconciled" << endl;
 	cout << left << setw(5) << "C" << "Cleared" << endl;
 	cout << left << setw(5) << "0" << "<None>" << endl;
@@ -401,11 +463,17 @@ bool entryInput() {
 
 
 	// System generate : Label
+	time_t rawtime = time(&rawtime);
+	struct tm now;
+	localtime_s(&now, &rawtime);
+	int thisYear = now.tm_year + 1900;
+
+
 
 	// Review entry, then press key to commit into file.
 
 
-		return true;
+	return true;
 }
 
 
