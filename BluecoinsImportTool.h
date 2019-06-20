@@ -251,8 +251,21 @@ int mainMenu() {
 }
 
 struct ENTRY {
-	string type;
-
+	string type;			// Transaction category.
+	string transCat;		// Transaction parent.
+	string transChild;		// Transaction child.
+	string accCat;			// Account category.
+	string accChild;		// Account child.
+	unsigned short int		// Date & time.
+		year = 0,
+		month = 0,
+		day = 0,
+		hour = 0,
+		mins = 0;
+	double amount;
+	string title;			// Title of transaction.
+	string notes;
+	string label;
 
 };
 
@@ -309,32 +322,26 @@ bool entryInput() {
 
 
 	// Date & time input :
-    unsigned short int 
-        year = 0,
-		month = 0,
-		day = 0,
-		hour = 0,
-		mins = 0;
 
 	// User input : Year
 	cout << "Year? ";
-	cin >> year;
+	cin >> entry.year;
 
 	// User input : Month
 	cout << "Month? ";
-	cin >> month;
+	cin >> entry.month;
 
 	// User input : Day
 	cout << "Day? ";
-	cin >> day;
+	cin >> entry.day;
 
 	// User input : Hour
 	cout << "Hour? ";
-	cin >> hour;
+	cin >> entry.hour;
 
 	// User input : Mins
 	cout << "Mins? ";
-	cin >> mins;
+	cin >> entry.mins;
 
 	// User input : Amount
 
