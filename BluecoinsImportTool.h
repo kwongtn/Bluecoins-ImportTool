@@ -403,6 +403,13 @@ bool entryInput() {
 
 	// Date & time input :
 	// ==================================================
+	cout << "Type: " << entry.type << endl;
+	cout << "Category: " << entry.transCat << endl;
+	cout << "Category Child: " << entry.transChild << endl;
+	cout << "Account Type: " << entry.accCat << endl;
+	cout << "Account Child: " << entry.accChild << endl;
+	// Create logic for displaying current atributes.
+
 	// User input : Year
 	cout << "Year? ";
 	cin >> entry.year;
@@ -469,11 +476,22 @@ bool entryInput() {
 	int thisYear = now.tm_year + 1900;
 
 
+	entry.label = "Import " + to_string(thisYear) + to_string(now.tm_mon);
 
-	// Review entry, then press key to commit into file.
 
 
-	return true;
+	// Review entry, then press key to return commit intent.
+	line(50, '-');
+	char commit;
+	cout << "Commit changes? (y/n) ";
+	cin >> commit;
+	commit = tolower(commit);
+
+	if (commit == 'y') {
+		return true;
+	} else {
+		return false;
+	}
 }
 
 
