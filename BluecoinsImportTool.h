@@ -36,6 +36,15 @@ void line(int j = 50, char k = '=', bool nextLineAtEnd = true) {
 	}
 }
 
+// Outputs
+// --------------------------------------------------
+// ID   Details
+// --------------------------------------------------
+void attrib() {
+	line(50, '-');
+	cout << left << setw(5) << "ID" << "Description" << endl;
+	line(50, '-');
+}
 
 // Request file path, opens it and imports it into the json struct.
 void readFile() {
@@ -182,19 +191,17 @@ void outArray(bool isAccount = false, int type = 10000, int cat = 10000) {
 
 
 	if (type == 10000) { // If type is unspecified show all types.
-		cout << left << setw(5) << "ID" << "Description" << endl;
+		attrib();
 		while (i < properties["presetLists"].size()) {
 			cout << left << setw(5) << i << returnString(properties["presetLists"][i]["type"]) << endl;
 			i++;
 		}
 	} else {
 
-		line(50, '-');
 		if (type < properties["presetLists"].size()) { // Only display if type is less than size of presetList
 			if (cat == 10000) { // If only type stated then only output list of categories.
 				int j = 0;
-				cout << left << setw(5) << "ID" << "Description" << endl;
-				line(50, '-');
+				attrib();
 
 				while (j < properties["presetLists"][type]["catList"].size()) {
 					cout << left << setw(5) << j << returnString(properties["presetLists"][type]["catList"][j]["cat"]) << endl;
@@ -205,8 +212,7 @@ void outArray(bool isAccount = false, int type = 10000, int cat = 10000) {
 				int j = 0;
 
 				if (cat < properties["presetLists"][type]["catList"].size()) {
-					cout << left << setw(5) << "ID" << "Description" << endl;
-					line(50, '-');
+					attrib();
 					while (j < properties["presetLists"][type]["catList"][cat]["child"].size()) {
 						cout << left << setw(5) << j << returnString(properties["presetLists"][type]["catList"][cat]["child"][j]) << endl;
 						j++;
@@ -236,9 +242,7 @@ int mainMenu() {
 	};
 		
 
-	line(50, '-');
-	cout << left << setw(5) << "ID" << "Details" << endl;
-	line(50, '-');
+	attrib();
 
 	for (int j = 0; j < 3; j++) {
 		cout << left << setw(5) << menuItem[j][0] << menuItem[j][1] << endl;
@@ -262,12 +266,26 @@ struct ENTRY {
 		day = 0,
 		hour = 0,
 		mins = 0;
-	double amount;
+	double amount = 0;
 	string title;			// Title of transaction.
 	string notes;
+	char status;
 	string label;
 
 };
+
+void outDate(ENTRY i) {
+	cout << "Date (YYYY/MM/DD): "
+		<< right << i.year << "/"
+		<< setfill('0') << setw(2) << i.month
+		<< setfill('0') << setw(2) << i.day
+		<< endl;
+
+	cout << "Time (HH:MM): "
+		<< setfill('0') << setw(2) << i.hour
+		<< setfill('0') << setw(2) << i.mins
+		<< endl;
+}
 
 bool entryInput() {
 	// Integer for expense, income category parent and child.
@@ -322,7 +340,7 @@ bool entryInput() {
 
 
 	// Date & time input :
-
+	// ==================================================
 	// User input : Year
 	cout << "Year? ";
 	cin >> entry.year;
@@ -342,15 +360,45 @@ bool entryInput() {
 	// User input : Mins
 	cout << "Mins? ";
 	cin >> entry.mins;
+	// ==================================================
 
 	// User input : Amount
-
+	outDate(entry);
+	cout << "Amount? ";
+	cin >> entry.amount;
 
 	// User input : Short Description
+	cout << "Transaction title? (Key in and press 'enter' when done)" << endl;
+	line(50, '-', true);
+	getline(cin, entry.title);
 
 	// User input : Notes (No multi-line)
+	cout << "Notes? (Only press 'enter' when done, no multi-line support yet)" << endl;
+	line(50, '-', true);
+	getline(cin, entry.notes);
 
 	// User input : Status
+	cout << "Status? ";
+	attrib();
+	char statusSelect;
+	cout << left << setw(5) << "R" << "Reconciled" << endl;
+	cout << left << setw(5) << "C" << "Cleared" << endl;
+	cout << left << setw(5) << "0" << "<None>" << endl;
+	switch (statusSelect) {
+		case 'R':{
+			entry.status = 'R';
+			break;
+		} case 'C':{
+			entry.status = 'C';
+			break;
+		} case '0':{
+			entry.status = '\0';
+			break;
+		}
+		default:
+			break;
+	}
+
 
 	// System generate : Label
 
@@ -359,5 +407,6 @@ bool entryInput() {
 
 		return true;
 }
+
 
 // TODO: Reference additional headers your program requires here.
