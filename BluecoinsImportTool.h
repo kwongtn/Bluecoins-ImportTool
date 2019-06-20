@@ -170,8 +170,19 @@ void outArray(string type, string cat = " ") {
 // Outputs all elements one level below according to the index number.
 // Also provides index number in the process.
 // *Does not output bank accounts unless specified.
-void outArray(int i = 0, int type = 10000, int cat = 10000) {
+void outArray(bool isAccount = false, int type = 10000, int cat = 10000) {
+	int i = 0;
+
+	// If selection is account, then start from array entry 1.
+	if (isAccount) {
+		i = 0;
+	} else {
+		i = 1;
+	}
+
+
 	if (type == 10000) { // If type is unspecified show all types.
+		cout << left << setw(5) << "ID" << "Description" << endl;
 		while (i < properties["presetLists"].size()) {
 			cout << left << setw(5) << i << returnString(properties["presetLists"][i]["type"]) << endl;
 			i++;
@@ -239,54 +250,94 @@ int mainMenu() {
 	return selection;
 }
 
+struct ENTRY {
+	string type;
+
+
+};
+
 bool entryInput() {
-	int i, j;
+	// Integer for expense, income category parent and child.
+	int
+		i = 0,
+		j = 0;
+
+	ENTRY entry;
+	bool illegal = true;
 
 	// User input : Type of Transaction *No logic for transfer yet.
-	// To decide whether to use json for entry or simple variables.
-	outArray();
-	cout << "Type? ";
-	cin >> i;
-	entry["type"] = properties["presetLists"][i]["type"];
+	while (illegal) {
+		outArray(false);
+		cout << endl << left << setw(5) << "5" << "Transfer" << endl;
+
+		cout << endl << "Type? ";
+		cin >> i;
+		entry.type = returnString(properties["presetLists"][i]["type"]);
+		cout << "Type: " << entry.type << endl;
+
+		if ((i == 1) || (i == 2) || (i == 5)) {
+			illegal = false;
+		} else {
+			cout << "Illegal action!" << endl;
+		}
+
+	}
 
 	// User input : Expense / Income Parent Category
-	outArray(i);
+	illegal == true;
+	while (illegal) {
+		cout << "Type: " << entry.type << endl;
+		outArray(false, i);
+		cout << "Category? ";
+		cin >> j;
+
+		if ((j < properties["presetLists"][i]["catList"].size()) && (j >= 0)) {
+			illegal = false;
+		} else {
+			cout << "Illegal action!" << endl;
+		}
+
+	}
 
 	// User input : Expense / Income Category
-	outArray(i, j);
+	outArray(false, i, j);
 
 	// User input : Account Type
 
+
 	// User input : Account
 
+
 	// Date & time input :
-		unsigned short int year = 0,
-			month = 0,
-			day = 0,
-			hour = 0,
-			mins = 0;
+    unsigned short int 
+        year = 0,
+		month = 0,
+		day = 0,
+		hour = 0,
+		mins = 0;
 
-		// User input : Year
-		cout << "Year? ";
-		cin >> year;
+	// User input : Year
+	cout << "Year? ";
+	cin >> year;
 
-		// User input : Month
-		cout << "Month? ";
-		cin >> month;
+	// User input : Month
+	cout << "Month? ";
+	cin >> month;
 
-		// User input : Day
-		cout << "Day? ";
-		cin >> day;
+	// User input : Day
+	cout << "Day? ";
+	cin >> day;
 
-		// User input : Hour
-		cout << "Hour? ";
-		cin >> hour;
+	// User input : Hour
+	cout << "Hour? ";
+	cin >> hour;
 
-		// User input : Mins
-		cout << "Mins? ";
-		cin >> mins;
+	// User input : Mins
+	cout << "Mins? ";
+	cin >> mins;
 
 	// User input : Amount
+
 
 	// User input : Short Description
 
@@ -298,6 +349,8 @@ bool entryInput() {
 
 	// Review entry, then press key to commit into file.
 
+
+		return true;
 }
 
 // TODO: Reference additional headers your program requires here.
