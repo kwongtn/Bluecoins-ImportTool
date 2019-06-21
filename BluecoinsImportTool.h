@@ -278,14 +278,15 @@ int mainMenu() {
 void outDate() {
 	cout << "Date (YYYY/MM/DD): "
 		<< right << entry.year << "/"
-		<< setfill('0') << setw(2) << entry.month
-		<< setfill('0') << setw(2) << entry.day
+		<< setfill('0') << setw(2) << entry.month << "/"
+		<< setfill('0') << setw(2) << entry.day 
 		<< endl;
 
 	cout << "Time (HH:MM): "
-		<< setfill('0') << setw(2) << entry.hour
+		<< setfill('0') << setw(2) << entry.hour << ":"
 		<< setfill('0') << setw(2) << entry.mins
 		<< endl;
+	cout << setfill(' ');
 }
 
 bool entryInput() {
@@ -367,7 +368,7 @@ bool entryInput() {
 		cout << "Account Type? ";
 		cin >> j;
 
-		if ((k < properties["presetLists"][0]["catList"].size()) && (k >= 0)) {
+		if ((j < properties["presetLists"][0]["catList"].size()) && (j >= 0)) {
 			illegal = false;
 		} else {
 			cout << "Illegal action!" << endl;
@@ -438,12 +439,12 @@ bool entryInput() {
 
 	// User input : Short Description
 	cout << "Transaction title? (Key in and press 'enter' when done)" << endl;
-	line(50, '-', true);
-	getline(cin, entry.title);
+	line(50, '-');
+	getline(cin, entry.title); // To check on why auto skip
 
 	// User input : Notes (No multi-line)
 	cout << "Notes? (Only press 'enter' when done, no multi-line support yet)" << endl;
-	line(50, '-', true);
+	line(50, '-');
 	getline(cin, entry.notes);
 
 	// User input : Status
@@ -475,8 +476,13 @@ bool entryInput() {
 	localtime_s(&now, &rawtime);
 	int thisYear = now.tm_year + 1900;
 
+	if (now.tm_mon < 10) {
+		entry.label = "Import " + to_string(thisYear) + "0" + to_string(now.tm_mon);
+	} else {
+		entry.label = "Import " + to_string(thisYear) + to_string(now.tm_mon);
 
-	entry.label = "Import " + to_string(thisYear) + to_string(now.tm_mon);
+	}
+
 
 
 
@@ -493,6 +499,7 @@ bool entryInput() {
 		return false;
 	}
 }
+
 
 
 // TODO: Reference additional headers your program requires here.

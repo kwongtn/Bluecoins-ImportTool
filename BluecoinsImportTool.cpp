@@ -28,6 +28,8 @@ int main() {
 		}
 		case 3 : {
 			// Creates a new entry.
+			cout << entry.label;
+			entryInput();
 			break;
 		}
 
