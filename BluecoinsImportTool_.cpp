@@ -45,6 +45,19 @@ void introduction() {
 
 }
 
+
+
+
+// Outputs
+// --------------------------------------------------
+// ID   Details
+// --------------------------------------------------
+void attrib() {
+	line(50, '-');
+	cout << left << setw(5) << "ID" << "Description" << endl;
+	line(50, '-');
+}
+
 // Request file path, opens it and imports it into the json struct.
 void readFile() {
 	ifstream jsonFile;

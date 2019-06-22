@@ -152,9 +152,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BluecoinsImportTool.cpp" />
+    <ClCompile Include="BluecoinsImportTool_otherCode.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BluecoinsImportTool.h" />
+    <ClInclude Include="BluecoinsImportTool_.cpp" />
     <ClInclude Include="json.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
