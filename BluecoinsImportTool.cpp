@@ -3,26 +3,48 @@
 
 #include "BluecoinsImportTool.h"
 
+int countEntry = 0,
+	countDiscard = 0;
 
 int main() {
-	// If json file is empty then load.
-	// If output file is empty then request.
-	readFile();
 
 	// Future feature: json file creator.
 	
 	while (true) {
 		system("cls");
+		// If json file is empty then load.
+		if (properties.empty()) {
+			readFile();
+		}
+
+		// If output file is empty then request.
+
+
+
 		cout << "Next action?" << endl;
 		int selection = mainMenu();
 		system("cls");
+
 		switch (selection) {
-		case 0 : {
-			// Load a new json file.
+		case 0 : {	// Load a new json file.
+			char intent;
+			cout << "Are you sure you want to clear the current json configuration and load a new one? (y/n)" << endl;
+			cin >> intent;
+			intent = tolower(intent);
+
+			if (intent == 'y') {
+				properties.clear();
+				cout << "json file cleared.";
+				system("pause");
+			} else {
+				cout << "No actions taken. ";
+				system("pause");
+			}
+
 			break;
 		}
-		case 1 : {
-			// Set a new output file.
+		case 1 : {	// Set a new output file.
+
 			break;
 		}
 		case 2: {
@@ -33,12 +55,19 @@ int main() {
 		}
 		case 3 : {
 			// Creates a new entry.
-			cout << entry.label;
-			entryInput();
+			if (entryInput()) {
+				
+				countEntry++;
+			} else {
+				countDiscard++;
+			}
 			break;
 		}
 		case 4 : {
-			cout << "Thank you for using. Goodbye." << endl;
+			cout << "Thank you for using. Throughout this session, you have: " << endl;
+			cout << "Inserted " << countEntry << " entries." << endl;
+			cout << "Discarded " << countDiscard << " entries." << endl;
+
 			system("pause");
 			exit(0);
 		}

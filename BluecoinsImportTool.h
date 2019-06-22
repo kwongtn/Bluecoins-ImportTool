@@ -67,10 +67,10 @@ void attrib() {
 	line(50, '-');
 }
 
+
 // Request file path, opens it and imports it into the json struct.
 void readFile() {
 	ifstream jsonFile;
-
 	while (true) {
 		cout << "File path for json file ? ";
 		string filename;
@@ -145,7 +145,7 @@ void inputted() {
 	}
 
 	if (entry.amount != 3.14159265359) {
-		cout << "Amount: " << setprecision(2) << entry.amount << endl;
+		cout << "Amount: " << fixed << showpoint << setprecision(2) << entry.amount << endl;
 	}
 
 	if (entry.title != "") {
@@ -468,6 +468,7 @@ bool entryInput() {
 	// Date & time input :
 	system("cls");
 	inputted();
+	line(50, '-');
 
 	// User input : Year
 	cout << "Year? ";
@@ -493,18 +494,21 @@ bool entryInput() {
 	// User input : Amount
 	system("cls");
 	inputted();
+	line(50, '-');
 	cout << "Amount? ";
 	cin >> entry.amount;
 
 	// User input : Short Description
 	system("cls");
 	inputted();
-	cout << "Transaction title? (Key in and press 'enter' when done)" << endl;
+	line(50, '-');
+	cout << "Transaction title? (Key in and press 'enter' when done), no multi line support yet" << endl;
 	line(50, '-');
 	getline(cin, entry.title); // To check on why auto skip
 
 	// User input : Notes (No multi-line)
 	inputted();
+	line(50, '-');
 	cout << "Notes? (Only press 'enter' when done, no multi-line support yet)" << endl;
 	line(50, '-');
 	getline(cin, entry.notes);
@@ -512,21 +516,20 @@ bool entryInput() {
 	// User input : Status
 	system("cls");
 	inputted();
-	cout << "Status? ";
 	attrib();
 	char statusSelect = '\0';
 	cout << left << setw(5) << "R" << "Reconciled" << endl;
 	cout << left << setw(5) << "C" << "Cleared" << endl;
 	cout << left << setw(5) << "0" << "<None>" << endl;
+	cout << "Status? ";
+	cin >> statusSelect;
+	statusSelect = toupper(statusSelect);
 	switch (statusSelect) {
 		case 'R':{
 			entry.status = 'R';
 			break;
 		} case 'C':{
 			entry.status = 'C';
-			break;
-		} case '0':{
-			entry.status = '\0';
 			break;
 		}
 		default:
@@ -568,6 +571,60 @@ bool entryInput() {
 	}
 }
 
+// Global variables related with file output.
+ifstream fileCheck;
+ofstream file;
+bool append = false;
 
+void fileFunc() {
+		cout << "File path for output file? ";
+		string filename;
+		getline(cin, filename);
+		fileCheck.open(filename);
+		if (!file) {
+			cout << "File does not exist, create file? (y/n)";
+			char intent;
+			cin >> intent;
+			intent = tolower(intent);
+
+			// If 'y' then create file else go back main menu
+			if (intent == 'y') {
+				file.open(filename);
+			}
+
+		} else {
+			cout << "File exists, append? Selecting 'n' will clear the existing file. Press 'c' to cancel." << endl;
+			char intent;
+			cin >> intent;
+			intent = tolower(intent);
+
+			if (intent == 'y') {
+				file.open(filename, ios::app);
+				append = true;
+			} else if (intent == 'n') {
+				file.open(filename);
+			} 
+
+		}
+
+
+}
+
+void writeToFile() {
+	if (!append) {
+		file << "(1)Type,(2)Date,(3)Item or Payee,(4)Amount,(5)Parent Category,(6)Category,(7)Account Type,(8)Account,(9)Notes,(10) Label,(11) Status" << endl;
+	}
+	file << entry.type << ",";
+	file << entry.month << "/" << entry.day << "/" << entry.year << " " << entry.hour << ":" << entry.mins << ",";
+	file << entry.title<<",";
+	file << entry.amount << ",";
+	file << entry.transCat << ",";
+	file << entry.transChild << ",";
+	file << entry.accCat << ",";
+	file << entry.accChild << ",";
+	file << entry.notes << ",";
+	file << entry.status;
+	file << endl;
+}
 
 // TODO: Reference additional headers your program requires here.
