@@ -18,16 +18,13 @@
     <ClCompile Include="BluecoinsImportTool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BluecoinsImportTool_otherCode.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BluecoinsImportTool.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
     <ClInclude Include="json.hpp">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BluecoinsImportTool_.cpp">
-      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

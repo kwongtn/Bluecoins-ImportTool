@@ -45,6 +45,27 @@ void introduction() {
 
 }
 
+
+// Outputs a line of j length of character k.
+void line(int j = 50, char k = '=', bool nextLineAtEnd = true) {
+	for (int i = 0; i < j; i++) {
+		cout << k;
+	}
+	if (nextLineAtEnd) {
+		cout << endl;
+	}
+}
+
+// Outputs
+// --------------------------------------------------
+// ID   Details
+// --------------------------------------------------
+void attrib() {
+	line(50, '-');
+	cout << left << setw(5) << "ID" << "Description" << endl;
+	line(50, '-');
+}
+
 // Request file path, opens it and imports it into the json struct.
 void readFile() {
 	ifstream jsonFile;
@@ -233,29 +254,18 @@ void outArray(bool isAccount = false, int type = 10000, int cat = 10000) {
 int mainMenu() {
 	int i = 3,
 		selection;
-	struct MENU {
-		int count;
-		string content;
+	string menuItem[][2] = { 
+		{"0","Load File"},
+		{"1", "Unload File"},
+		{"2", "View All Entries"},
+		{"3", "New Entry"} 
 	};
-	MENU menu[menusize];
-
-	// Define menus
-	menu[0].count = 0;
-	menu[0].content = "Load New Json File";
-	menu[1].count = 1;
-	menu[1].content = "Set New Output File";
-	menu[2].count = 2;
-	menu[2].content = "View All Current Entries";
-	menu[3].count = 3;
-	menu[3].content = "Input New Entry";
-
-	
-
+		
 
 	attrib();
 
-	for (int j = 0; j < menusize; j++) {
-		cout << left << setw(5) << menu[j].count << menu[j].content << endl;
+	for (int j = 0; j < 3; j++) {
+		cout << left << setw(5) << menuItem[j][0] << menuItem[j][1] << endl;
 	}
 
 	cout << "Your Selection? : ";
