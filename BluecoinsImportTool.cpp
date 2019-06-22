@@ -4,9 +4,12 @@
 #include "BluecoinsImportTool.h"
 
 
-
 int main() {
+	// If json file is empty then load.
+	// If output file is empty then request.
 	readFile();
+
+	// Future feature: json file creator.
 	
 	while (true) {
 		system("cls");
@@ -34,7 +37,11 @@ int main() {
 			entryInput();
 			break;
 		}
-
+		case 4 : {
+			cout << "Thank you for using. Goodbye." << endl;
+			system("pause");
+			exit(0);
+		}
 
 		default:
 			break;
