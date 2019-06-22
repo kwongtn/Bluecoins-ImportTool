@@ -12,6 +12,8 @@ using json = nlohmann::json;
 #include <fstream>
 #include <iomanip>
 
+const int menusize = 5;
+
 using namespace std;
 
 // Used to store all properties in the json file.
@@ -19,25 +21,24 @@ json properties;
 
 // Used to store current entry before writing into file.
 struct ENTRY {
-	string type;			// Transaction category.
-	string transCat;		// Transaction parent.
-	string transChild;		// Transaction child.
-	string accCat;			// Account category.
-	string accChild;		// Account child.
+	string type = "";			// Transaction category.
+	string transCat = "";		// Transaction parent.
+	string transChild = "";		// Transaction child.
+	string accCat = "";			// Account category.
+	string accChild = "";		// Account child.
 	unsigned short int		// Date & time.
 		year = 0,
 		month = 0,
 		day = 0,
-		hour = 0,
-		mins = 0;
-	double amount = 0;
-	string title;			// Title of transaction.
-	string notes;
+		hour = 1000,
+		mins = 1000;
+	double amount = 3.14159265359;
+	string title = "";			// Title of transaction.
+	string notes = "";
 	char status = '\0';
-	string label;
+	string label = "";
 
 };
-
 ENTRY entry;
 
 // Some arbituary introduction to the program during launch.
@@ -100,6 +101,69 @@ void readFile() {
 // Returns the json string without the quotes
 string returnString(json i) {
 	return(i);
+}
+
+// Returns all current inputted items in entry.
+void inputted() {
+	if (entry.type != "") {
+		cout << "Type: " << entry.type << endl;
+	}
+
+	if (entry.transCat != "") {
+		cout << "Category: " << entry.transCat << endl;
+	}
+
+	if (entry.transChild != "") {
+		cout << "Category Child: " << entry.transChild << endl;
+	}
+
+	if (entry.accCat != "") {
+		cout << "Account Type: " << entry.accCat << endl;
+	}
+
+	if (entry.accChild != "") {
+		cout << "Account Child: " << entry.accChild << endl;
+	}
+
+	if ((entry.year != 0) &&
+		(entry.month != 0) &&
+		(entry.day != 0) &&
+		(entry.hour != 1000) &&
+		(entry.mins != 1000)
+		) {
+		cout << "Date (YYYY/MM/DD): "
+			<< right << entry.year << "/"
+			<< setfill('0') << setw(2) << entry.month << "/"
+			<< setfill('0') << setw(2) << entry.day
+			<< endl;
+
+		cout << "Time (HH:MM): "
+			<< setfill('0') << setw(2) << entry.hour << ":"
+			<< setfill('0') << setw(2) << entry.mins
+			<< endl;
+		cout << setfill(' ');
+	}
+
+	if (entry.amount != 3.14159265359) {
+		cout << "Amount: " << setprecision(2) << entry.amount << endl;
+	}
+
+	if (entry.title != "") {
+		cout << "Title: " << entry.title << endl;
+	}
+
+	if (entry.notes != "") {
+		cout << "\nNotes:\n" << entry.notes << endl;
+	}
+
+	if (entry.status != '\0') {
+		cout << "Status: " << entry.status << endl;
+	}
+
+	if (entry.label != "") {
+		cout << "Label: " << entry.label << endl;
+	}
+
 }
 
 // Outputs all properties and their respective values.
@@ -254,11 +318,11 @@ void outArray(bool isAccount = false, int type = 10000, int cat = 10000) {
 int mainMenu() {
 	int i = 3,
 		selection;
+
 	struct MENU {
 		int count;
 		string content;
 	};
-
 	MENU menu[menusize];
 
 	// Define menus
@@ -285,21 +349,6 @@ int mainMenu() {
 	return selection;
 }
 
-// Outputs date in human readable format.
-void outDate() {
-	cout << "Date (YYYY/MM/DD): "
-		<< right << entry.year << "/"
-		<< setfill('0') << setw(2) << entry.month << "/"
-		<< setfill('0') << setw(2) << entry.day 
-		<< endl;
-
-	cout << "Time (HH:MM): "
-		<< setfill('0') << setw(2) << entry.hour << ":"
-		<< setfill('0') << setw(2) << entry.mins
-		<< endl;
-	cout << setfill(' ');
-}
-
 bool entryInput() {
 	// Integer for expense, income category parent and child.
 	int
@@ -310,6 +359,7 @@ bool entryInput() {
 	bool illegal = true;
 
 	// User input : Type of Transaction *No logic for transfer yet.
+	system("cls");
 	while (illegal) {
 		outArray(false);
 		cout << endl << left << setw(5) << "5" << "Transfer" << endl;
@@ -328,6 +378,7 @@ bool entryInput() {
 	entry.type = returnString(properties["presetLists"][i]["type"]);
 
 	// User input : Expense / Income Parent Category
+	system("cls");
 	illegal = true;
 	while (illegal) {
 		cout << "Type: " << entry.type << endl;
@@ -348,6 +399,7 @@ bool entryInput() {
 	entry.transCat = returnString(properties["presetLists"][i]["catList"][j]["cat"]);
 
 	// User input : Expense / Income Category
+	system("cls");
 	illegal = true;
 	while (illegal) {
 		cout << "Type: " << entry.type << endl;
@@ -369,6 +421,7 @@ bool entryInput() {
 	entry.transChild = returnString(properties["presetLists"][i]["catList"][j]["child"][k]);
 
 	// User input : Account Type
+	system("cls");
 	illegal = true;
 	while (illegal) {
 		cout << "Type: " << entry.type << endl;
@@ -391,6 +444,7 @@ bool entryInput() {
 	entry.accCat = returnString(properties["presetLists"][0]["catList"][j]["cat"]);
 
 	// User input : Account
+	system("cls");
 	illegal = true;
 	while (illegal) {
 		cout << "Type: " << entry.type << endl;
@@ -414,6 +468,7 @@ bool entryInput() {
 	entry.accChild = returnString(properties["presetLists"][0]["catList"][j]["child"][k]);
 
 	// Date & time input :
+	system("cls");
 	// ==================================================
 	cout << "Type: " << entry.type << endl;
 	cout << "Category: " << entry.transCat << endl;
@@ -444,7 +499,7 @@ bool entryInput() {
 	// ==================================================
 
 	// User input : Amount
-	outDate();
+	system("cls");
 	cout << "Amount? ";
 	cin >> entry.amount;
 
@@ -454,11 +509,13 @@ bool entryInput() {
 	getline(cin, entry.title); // To check on why auto skip
 
 	// User input : Notes (No multi-line)
+	system("cls");
 	cout << "Notes? (Only press 'enter' when done, no multi-line support yet)" << endl;
 	line(50, '-');
 	getline(cin, entry.notes);
 
 	// User input : Status
+	system("cls");
 	cout << "Status? ";
 	attrib();
 	char statusSelect = '\0';
@@ -482,11 +539,13 @@ bool entryInput() {
 
 
 	// System generate : Label
+	system("cls");
 	time_t rawtime = time(&rawtime);
 	struct tm now;
 	localtime_s(&now, &rawtime);
 	int thisYear = now.tm_year + 1900;
 
+	// Commit confirmation
 	if (now.tm_mon < 10) {
 		entry.label = "Import " + to_string(thisYear) + "0" + to_string(now.tm_mon);
 	} else {

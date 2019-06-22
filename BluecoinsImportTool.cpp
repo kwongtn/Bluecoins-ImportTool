@@ -3,7 +3,6 @@
 
 #include "BluecoinsImportTool.h"
 
-const int menusize = 5;
 
 
 int main() {
@@ -13,17 +12,20 @@ int main() {
 		system("cls");
 		cout << "Next action?" << endl;
 		int selection = mainMenu();
+		system("cls");
 		switch (selection) {
 		case 0 : {
-			// Open a file.
+			// Load a new json file.
 			break;
 		}
 		case 1 : {
-			// Unload a file.
+			// Set a new output file.
 			break;
 		}
 		case 2: {
+			// Outputs all properties.
 			outAllProperties();
+			system("pause");
 			break;
 		}
 		case 3 : {
