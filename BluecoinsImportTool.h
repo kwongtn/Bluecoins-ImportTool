@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "json.hpp"
+#include "externals/json/single_include/nlohmann/json.hpp"
 using json = nlohmann::json;
 
 #include <iostream>
@@ -254,18 +254,29 @@ void outArray(bool isAccount = false, int type = 10000, int cat = 10000) {
 int mainMenu() {
 	int i = 3,
 		selection;
-	string menuItem[][2] = { 
-		{"0","Load File"},
-		{"1", "Unload File"},
-		{"2", "View All Entries"},
-		{"3", "New Entry"} 
+	struct MENU {
+		int count;
+		string content;
 	};
-		
 
+	MENU menu[menusize];
+
+	// Define menus
+	menu[0].count = 0;
+	menu[0].content = "Load New Json File";
+	menu[1].count = 1;
+	menu[1].content = "Set New Output File";
+	menu[2].count = 2;
+	menu[2].content = "View All Current Entries";
+	menu[3].count = 3;
+	menu[3].content = "Input New Entry";
+
+
+
+	// Output menu.
 	attrib();
-
-	for (int j = 0; j < 3; j++) {
-		cout << left << setw(5) << menuItem[j][0] << menuItem[j][1] << endl;
+	for (int j = 0; j < menusize; j++) {
+		cout << left << setw(5) << menu[j].count << menu[j].content << endl;
 	}
 
 	cout << "Your Selection? : ";
