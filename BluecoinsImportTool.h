@@ -313,6 +313,8 @@ void outArray(bool isAccount = false, int type = 10000, int cat = 10000) {
 			cout << "Type number invalid." << endl;
 		}
 	}
+
+	cout << endl;
 }
 
 int mainMenu() {
@@ -334,6 +336,8 @@ int mainMenu() {
 	menu[2].content = "View All Current Entries";
 	menu[3].count = 3;
 	menu[3].content = "Input New Entry";
+	menu[4].count = 4;
+	menu[4].content = "Exit";
 
 
 
@@ -381,7 +385,7 @@ bool entryInput() {
 	system("cls");
 	illegal = true;
 	while (illegal) {
-		cout << "Type: " << entry.type << endl;
+		inputted();
 		outArray(false, i);
 
 		cout << "Category? ";
@@ -402,8 +406,7 @@ bool entryInput() {
 	system("cls");
 	illegal = true;
 	while (illegal) {
-		cout << "Type: " << entry.type << endl;
-		cout << "Category: " << entry.transCat << endl;
+		inputted();
 		outArray(false, i, j);
 
 		cout << "Category Child? ";
@@ -424,9 +427,7 @@ bool entryInput() {
 	system("cls");
 	illegal = true;
 	while (illegal) {
-		cout << "Type: " << entry.type << endl;
-		cout << "Category: " << entry.transCat << endl;
-		cout << "Category Child: " << entry.transChild << endl;
+		inputted();
 		outArray(true, 0);
 
 		cout << "Account Type? ";
@@ -447,10 +448,7 @@ bool entryInput() {
 	system("cls");
 	illegal = true;
 	while (illegal) {
-		cout << "Type: " << entry.type << endl;
-		cout << "Category: " << entry.transCat << endl;
-		cout << "Category Child: " << entry.transChild << endl;
-		cout << "Account Type: " << entry.accCat << endl;
+		inputted();
 		outArray(true, 0, j);
 
 		cout << "Account Child? ";
@@ -469,13 +467,7 @@ bool entryInput() {
 
 	// Date & time input :
 	system("cls");
-	// ==================================================
-	cout << "Type: " << entry.type << endl;
-	cout << "Category: " << entry.transCat << endl;
-	cout << "Category Child: " << entry.transChild << endl;
-	cout << "Account Type: " << entry.accCat << endl;
-	cout << "Account Child: " << entry.accChild << endl;
-	// Create logic for displaying current atributes.
+	inputted();
 
 	// User input : Year
 	cout << "Year? ";
@@ -500,22 +492,26 @@ bool entryInput() {
 
 	// User input : Amount
 	system("cls");
+	inputted();
 	cout << "Amount? ";
 	cin >> entry.amount;
 
 	// User input : Short Description
+	system("cls");
+	inputted();
 	cout << "Transaction title? (Key in and press 'enter' when done)" << endl;
 	line(50, '-');
 	getline(cin, entry.title); // To check on why auto skip
 
 	// User input : Notes (No multi-line)
-	system("cls");
+	inputted();
 	cout << "Notes? (Only press 'enter' when done, no multi-line support yet)" << endl;
 	line(50, '-');
 	getline(cin, entry.notes);
 
 	// User input : Status
 	system("cls");
+	inputted();
 	cout << "Status? ";
 	attrib();
 	char statusSelect = '\0';
@@ -544,6 +540,8 @@ bool entryInput() {
 	struct tm now;
 	localtime_s(&now, &rawtime);
 	int thisYear = now.tm_year + 1900;
+
+	inputted();
 
 	// Commit confirmation
 	if (now.tm_mon < 10) {
