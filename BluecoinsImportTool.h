@@ -33,7 +33,7 @@ struct ENTRY {
 		hour = 1000,
 		mins = 1000;
 	double amount = 3.14159265359;
-	string title = "";			// Title of transaction.
+	string item = "";			// Title of transaction.
 	string notes = "";
 	char status = '\0';
 	string label = "";
@@ -68,19 +68,19 @@ void attrib() {
 }
 
 
+string jsonFilename;
 // Request file path, opens it and imports it into the json struct.
 void readFile() {
 	ifstream jsonFile;
 	while (true) {
 		cout << "File path for json file ? ";
-		string filename;
-		getline(cin, filename);
+		getline(cin, jsonFilename);
 
-		if (filename == "d") {
-			filename = "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\ktn.json";
+		if (jsonFilename == "d") {
+			jsonFilename = "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\ktn.json";
 		}
 
-		jsonFile.open(filename);
+		jsonFile.open(jsonFilename);
 
 		if (!jsonFile) {
 			cout << "File does not exist. " << endl;
@@ -105,6 +105,11 @@ string returnString(json i) {
 
 // Returns all current inputted items in entry.
 void inputted() {
+	cout << endl;
+	if (entry.item != "") {
+		cout << "Title: " << entry.item << endl;
+	}
+
 	if (entry.type != "") {
 		cout << "Type: " << entry.type << endl;
 	}
@@ -148,14 +153,7 @@ void inputted() {
 		cout << "Amount: " << fixed << showpoint << setprecision(2) << entry.amount << endl;
 	}
 
-	if (entry.title != "") {
-		cout << "Title: " << entry.title << endl;
-	}
-
-	if (entry.notes != "") {
-		cout << "\nNotes:\n" << entry.notes << endl;
-	}
-
+	
 	if (entry.status != '\0') {
 		cout << "Status: " << entry.status << endl;
 	}
@@ -163,6 +161,11 @@ void inputted() {
 	if (entry.label != "") {
 		cout << "Label: " << entry.label << endl;
 	}
+
+	if (entry.notes != "") {
+		cout << "\nNotes:\n" << entry.notes << endl << endl;
+	}
+
 
 }
 
@@ -322,8 +325,8 @@ int mainMenu() {
 		selection;
 
 	struct MENU {
-		int count;
-		string content;
+		int count = 0;
+		string content = "";
 	};
 	MENU menu[menusize];
 
@@ -362,9 +365,20 @@ bool entryInput() {
 
 	bool illegal = true;
 
-	// User input : Type of Transaction *No logic for transfer yet.
+	// User input : Short Description
 	system("cls");
+	inputted();
+	line(50, '-');
+	cout << "Transaction title? (Only press 'enter' when done, no multi-line support yet)" << endl;
+	line(50, '-');
+	cin.ignore();
+	getline(cin, entry.item);
+
+	// User input : Type of Transaction *No logic for transfer yet.
+	illegal = true;
 	while (illegal) {
+		system("cls");
+		inputted();
 		outArray(false);
 		cout << endl << left << setw(5) << "5" << "Transfer" << endl;
 
@@ -382,9 +396,9 @@ bool entryInput() {
 	entry.type = returnString(properties["presetLists"][i]["type"]);
 
 	// User input : Expense / Income Parent Category
-	system("cls");
 	illegal = true;
 	while (illegal) {
+		system("cls");
 		inputted();
 		outArray(false, i);
 
@@ -403,9 +417,9 @@ bool entryInput() {
 	entry.transCat = returnString(properties["presetLists"][i]["catList"][j]["cat"]);
 
 	// User input : Expense / Income Category
-	system("cls");
 	illegal = true;
 	while (illegal) {
+		system("cls");
 		inputted();
 		outArray(false, i, j);
 
@@ -424,9 +438,9 @@ bool entryInput() {
 	entry.transChild = returnString(properties["presetLists"][i]["catList"][j]["child"][k]);
 
 	// User input : Account Type
-	system("cls");
 	illegal = true;
 	while (illegal) {
+		system("cls");
 		inputted();
 		outArray(true, 0);
 
@@ -445,9 +459,9 @@ bool entryInput() {
 	entry.accCat = returnString(properties["presetLists"][0]["catList"][j]["cat"]);
 
 	// User input : Account
-	system("cls");
 	illegal = true;
 	while (illegal) {
+		system("cls");
 		inputted();
 		outArray(true, 0, j);
 
@@ -468,6 +482,8 @@ bool entryInput() {
 	// Date & time input :
 	system("cls");
 	inputted();
+	line(50, '-');
+	cout << "Date & time input: " << endl;
 	line(50, '-');
 
 	// User input : Year
@@ -498,47 +514,50 @@ bool entryInput() {
 	cout << "Amount? ";
 	cin >> entry.amount;
 
-	// User input : Short Description
-	system("cls");
-	inputted();
-	line(50, '-');
-	cout << "Transaction title? (Key in and press 'enter' when done), no multi line support yet" << endl;
-	line(50, '-');
-	getline(cin, entry.title); // To check on why auto skip
 
 	// User input : Notes (No multi-line)
+	system("cls");
 	inputted();
 	line(50, '-');
 	cout << "Notes? (Only press 'enter' when done, no multi-line support yet)" << endl;
 	line(50, '-');
+	cin.ignore();
 	getline(cin, entry.notes);
 
 	// User input : Status
-	system("cls");
-	inputted();
-	attrib();
-	char statusSelect = '\0';
-	cout << left << setw(5) << "R" << "Reconciled" << endl;
-	cout << left << setw(5) << "C" << "Cleared" << endl;
-	cout << left << setw(5) << "0" << "<None>" << endl;
-	cout << "Status? ";
-	cin >> statusSelect;
-	statusSelect = toupper(statusSelect);
-	switch (statusSelect) {
-		case 'R':{
-			entry.status = 'R';
-			break;
-		} case 'C':{
-			entry.status = 'C';
-			break;
+	illegal = true;
+	while (illegal) {
+		system("cls");
+		inputted();
+		attrib();
+		char statusSelect = '\0';
+		cout << left << setw(5) << "R" << "Reconciled" << endl;
+		cout << left << setw(5) << "C" << "Cleared" << endl;
+		cout << left << setw(5) << "0" << "<None>" << endl;
+		cout << "Status? ";
+		cin >> statusSelect;
+		statusSelect = toupper(statusSelect);
+		switch (statusSelect) {
+			case 'R' : {
+				entry.status = 'R';
+				illegal = false;
+				break;
+			} case 'C' : {
+				entry.status = 'C';
+				illegal = false;
+				break;
+			} case '0' : {
+				illegal = false;
+				break;
+			}
+			default:
+				break;
 		}
-		default:
-			break;
+
 	}
 
 
 	// System generate : Label
-	system("cls");
 	time_t rawtime = time(&rawtime);
 	struct tm now;
 	localtime_s(&now, &rawtime);
@@ -558,6 +577,8 @@ bool entryInput() {
 
 
 	// Review entry, then press key to return commit intent.
+	system("cls");
+	inputted();
 	line(50, '-');
 	char commit;
 	cout << "Commit changes? (y/n) ";
@@ -575,13 +596,14 @@ bool entryInput() {
 ifstream fileCheck;
 ofstream file;
 bool append = false;
+string outFilename;
 
 void fileFunc() {
 		cout << "File path for output file? ";
-		string filename;
-		getline(cin, filename);
-		fileCheck.open(filename);
-		if (!file) {
+		cin.ignore();
+		getline(cin, outFilename);
+		fileCheck.open(outFilename);
+		if (!fileCheck) {
 			cout << "File does not exist, create file? (y/n)";
 			char intent;
 			cin >> intent;
@@ -589,7 +611,7 @@ void fileFunc() {
 
 			// If 'y' then create file else go back main menu
 			if (intent == 'y') {
-				file.open(filename);
+				file.open(outFilename);
 			}
 
 		} else {
@@ -599,10 +621,10 @@ void fileFunc() {
 			intent = tolower(intent);
 
 			if (intent == 'y') {
-				file.open(filename, ios::app);
+				file.open(outFilename, ios::app);
 				append = true;
 			} else if (intent == 'n') {
-				file.open(filename);
+				file.open(outFilename);
 			} 
 
 		}
@@ -616,7 +638,7 @@ void writeToFile() {
 	}
 	file << entry.type << ",";
 	file << entry.month << "/" << entry.day << "/" << entry.year << " " << entry.hour << ":" << entry.mins << ",";
-	file << entry.title<<",";
+	file << entry.item<<",";
 	file << entry.amount << ",";
 	file << entry.transCat << ",";
 	file << entry.transChild << ",";
