@@ -41,6 +41,25 @@ struct ENTRY {
 };
 ENTRY entry;
 
+// Resets all entry to initial values.
+void reset() {
+	entry.type = "";
+	entry.transCat = "";
+	entry.transChild = "";
+	entry.accCat = "";
+	entry.accChild = "";
+	entry.year = 0;
+	entry.month = 0;
+	entry.day = 0;
+	entry.hour = 1000;
+	entry.mins = 1000;
+	entry.amount = 3.14159265359;
+	entry.item = "";
+	entry.notes = "";
+	entry.status = '\0';
+	entry.label = "";
+}
+
 // Some arbituary introduction to the program during launch.
 void introduction() {
 
@@ -628,6 +647,7 @@ void fileFunc() {
 			} 
 
 		}
+		fileCheck.close();
 
 
 }

@@ -29,7 +29,8 @@ int main() {
 		system("cls");
 
 		switch (selection) {
-		case 0 : {	// Load a new json file.
+		// Load a new json file.
+		case 0 : {	
 			char intent;
 			cout << "Are you sure you want to clear the current json configuration and load a new one? (y/n)" << endl;
 			cin >> intent;
@@ -45,18 +46,20 @@ int main() {
 
 			break;
 		}
-		case 1 : {	// Set a new output file.
+		// Set a new output file.
+		case 1 : {	
 			fileFunc();
 			break;
 		}
+		// Outputs all properties.
 		case 2: {
-			// Outputs all properties.
 			outAllProperties();
 			system("pause");
 			break;
 		}
+		// Creates a new entry.
 		case 3 : {
-			// Creates a new entry.
+			reset();
 			if (entryInput()) { //Fix functionality to request file when file is not loaded.
 				if (!file) {
 					fileFunc();
