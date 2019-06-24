@@ -12,7 +12,7 @@ using json = nlohmann::json;
 #include <fstream>
 #include <iomanip>
 
-const int menusize = 5;
+const int menusize = 10;
 
 using namespace std;
 
@@ -89,12 +89,16 @@ void attrib() {
 
 string jsonFilename;
 // Request file path, opens it and imports it into the json struct.
-void readFile() {
+void readFile(bool ignore = false) {
 	ifstream jsonFile;
 	while (true) {
 		cout << "File path for json file ? ";
+		if (ignore) {
+			cin.ignore();
+		}
 		getline(cin, jsonFilename);
 
+		// You can edit this to prevent yourself from having to retype the full path everytime.
 		if (jsonFilename == "d") {
 			jsonFilename = "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\ktn.json";
 		}
@@ -340,8 +344,7 @@ void outArray(bool isAccount = false, int type = 10000, int cat = 10000) {
 }
 
 int mainMenu() {
-	int i = 3,
-		selection;
+	int selection;
 
 	struct MENU {
 		int count = 0;
@@ -355,20 +358,27 @@ int mainMenu() {
 	menu[1].count = 1;
 	menu[1].content = "Set New Output File";
 	menu[2].count = 2;
-	menu[2].content = "View All Current Entries";
+	menu[2].content = "View All Current Categories";
 	menu[3].count = 3;
-	menu[3].content = "Input New Entry";
+	menu[3].content = "View Last Entry";
 	menu[4].count = 4;
-	menu[4].content = "Exit";
+	menu[4].content = "Input New Entry";
+
+	menu[9].count = 9;
+	menu[9].content = "Exit";
 
 
 
 	// Output menu.
 	attrib();
-	for (int j = 0; j < menusize; j++) {
-		cout << left << setw(5) << menu[j].count << menu[j].content << endl;
+	for (int j = 0; j < menusize - 2; j++) {
+		if (menu[j].content != "") {
+			cout << left << setw(5) << menu[j].count << menu[j].content << endl;
+		}
 	}
-
+	cout << endl;
+	cout << left << setw(5) << menu[menusize - 1].count << menu[menusize - 1].content << endl;
+	cout << endl;
 	cout << "Your Selection? : ";
 	cin >> selection;
 
@@ -617,37 +627,46 @@ ofstream file;
 bool append = false;
 string outFilename;
 
-void fileFunc() {
-		cout << "File path for output file? ";
+void fileFunc(bool ignore = false) {
+	cout << "File path for output file? ";
+	if (ignore) {
 		cin.ignore();
-		getline(cin, outFilename);
-		fileCheck.open(outFilename);
-		if (!fileCheck) {
-			cout << "File does not exist, create file? (y/n)";
-			char intent;
-			cin >> intent;
-			intent = tolower(intent);
+	}
+	getline(cin, outFilename);
 
-			// If 'y' then create file else go back main menu
-			if (intent == 'y') {
-				file.open(outFilename);
-			}
+	if (outFilename == "d") {
+		outFilename = "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\outputfile.csv";
+	}
 
-		} else {
-			cout << "File exists, append? Selecting 'n' will clear the existing file. Press 'c' to cancel." << endl;
-			char intent;
-			cin >> intent;
-			intent = tolower(intent);
+	fileCheck.open(outFilename);
+	if (!fileCheck) {
+		cout << "File does not exist, create file? (y/n)";
+		char intent;
+		cin >> intent;
+		intent = tolower(intent);
 
-			if (intent == 'y') {
-				file.open(outFilename, ios::app);
-				append = true;
-			} else if (intent == 'n') {
-				file.open(outFilename);
-			} 
-
+		// If 'y' then create file else go back main menu
+		if (intent == 'y') {
+			file.open(outFilename);
 		}
-		fileCheck.close();
+
+	} else {
+		cout << "File exists, append? Selecting 'n' will clear the existing file. Press 'c' to cancel." << endl;
+		char intent;
+		cin >> intent;
+		intent = tolower(intent);
+
+		if (intent == 'y') {
+			file.open(outFilename, ios::app);
+			append = true;
+		} else if (intent == 'n') {
+			file.open(outFilename);
+		} else {
+			outFilename = "";
+		}
+
+	}
+	fileCheck.close();
 
 
 }
@@ -665,6 +684,7 @@ void writeToFile() {
 	file << entry.accCat << ",";
 	file << entry.accChild << ",";
 	file << entry.notes << ",";
+	file << entry.label << ",";
 	file << entry.status;
 	file << endl;
 }

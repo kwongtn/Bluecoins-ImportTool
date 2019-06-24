@@ -17,6 +17,8 @@ int main() {
 			readFile();
 		}
 
+		
+
 		cout << endl;
 		cout << "Json file path: \"" << jsonFilename << "\"" << endl;
 		cout << "Output file path: \"" << outFilename << "\"" << endl;
@@ -38,31 +40,39 @@ int main() {
 
 			if (intent == 'y') {
 				properties.clear();
-				cout << "json file cleared.";
+				cout << "json file cleared. " << endl;
+				readFile(true);
 			} else {
 				cout << "No actions taken. ";
+				system("pause");
 			}
-			system("pause");
+			
 
 			break;
 		}
 		// Set a new output file.
 		case 1 : {	
-			fileFunc();
+			fileFunc(true);
 			break;
 		}
 		// Outputs all properties.
-		case 2: {
+		case 2 : {
 			outAllProperties();
 			system("pause");
 			break;
 		}
-		// Creates a new entry.
+		// View last inputted entry.
 		case 3 : {
+			inputted();
+			system("pause");
+			break;
+		}
+		// Creates a new entry.
+		case 4 : {
 			reset();
-			if (entryInput()) { //Fix functionality to request file when file is not loaded.
-				if (!file) {
-					fileFunc();
+			if (entryInput()) { 
+				if (!file.is_open()) {
+					fileFunc(true);
 				}
 				writeToFile();
 				cout << "Written to file. ";
@@ -74,7 +84,7 @@ int main() {
 			system("pause");
 			break;
 		}
-		case 4 : {
+		case 9 : {
 			cout << "Thank you for using. Throughout this session, you have: " << endl;
 			cout << endl;
 			cout << "Inserted " << countEntry << " entries." << endl;
