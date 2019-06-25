@@ -18,6 +18,9 @@
     <ClCompile Include="BluecoinsImportTool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BluecoinsImportTool_FileImplementations.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BluecoinsImportTool.h">

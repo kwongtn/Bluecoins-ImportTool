@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="BluecoinsImportTool.cpp" />
+    <ClCompile Include="BluecoinsImportTool_FileImplementations.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BluecoinsImportTool.h" />
