@@ -93,16 +93,47 @@ void writeToFile() {
 	if (!append) {
 		file << "(1)Type,(2)Date,(3)Item or Payee,(4)Amount,(5)Parent Category,(6)Category,(7)Account Type,(8)Account,(9)Notes,(10) Label,(11) Status" << endl;
 	}
-	file << entry.type << ",";
-	file << entry.month << "/" << entry.day << "/" << entry.year << " " << entry.hour << ":" << entry.mins << ",";
-	file << entry.item << ",";
-	file << entry.amount << ",";
-	file << entry.transCat << ",";
-	file << entry.transChild << ",";
-	file << entry.accCat << ",";
-	file << entry.accChild << ",";
-	file << entry.notes << ",";
-	file << entry.label << ",";
-	file << entry.status;
-	file << endl;
+	if (entry.type == "Transfer") {
+		// Source
+		file << "Transfer" << ",";
+		file << entry.month << "/" << entry.day << "/" << entry.year << " " << entry.hour << ":" << entry.mins << ",";
+		file << entry.item << ",";
+		file << entry.amount << ",";
+		file << "(Transfer)" << ",";
+		file << "(Transfer)" << ",";
+		file << entry.sourceAccCat << ",";
+		file << entry.sourceAccChild << ",";
+		file << entry.notes << ",";
+		file << entry.label << ",";
+		file << entry.status;
+		file << endl;
+		// Destination
+		file << "Transfer" << ",";
+		file << entry.month << "/" << entry.day << "/" << entry.year << " " << entry.hour << ":" << entry.mins << ",";
+		file << entry.item << ",";
+		file << entry.amount << ",";
+		file << "(Transfer)" << ",";
+		file << "(Transfer)" << ",";
+		file << entry.destAccCat << ",";
+		file << entry.destAccChild << ",";
+		file << entry.notes << ",";
+		file << entry.label << ",";
+		file << entry.status;
+		file << endl;
+
+	} else {
+		file << entry.type << ",";
+		file << entry.month << "/" << entry.day << "/" << entry.year << " " << entry.hour << ":" << entry.mins << ",";
+		file << entry.item << ",";
+		file << entry.amount << ",";
+		file << entry.transCat << ",";
+		file << entry.transChild << ",";
+		file << entry.accCat << ",";
+		file << entry.accChild << ",";
+		file << entry.notes << ",";
+		file << entry.label << ",";
+		file << entry.status;
+		file << endl;
+
+	}
 }

@@ -1,7 +1,7 @@
 // BluecoinsImportTool.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include "BluecoinsImportTool_FileImplementations.cpp"
+#include "BluecoinsImportTool.h"
 
 int countEntry = 0,
 	countDiscard = 0;
@@ -75,6 +75,7 @@ int main() {
 					fileFunc(true);
 				}
 				writeToFile();
+				append = true;
 				cout << "Written to file. ";
 				countEntry++;
 			} else {
