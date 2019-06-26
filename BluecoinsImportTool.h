@@ -46,9 +46,6 @@ struct ENTRY {
 };
 ENTRY entry;
 
-
-
-
 // Resets all entry to initial values.
 void reset() {
 	entry.type = "";
@@ -94,7 +91,7 @@ void attrib() {
 	line(50, '-');
 }
 
-// For file input
+
 string jsonFilename;
 // Request file path, opens it and imports it into the json struct.
 void readFile(bool ignore = false) {
@@ -164,7 +161,7 @@ void inputted() {
 		if (entry.sourceAccChild != "") {
 			cout << "Source Account Child: " << entry.sourceAccChild << endl;
 		}
-		
+
 		if (entry.destAccCat != "") {
 			cout << "Destination Account Category: " << entry.destAccCat << endl;
 		}
@@ -629,17 +626,8 @@ bool entryInput() {
 		}
 		entry.accChild = returnString(properties["presetLists"][0]["catList"][j]["child"][k]);
 
-			if ((k < properties["presetLists"][0]["catList"][j]["child"].size()) && (k >= 0)) {
-				illegal = false;
-			} else {
-				cout << "Illegal action!" << endl;
-				system("pause");
-				continue;
-			}
-
-		}
-		entry.accChild = returnString(properties["presetLists"][0]["catList"][j]["child"][k]);
 	}
+
 
 
 	// Date & time input :
@@ -741,6 +729,7 @@ bool entryInput() {
 
 
 
+
 	// Review entry, then press key to return commit intent.
 	system("cls");
 	inputted();
@@ -757,7 +746,7 @@ bool entryInput() {
 	}
 }
 
-// For file output
+// Global variables related with file output.
 ifstream fileCheck;
 ofstream file;
 bool append = false;
@@ -814,10 +803,10 @@ void writeToFile() {
 	if (entry.type == "Transfer") {
 	// Source Account
 		file << "Transfer" << ",";
-		file << right << setfill('0') 
-			<< setw(2) << entry.month << "/" 
-			<< setw(2) << entry.day << "/" 
-			<< entry.year << " " 
+		file << right << setfill('0')
+			<< setw(2) << entry.month << "/"
+			<< setw(2) << entry.day << "/"
+			<< entry.year << " "
 			<< setw(2) << entry.hour << ":"
 			<< setw(2) << entry.mins << ","
 			<< setfill(' ');
@@ -876,4 +865,3 @@ void writeToFile() {
 }
 
 // TODO: Reference additional headers your program requires here.
-
