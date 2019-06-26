@@ -1,0 +1,145 @@
+{
+    "jsonType" : "Simple",
+
+    "presetLists":[
+        {    
+            "type" : "Account",
+            "catList" : [
+                {
+                    "cat" : "Bank",
+                    "child" : [
+                        "Bank Islam Account",
+                        "RHB Bank Account",
+                        "Bank Rakyat Savings Account"
+                    ]
+                },{
+                    "cat" : "Cash",
+                    "child" : [
+                        "Wallet",
+                        "Mummy Account",
+                        "Owing Account"
+                    ]
+                },{
+                    "cat" : "Investments",
+                    "child" : [
+                        "Fixed Deposits",
+                        "Investment Funding"
+                    ]
+                },{
+                    "cat" : "Other Assets",
+                    "child" : [
+                        "Settled Debtors"
+                    ]
+                },{
+                    "cat" : "Virtual Accounts",
+                    "child" : [
+                        "DiGi Account",
+                        "RapidStudent Card",
+                        "Steam Wallet",
+                        "TnG Wallet",
+                        "XueJi TnG Card"
+                    ]
+                },{
+                    "cat" : "Loans",
+                    "child" : [
+                        "PTPTN + Interest Suspense"
+                    ]
+                },{
+                    "cat" : "Payables",
+                    "child" : [
+                        "Depreciation / Prepayment Account"
+                    ]
+                }
+
+                
+            ]
+        },{
+            "type" : "Expense",
+            "catList" : [
+                {
+                    "cat" : "Car",
+                    "child" : [
+                        "Fuel",
+                        "Maintenance",
+                        "Parking Fees & Toll"
+                    ]
+                },{
+                    "cat" : "Computing",
+                    "child" : [
+                        "Hardware",
+                        "Software"
+                    ]
+                },{
+                    "cat" : "Education",
+                    "child" : [
+                        "Entrance Tickets / Fees",
+                        "Study Materials"
+                    ]
+                },{
+                    "cat" : "Entertainment",
+                    "child" : [
+                        "Dining Out",
+                        "Drinks",
+                        "Games",
+                        "Movies",
+                        "Shopping"
+                    ]
+                },{
+                    "cat" : "Household",
+                    "child" : [
+                        "Clothing",
+                        "Family Obligation",
+                        "Grocery",
+                        "Medicine & Dental Care",
+                        "Printing & Stationaries"
+                    ]
+                },{
+                    "cat" : "Transportation",
+                    "child" : [
+                        "Public Transportation",
+                        "Taxi"
+                    ]
+                },{
+                    "cat" : "Utilities",
+                    "child" : [
+                        "Accommodation / Rent",
+                        "Electricity",
+                        "Phone / Internet",
+                        "Postage",
+                        "Water"
+                    ]
+                },{
+                    "cat" : "Others",
+                    "child" : [
+                        "Fines & Penalties",
+                        "Others"
+                    ]
+                }
+
+            ]
+        },{
+            "type" : "Income",
+            "catList" : [
+                {
+                    "cat" : "Employer",
+                    "child" : [
+                        "Bonus",
+                        "Salary"
+                    ]
+                },{
+                    "cat" : "Family",
+                    "child" : [
+                        "Pocket Money"
+                    ]
+                },{
+                    "cat" : "Others",
+                    "child" : [
+                        "Interests",
+                        "Refunds",
+                        "Others"
+                    ]
+                }
+            ]
+        }
+    ]
+}
