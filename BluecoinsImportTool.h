@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "externals/json/single_include/nlohmann/json.hpp"
+#include "json.hpp"
 using json = nlohmann::json;
 
 #include <iostream>
@@ -38,6 +38,11 @@ struct ENTRY {
 	char status = '\0';
 	string label = "";
 
+	// Special variables for transfers
+	string sourceAccCat = "";
+	string sourceAccChild = "";
+	string destAccCat = "";
+	string destAccChild = "";
 };
 ENTRY entry;
 
@@ -76,7 +81,7 @@ void line(int j = 50, char k = '=', bool nextLineAtEnd = true) {
 	}
 }
 
-// Outputs
+// Outputs the following in the console
 // --------------------------------------------------
 // ID   Details
 // --------------------------------------------------
@@ -129,6 +134,8 @@ string returnString(json i) {
 // Returns all current inputted items in entry.
 void inputted() {
 	cout << endl;
+
+
 	if (entry.item != "") {
 		cout << "Title: " << entry.item << endl;
 	}
@@ -145,12 +152,32 @@ void inputted() {
 		cout << "Category Child: " << entry.transChild << endl;
 	}
 
-	if (entry.accCat != "") {
-		cout << "Account Type: " << entry.accCat << endl;
-	}
 
-	if (entry.accChild != "") {
-		cout << "Account Child: " << entry.accChild << endl;
+	if (entry.type == "Transfer") {
+		if (entry.sourceAccCat != "") {
+			cout << "Source Account Category: " << entry.sourceAccCat << endl;
+		}
+
+		if (entry.sourceAccChild != "") {
+			cout << "Source Account Child: " << entry.sourceAccChild << endl;
+		}
+		
+		if (entry.destAccCat != "") {
+			cout << "Destination Account Category: " << entry.destAccCat << endl;
+		}
+
+		if (entry.destAccChild != "") {
+			cout << "Destination Account Child: " << entry.destAccChild << endl;
+		}
+
+	} else {
+		if (entry.accCat != "") {
+			cout << "Account Type: " << entry.accCat << endl;
+		}
+
+		if (entry.accChild != "") {
+			cout << "Account Child: " << entry.accChild << endl;
+		}
 	}
 
 	if ((entry.year != 0) &&
@@ -176,7 +203,7 @@ void inputted() {
 		cout << "Amount: " << fixed << showpoint << setprecision(2) << entry.amount << endl;
 	}
 
-	
+
 	if (entry.status != '\0') {
 		cout << "Status: " << entry.status << endl;
 	}
@@ -422,91 +449,186 @@ bool entryInput() {
 			continue;
 		}
 	}
-	entry.type = returnString(properties["presetLists"][i]["type"]);
 
+	// If transaction type is transfer
+	if (i == 5) {
+		// Transfer cases
+		entry.transCat = "(Transfer)";
+		entry.transChild = "(Transfer)";
+		entry.type = "Transfer";
+
+		//To determine source account
+		// User input : Account Type
+		illegal = true;
+		while (illegal) {
+			system("cls");
+			inputted();
+			outArray(true, 0);
+
+			cout << "Source Account Type? ";
+			cin >> j;
+
+			if ((j < properties["presetLists"][0]["catList"].size()) && (j >= 0)) {
+				illegal = false;
+			} else {
+				cout << "Illegal action!" << endl;
+				system("pause");
+				continue;
+			}
+		}
+		entry.sourceAccCat = returnString(properties["presetLists"][0]["catList"][j]["cat"]);
+
+		// User input : Account
+		illegal = true;
+		while (illegal) {
+			system("cls");
+			inputted();
+			outArray(true, 0, j);
+
+			cout << "Source Account Child? ";
+			cin >> k;
+
+			if ((k < properties["presetLists"][0]["catList"][j]["child"].size()) && (k >= 0)) {
+				illegal = false;
+			} else {
+				cout << "Illegal action!" << endl;
+				system("pause");
+				continue;
+			}
+		}
+		entry.sourceAccChild = returnString(properties["presetLists"][0]["catList"][j]["child"][k]);
+
+		// To determine destination account.
+		j = 0;
+		k = 0;
+		// User input : Account Type
+		illegal = true;
+		while (illegal) {
+			system("cls");
+			inputted();
+			outArray(true, 0);
+
+			cout << "Destination Account Type? ";
+			cin >> j;
+
+			if ((j < properties["presetLists"][0]["catList"].size()) && (j >= 0)) {
+				illegal = false;
+			} else {
+				cout << "Illegal action!" << endl;
+				system("pause");
+				continue;
+			}
+		}
+		entry.destAccCat = returnString(properties["presetLists"][0]["catList"][j]["cat"]);
+
+		// User input : Account
+		illegal = true;
+		while (illegal) {
+			system("cls");
+			inputted();
+			outArray(true, 0, j);
+			cout << "Destination Account Child? ";
+			cin >> k;
+			if ((k < properties["presetLists"][0]["catList"][j]["child"].size()) && (k >= 0)) {
+				illegal = false;
+			} else {
+				cout << "Illegal action!" << endl;
+				system("pause");
+				continue;
+			}
+			entry.destAccChild = returnString(properties["presetLists"][0]["catList"][j]["child"][k]);
+
+		}
+
+	} else {
 	// User input : Expense / Income Parent Category
-	illegal = true;
-	while (illegal) {
-		system("cls");
-		inputted();
-		outArray(false, i);
+		entry.type = returnString(properties["presetLists"][i]["type"]);
+		illegal = true;
+		while (illegal) {
+			system("cls");
+			inputted();
+			outArray(false, i);
 
-		cout << "Category? ";
-		cin >> j;
+			cout << "Category? ";
+			cin >> j;
 
-		if ((j < properties["presetLists"][i]["catList"].size()) && (j >= 0)) {
-			illegal = false;
-		} else {
-			cout << "Illegal action!" << endl;
-			system("pause");
-			continue;
+			if ((j < properties["presetLists"][i]["catList"].size()) && (j >= 0)) {
+				illegal = false;
+			} else {
+				cout << "Illegal action!" << endl;
+				system("pause");
+				continue;
+			}
+
 		}
+		entry.transCat = returnString(properties["presetLists"][i]["catList"][j]["cat"]);
+
+		// User input : Expense / Income Category
+		illegal = true;
+		while (illegal) {
+			system("cls");
+			inputted();
+			outArray(false, i, j);
+
+			cout << "Category Child? ";
+			cin >> k;
+
+			if ((k < properties["presetLists"][i]["catList"][j]["child"].size()) && (k >= 0)) {
+				illegal = false;
+			} else {
+				cout << "Illegal action!" << endl;
+				system("pause");
+				continue;
+			}
+
+		}
+		entry.transChild = returnString(properties["presetLists"][i]["catList"][j]["child"][k]);
+
+		// User input : Account Type
+		illegal = true;
+		while (illegal) {
+			system("cls");
+			inputted();
+			outArray(true, 0);
+
+			cout << "Account Type? ";
+			cin >> j;
+
+			if ((j < properties["presetLists"][0]["catList"].size()) && (j >= 0)) {
+				illegal = false;
+			} else {
+				cout << "Illegal action!" << endl;
+				system("pause");
+				continue;
+			}
+
+		}
+		entry.accCat = returnString(properties["presetLists"][0]["catList"][j]["cat"]);
+
+		// User input : Account
+		illegal = true;
+		while (illegal) {
+			system("cls");
+			inputted();
+			outArray(true, 0, j);
+
+			cout << "Account Child? ";
+			cin >> k;
+
+			if ((k < properties["presetLists"][0]["catList"][j]["child"].size()) && (k >= 0)) {
+				illegal = false;
+			} else {
+				cout << "Illegal action!" << endl;
+				system("pause");
+				continue;
+			}
+
+		}
+		entry.accChild = returnString(properties["presetLists"][0]["catList"][j]["child"][k]);
 
 	}
-	entry.transCat = returnString(properties["presetLists"][i]["catList"][j]["cat"]);
 
-	// User input : Expense / Income Category
-	illegal = true;
-	while (illegal) {
-		system("cls");
-		inputted();
-		outArray(false, i, j);
 
-		cout << "Category Child? ";
-		cin >> k;
-
-		if ((k < properties["presetLists"][i]["catList"][j]["child"].size()) && (k >= 0)) {
-			illegal = false;
-		} else {
-			cout << "Illegal action!" << endl;
-			system("pause");
-			continue;
-		}
-
-	}
-	entry.transChild = returnString(properties["presetLists"][i]["catList"][j]["child"][k]);
-
-	// User input : Account Type
-	illegal = true;
-	while (illegal) {
-		system("cls");
-		inputted();
-		outArray(true, 0);
-
-		cout << "Account Type? ";
-		cin >> j;
-
-		if ((j < properties["presetLists"][0]["catList"].size()) && (j >= 0)) {
-			illegal = false;
-		} else {
-			cout << "Illegal action!" << endl;
-			system("pause");
-			continue;
-		}
-
-	}
-	entry.accCat = returnString(properties["presetLists"][0]["catList"][j]["cat"]);
-
-	// User input : Account
-	illegal = true;
-	while (illegal) {
-		system("cls");
-		inputted();
-		outArray(true, 0, j);
-
-		cout << "Account Child? ";
-		cin >> k;
-
-		if ((k < properties["presetLists"][0]["catList"][j]["child"].size()) && (k >= 0)) {
-			illegal = false;
-		} else {
-			cout << "Illegal action!" << endl;
-			system("pause");
-			continue;
-		}
-
-	}
-	entry.accChild = returnString(properties["presetLists"][0]["catList"][j]["child"][k]);
 
 	// Date & time input :
 	system("cls");
@@ -567,15 +689,18 @@ bool entryInput() {
 		cin >> statusSelect;
 		statusSelect = toupper(statusSelect);
 		switch (statusSelect) {
-			case 'R' : {
+			case 'R':
+			{
 				entry.status = 'R';
 				illegal = false;
 				break;
-			} case 'C' : {
+			} case 'C':
+			{
 				entry.status = 'C';
 				illegal = false;
 				break;
-			} case '0' : {
+			} case '0':
+			{
 				illegal = false;
 				break;
 			}
@@ -651,7 +776,7 @@ void fileFunc(bool ignore = false) {
 		}
 
 	} else {
-		cout << "File exists, append? Selecting 'n' will clear the existing file. Press 'c' to cancel." << endl;
+		cout << "File exists, append? (y/n/c) \nSelecting 'n' will clear the existing file. Press 'c' to cancel. " << endl;
 		char intent;
 		cin >> intent;
 		intent = tolower(intent);
@@ -675,18 +800,68 @@ void writeToFile() {
 	if (!append) {
 		file << "(1)Type,(2)Date,(3)Item or Payee,(4)Amount,(5)Parent Category,(6)Category,(7)Account Type,(8)Account,(9)Notes,(10) Label,(11) Status" << endl;
 	}
-	file << entry.type << ",";
-	file << entry.month << "/" << entry.day << "/" << entry.year << " " << entry.hour << ":" << entry.mins << ",";
-	file << entry.item<<",";
-	file << entry.amount << ",";
-	file << entry.transCat << ",";
-	file << entry.transChild << ",";
-	file << entry.accCat << ",";
-	file << entry.accChild << ",";
-	file << entry.notes << ",";
-	file << entry.label << ",";
-	file << entry.status;
-	file << endl;
+	if (entry.type == "Transfer") {
+	// Source Account
+		file << "Transfer" << ",";
+		file << right << setfill('0') 
+			<< setw(2) << entry.month << "/" 
+			<< setw(2) << entry.day << "/" 
+			<< entry.year << " " 
+			<< setw(2) << entry.hour << ":"
+			<< setw(2) << entry.mins << ","
+			<< setfill(' ');
+		file << entry.item << ",";
+		file << entry.amount * -1 << ",";
+		file << "(Transfer)" << ",";
+		file << "(Transfer)" << ",";
+		file << entry.sourceAccCat << ",";
+		file << entry.sourceAccChild << ",";
+		file << entry.notes << ",";
+		file << entry.label << ",";
+		file << entry.status;
+		file << endl;
+	// Destination Account
+		file << "Transfer" << ",";
+		file << right << setfill('0')
+			<< setw(2) << entry.month << "/"
+			<< setw(2) << entry.day << "/"
+			<< entry.year << " "
+			<< setw(2) << entry.hour << ":"
+			<< setw(2) << entry.mins << ","
+			<< setfill(' ');
+		file << entry.item << ",";
+		file << entry.amount << ",";
+		file << "(Transfer)" << ",";
+		file << "(Transfer)" << ",";
+		file << entry.destAccCat << ",";
+		file << entry.destAccChild << ",";
+		file << entry.notes << ",";
+		file << entry.label << ",";
+		file << entry.status;
+		file << endl;
+
+	} else { // For normal use cases.
+		file << entry.type << ",";
+		file << right << setfill('0')
+			<< setw(2) << entry.month << "/"
+			<< setw(2) << entry.day << "/"
+			<< entry.year << " "
+			<< setw(2) << entry.hour << ":"
+			<< setw(2) << entry.mins << ","
+			<< setfill(' ');
+
+		file << entry.item << ",";
+		file << entry.amount << ",";
+		file << entry.transCat << ",";
+		file << entry.transChild << ",";
+		file << entry.accCat << ",";
+		file << entry.accChild << ",";
+		file << entry.notes << ",";
+		file << entry.label << ",";
+		file << entry.status;
+		file << endl;
+
+	}
 }
 
 // TODO: Reference additional headers your program requires here.

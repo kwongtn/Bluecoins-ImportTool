@@ -75,6 +75,7 @@ int main() {
 					fileFunc(true);
 				}
 				writeToFile();
+				append = true;
 				cout << "Written to file. ";
 				countEntry++;
 			} else {

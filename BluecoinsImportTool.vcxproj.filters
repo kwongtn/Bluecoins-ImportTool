@@ -23,7 +23,7 @@
     <ClInclude Include="BluecoinsImportTool.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="externals\json\single_include\nlohmann\json.hpp">
+    <ClInclude Include="json.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
