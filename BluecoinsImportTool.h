@@ -13,6 +13,8 @@ using json = nlohmann::json;
 #include <iomanip>
 
 const int menusize = 10;
+const string defaultJsonFileName = "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\ktn.json";
+const string defaultOutFileName = "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\outputfile.csv";
 
 using namespace std;
 
@@ -105,7 +107,7 @@ void readFile(bool ignore = false) {
 
 		// You can edit this to prevent yourself from having to retype the full path everytime.
 		if (jsonFilename == "d") {
-			jsonFilename = "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\ktn.json";
+			jsonFilename = defaultJsonFileName;
 		}
 
 		jsonFile.open(jsonFilename);
@@ -760,7 +762,7 @@ void fileFunc(bool ignore = false) {
 	getline(cin, outFilename);
 
 	if (outFilename == "d") {
-		outFilename = "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\outputfile.csv";
+		outFilename = defaultOutFileName;
 	}
 
 	fileCheck.open(outFilename);
