@@ -1,1 +1,87 @@
 # Bluecoins-ImportTool
+## Introduction
+This is a little tool created for the import of transactions for the Bluecoins app.  
+As I am a lazy person, I would frequently gather a lot of receipts and do it in one go. Typing at phones proves to be a strain when there is a load.  
+Therefore, this tool is created.
+According to the prompts, you can input and select accounts' number as required, speeding up the input process.
+The inputted file will then be exported to a csv file that can be imported into the bluecoins app.
+
+*Note: There is no support for advanced file type yet. You are welcome to fork this repo and add functionality.
+
+Released by KwongTN under the MIT license. Contains code from https://github.com/nlohmann/json .
+
+For the bluecoins import guide, refer to:
+http://www.bluecoinsapp.com/import-guide/
+
+
+## json file terminology
+- `jsonType` simply means the type of the json file, there are `simple` and `advanced`. For more details refer to the [bluecoins import guide](http://www.bluecoinsapp.com/import-guide/).
+- `presetLists` is an array of objects consisting of `account type` and `category list`
+- `type` is the type of account/transaction. Can be any value, but recommended values are `Account`, `Expense`, `Income`. You must have at least one category and child for each type.
+- `cat` is the main category
+- `child` is the child category 
+
+
+## Creating the json file
+### Manual Creation
+#### Simple json
+This is a sample file for a simple json configuration. `a`(or, `account`) must be the first object in the `presetLists` array.
+Currently you are not required to fill in `jsonType`, but it is recommended for future releases.
+```
+{
+    "jsonType" : "Simple",
+    "presetLists":[
+        {    
+            "type" : "a",
+            "catList" : [
+                {
+                    "cat" : "Category1",
+                    "child" : [
+                        "Child1.1",
+                        "Child1.2"
+                    ]
+                }
+            ]
+        },
+        {
+            "type" : "e / i",
+            "catList" : [
+                {
+                    "cat" : "Category2",
+                    "child" : [
+                        "Child2.1",
+                        "Child2.2"
+                    ]
+                }
+            ]
+    ]
+}
+```
+You may also refer to "./Tests/ktn.json" for a real life sample file.
+
+#### (Future) Advanced json
+To be announced, depending on project popularity.
+
+### (Future) Program creation
+Depending the popularity of this project, a tool may be created to facilitate this use case. You are always welcome to fork my project.
+
+## Specifying default path
+If you are compiling yourself, you may edit in your default path that you use to store your json and csv file so that you are not required to manual key in every time:
+- In ".\BlueCoinsImportTool.h", you edit the following variables:
+```
+const string defaultJsonFileName = "<Your path>";
+const string defaultOutFileName = "<Your path>";
+```
+- Take note that you need to add extra backslashes for directory paths, e.g.:
+``` D:\Bluecoins-ImportTool\Tests\ktn.json ``` would be ``` D:\\Bluecoins-ImportTool\\Tests\\ktn.json ```
+
+## No support / not tested
+- Compilers other than the one default in Visual Studio 2019
+- CMake. Not tried yet.
+
+## Project Milestones
+- 28 June 2019, Project announcement to the BlueCoins Community
+- 26 June 2019, Transfers logic completed
+- 24 June 2019, Overall completed
+- 21 June 2019, json file standard decided
+- 16 June 2019, Project Started
