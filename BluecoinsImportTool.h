@@ -12,11 +12,12 @@ using json = nlohmann::json;
 #include <fstream>
 #include <iomanip>
 
+using namespace std;
+
 const int menusize = 10;
 const string defaultJsonFileName = "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\ktn.json";
 const string defaultOutFileName = "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\outputfile.csv";
 
-using namespace std;
 
 // Used to store all properties in the json file.
 json properties;
