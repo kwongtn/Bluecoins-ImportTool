@@ -12,11 +12,12 @@ using json = nlohmann::json;
 #include <fstream>
 #include <iomanip>
 
+using namespace std;
+
 const int menusize = 10;
 const string defaultJsonFileName = "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\ktn.json";
 const string defaultOutFileName = "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\outputfile.csv";
 
-using namespace std;
 
 // Used to store all properties in the json file.
 json properties;
@@ -48,6 +49,8 @@ struct ENTRY {
 };
 ENTRY entry;
 
+// Utility functions:
+
 // Resets all entry to initial values.
 void reset() {
 	entry.type = "";
@@ -72,7 +75,6 @@ void introduction() {
 
 }
 
-
 // Outputs a line of j length of character k.
 void line(int j = 50, char k = '=', bool nextLineAtEnd = true) {
 	for (int i = 0; i < j; i++) {
@@ -93,39 +95,45 @@ void attrib() {
 	line(50, '-');
 }
 
+// Main menu for program.
+int mainMenu() {
+	int selection;
 
-string jsonFilename;
-// Request file path, opens it and imports it into the json struct.
-void readFile(bool ignore = false) {
-	ifstream jsonFile;
-	while (true) {
-		cout << "File path for json file ? ";
-		if (ignore) {
-			cin.ignore();
+	struct MENU {
+		int count = 0;
+		string content = "";
+	};
+	MENU menu[menusize];
+
+	// Define menus
+	menu[0].count = 0;
+	menu[0].content = "Load New Json File";
+	menu[1].count = 1;
+	menu[1].content = "Set New Output File";
+	menu[2].count = 2;
+	menu[2].content = "View All Current Categories";
+	menu[3].count = 3;
+	menu[3].content = "View Last Entry";
+	menu[4].count = 4;
+	menu[4].content = "Input New Entry";
+
+	menu[9].count = 9;
+	menu[9].content = "Exit";
+
+	// Output menu.
+	attrib();
+	for (int j = 0; j < menusize - 2; j++) {
+		if (menu[j].content != "") {
+			cout << left << setw(5) << menu[j].count << menu[j].content << endl;
 		}
-		getline(cin, jsonFilename);
-
-		// You can edit this to prevent yourself from having to retype the full path everytime.
-		if (jsonFilename == "d") {
-			jsonFilename = defaultJsonFileName;
-		}
-
-		jsonFile.open(jsonFilename);
-
-		if (!jsonFile) {
-			cout << "File does not exist. " << endl;
-			continue;
-		} else {
-			break;
-		}
-
 	}
+	cout << endl;
+	cout << left << setw(5) << menu[menusize - 1].count << menu[menusize - 1].content << endl;
+	cout << endl;
+	cout << "Your Selection? : ";
+	cin >> selection;
 
-	jsonFile >> properties;
-
-	cout << "File succesfully imported." << endl;
-
-	jsonFile.close();
+	return selection;
 }
 
 // Returns the json string without the quotes
@@ -251,6 +259,7 @@ void outAllProperties() {
 	}
 }
 
+// === Unused function ===
 // Outputs elements one level below, excluding unspecified arrays.
 // Place a space if want to output all types.
 // If only type provided, list cat.
@@ -372,48 +381,7 @@ void outArray(bool isAccount = false, int type = 10000, int cat = 10000) {
 	cout << endl;
 }
 
-int mainMenu() {
-	int selection;
-
-	struct MENU {
-		int count = 0;
-		string content = "";
-	};
-	MENU menu[menusize];
-
-	// Define menus
-	menu[0].count = 0;
-	menu[0].content = "Load New Json File";
-	menu[1].count = 1;
-	menu[1].content = "Set New Output File";
-	menu[2].count = 2;
-	menu[2].content = "View All Current Categories";
-	menu[3].count = 3;
-	menu[3].content = "View Last Entry";
-	menu[4].count = 4;
-	menu[4].content = "Input New Entry";
-
-	menu[9].count = 9;
-	menu[9].content = "Exit";
-
-
-
-	// Output menu.
-	attrib();
-	for (int j = 0; j < menusize - 2; j++) {
-		if (menu[j].content != "") {
-			cout << left << setw(5) << menu[j].count << menu[j].content << endl;
-		}
-	}
-	cout << endl;
-	cout << left << setw(5) << menu[menusize - 1].count << menu[menusize - 1].content << endl;
-	cout << endl;
-	cout << "Your Selection? : ";
-	cin >> selection;
-
-	return selection;
-}
-
+// For user to input all entry information.
 bool entryInput() {
 	// Integer for expense, income category parent and child.
 	int
@@ -432,7 +400,7 @@ bool entryInput() {
 	cin.ignore();
 	getline(cin, entry.item);
 
-	// User input : Type of Transaction *No logic for transfer yet.
+	// User input : Type of Transaction
 	illegal = true;
 	while (illegal) {
 		system("cls");
@@ -630,8 +598,6 @@ bool entryInput() {
 
 	}
 
-
-
 	// Date & time input :
 	system("cls");
 	inputted();
@@ -712,25 +678,17 @@ bool entryInput() {
 
 	}
 
-
 	// System generate : Label
 	time_t rawtime = time(&rawtime);
 	struct tm now;
 	localtime_s(&now, &rawtime);
 	int thisYear = now.tm_year + 1900;
-
-	inputted();
-
-	// Commit confirmation
 	if (now.tm_mon < 10) {
 		entry.label = "Import " + to_string(thisYear) + "0" + to_string(now.tm_mon);
 	} else {
 		entry.label = "Import " + to_string(thisYear) + to_string(now.tm_mon);
 
 	}
-
-
-
 
 	// Review entry, then press key to return commit intent.
 	system("cls");
@@ -752,8 +710,42 @@ bool entryInput() {
 ifstream fileCheck;
 ofstream file;
 bool append = false;
-string outFilename;
+string outFilename, 
+	jsonFilename;
 
+// Request json file path, opens it and imports it into the json struct.
+void readFile(bool ignore = false) {
+	ifstream jsonFile;
+	while (true) {
+		cout << "File path for json file ? ";
+		if (ignore) {
+			cin.ignore();
+		}
+		getline(cin, jsonFilename);
+
+		if (jsonFilename == "d") {
+			jsonFilename = defaultJsonFileName;
+		}
+
+		jsonFile.open(jsonFilename);
+
+		if (!jsonFile) {
+			cout << "File does not exist. " << endl;
+			continue;
+		} else {
+			break;
+		}
+
+	}
+
+	jsonFile >> properties;
+
+	cout << "File succesfully imported." << endl;
+
+	jsonFile.close();
+}
+
+// Function to load output file.
 void fileFunc(bool ignore = false) {
 	cout << "File path for output file? ";
 	if (ignore) {
@@ -795,13 +787,16 @@ void fileFunc(bool ignore = false) {
 	}
 	fileCheck.close();
 
-
 }
 
+// Outputs everything stored in current entry to the output file.
 void writeToFile() {
+	// If user selects to append or is not first entry then will not output this line.
 	if (!append) {
 		file << "(1)Type,(2)Date,(3)Item or Payee,(4)Amount,(5)Parent Category,(6)Category,(7)Account Type,(8)Account,(9)Notes,(10) Label,(11) Status" << endl;
 	}
+
+	// There are different logics for transfers and normal transactions.
 	if (entry.type == "Transfer") {
 	// Source Account
 		file << "Transfer" << ",";

@@ -17,14 +17,10 @@ int main() {
 			readFile();
 		}
 
-
-
 		cout << endl;
 		cout << "Json file path: \"" << jsonFilename << "\"" << endl;
 		cout << "Output file path: \"" << outFilename << "\"" << endl;
 		cout << endl;
-
-
 
 		cout << "Next action?" << endl;
 		int selection = mainMenu();
