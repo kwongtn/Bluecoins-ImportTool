@@ -1,4 +1,11 @@
 # Bluecoins-ImportTool
+
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](http://makeapullrequest.com)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/kwongtn/Bluecoins-ImportTool/issues)
+[![HitCount](http://hits.dwyl.io/kwongtn/Bluecoins-ImportTool.svg)](http://hits.dwyl.io/kwongtn/Bluecoins-ImportTool)
+
+
+
 ## Introduction
 This is a little tool created for the import of transactions for the Bluecoins app.  
 As I am a lazy person, I would frequently gather a lot of receipts and do it in one go. Typing at phones proves to be a strain when there is a load.  
