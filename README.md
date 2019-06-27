@@ -80,7 +80,7 @@ const string defaultOutFileName = "<Your path>";
 - CMake. Not tried yet.
 
 ## Project Milestones
-- 28 June 2019, Project announcement to the BlueCoins Community
+- 27 June 2019, Project announcement to the BlueCoins Community
 - 26 June 2019, Transfers logic completed
 - 24 June 2019, Overall completed
 - 21 June 2019, json file standard decided
