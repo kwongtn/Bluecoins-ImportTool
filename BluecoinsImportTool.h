@@ -68,6 +68,10 @@ void reset() {
 	entry.notes = "";
 	entry.status = '\0';
 	entry.label = "";
+	entry.sourceAccCat = "";
+	entry.sourceAccChild = "";
+	entry.destAccCat = "";
+	entry.destAccChild = "";
 }
 
 // Some arbituary introduction to the program during launch.
