@@ -815,7 +815,9 @@ void writeToFile() {
 		file << entry.sourceAccChild << ",";
 		file << entry.notes << ",";
 		file << entry.label << ",";
-		file << entry.status;
+		if(entry.status != '\0'){
+			file << entry.status;
+		}
 		file << endl;
 	// Destination Account
 		file << "Transfer" << ",";
@@ -834,7 +836,9 @@ void writeToFile() {
 		file << entry.destAccChild << ",";
 		file << entry.notes << ",";
 		file << entry.label << ",";
-		file << entry.status;
+		if(entry.status != '\0'){
+			file << entry.status;
+		}
 		file << endl;
 
 	} else { // For normal use cases.
@@ -855,7 +859,9 @@ void writeToFile() {
 		file << entry.accChild << ",";
 		file << entry.notes << ",";
 		file << entry.label << ",";
-		file << entry.status;
+		if(entry.status != '\0'){
+			file << entry.status;
+		}
 		file << endl;
 
 	}
