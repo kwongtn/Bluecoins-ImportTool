@@ -80,7 +80,7 @@ You may also refer to "./Tests/ktn.json" for a real life sample file.
 #### (Future) Advanced json
 To be announced, depending on project popularity.
 
-### (Future) Program creation
+### (Future) Json file creation
 Depending the popularity of this project, a tool may be created to facilitate this use case. You are always welcome to fork my project.
 
 ## Specifying default path
