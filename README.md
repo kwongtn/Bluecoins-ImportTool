@@ -4,6 +4,17 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/kwongtn/Bluecoins-ImportTool/issues)
 [![HitCount](http://hits.dwyl.io/kwongtn/Bluecoins-ImportTool.svg)](http://hits.dwyl.io/kwongtn/Bluecoins-ImportTool)
 
+[![Coverage Status](https://coveralls.io/repos/github/kwongtn/Bluecoins-ImportTool/badge.svg?branch=master)](https://coveralls.io/github/kwongtn/Bluecoins-ImportTool?branch=master)
+
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/kwongtn/Bluecoins-ImportTool/LICENSE.MIT)
+[![GitHub Releases](https://img.shields.io/github/release/kwongtn/Bluecoins-ImportTool.svg)](https://github.com/kwongtn/Bluecoins-ImportTool/releases)
+
+[![GitHub Issues](https://img.shields.io/github/issues/kwongtn/Bluecoins-ImportTool.svg)](http://github.com/kwongtn/Bluecoins-ImportTool/issues)
+
+[![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/kwongtn/Bluecoins-ImportTool.svg)](http://isitmaintained.com/project/kwongtn/Bluecoins-ImportTool "Average time to resolve an issue")
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/kwongtn/Bluecoins-ImportTool.svg)](http://isitmaintained.com/project/kwongtn/Bluecoins-ImportTool "Percentage of issues still open")
+
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/289/badge)](https://bestpractices.coreinfrastructure.org/projects/289)
 
 
 ## Introduction
@@ -92,3 +103,20 @@ const string defaultOutFileName = "<Your path>";
 - 24 June 2019, Overall completed
 - 21 June 2019, json file standard decided
 - 16 June 2019, Project Started
+
+## License
+
+<img align="right" src="http://opensource.org/trademarks/opensource/OSI-Approved-License-100x137.png">
+
+This tool is licensed under the MIT License <http://opensource.org/licenses/MIT>.
+Copyright &copy; 2019 Kwong Tung Nan
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+* * *
+
+This tool contains json for modern C++ from Niels Lohmann which is licensed under the [MIT License](http://opensource.org/licenses/MIT) (see above). Copyright &copy; 2013-2019 [Niels Lohmann](http://nlohmann.me/) <mail@nlohmann.me>
