@@ -119,5 +119,5 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 * * *
 
-This tool contains json for modern C++ from Niels Lohmann which is licensed under the [MIT License](http://opensource.org/licenses/MIT) (see above).   
+This tool contains code from "json for modern C++" from Niels Lohmann which is licensed under the [MIT License](http://opensource.org/licenses/MIT) (see above).   
 Copyright &copy; 2013-2019 [Niels Lohmann](http://nlohmann.me/) <mail@nlohmann.me>
