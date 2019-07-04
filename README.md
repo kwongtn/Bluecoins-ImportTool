@@ -92,10 +92,9 @@ Depending the popularity of this project, a tool may be created to facilitate th
 
 ## Specifying default path
 If you are compiling yourself, you may edit in your default path that you use to store your json and csv file so that you are not required to manual key in every time:
-- In ".\BlueCoinsImportTool.h", you edit the following variables:
+- In ".\BlueCoinsImportTool.h", you edit the following variable:
 ```
 const string defaultJsonFileName = "<Your path>";
-const string defaultOutFileName = "<Your path>";
 ```
 - Take note that you need to add extra backslashes for directory paths, e.g.:
 ``` D:\Bluecoins-ImportTool\Tests\ktn.json ``` would be ``` D:\\Bluecoins-ImportTool\\Tests\\ktn.json ```
