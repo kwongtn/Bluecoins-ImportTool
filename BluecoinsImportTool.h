@@ -16,7 +16,6 @@ using namespace std;
 
 const int menusize = 10;
 const string defaultJsonFileName = "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\ktn.json";
-const string defaultOutFileName = "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\outputfile.csv";
 
 
 // Used to store all properties in the json file.
@@ -149,7 +148,6 @@ string returnString(json i) {
 void inputted() {
 	cout << endl;
 
-
 	if (entry.item != "") {
 		cout << "Title: " << entry.item << endl;
 	}
@@ -236,6 +234,8 @@ void inputted() {
 // Outputs all properties and their respective values.
 void outAllProperties() {
 	cout << "json type : " << returnString(properties["jsonType"]) << endl;
+	cout << "default output path : " << returnString(properties["outFile"][0]["filePath"]) << endl;
+	cout << "    Default is append : " << returnString(properties["outFile"][0]["defaultAppend"]) << endl;
 
 	int i = 0,
 		j = 0,
@@ -717,6 +717,51 @@ bool append = false;
 string outFilename, 
 	jsonFilename;
 
+// Function to load output file.
+void fileFunc(bool ignore = false, string path = "", bool toAppend = false) {
+	if (path == "") {
+		cout << "File path for output file? ";
+		if (ignore) {
+			cin.ignore();
+		}
+		getline(cin, outFilename);
+	}
+
+	fileCheck.open(outFilename);
+	if (!fileCheck) {
+		cout << "Output file does not exist, create file? (y/n)";
+		char intent;
+		cin >> intent;
+		intent = tolower(intent);
+
+		// If 'y' then create file else go back main menu
+		if (intent == 'y') {
+			file.open(outFilename);
+		}
+
+	} else {
+		char intent = '\0';
+		if (!toAppend) {
+			cout << "Output file exists, append? (y/n/c) \nSelecting 'n' will clear the existing file. Press 'c' to cancel. " << endl;
+			cin >> intent;
+			intent = tolower(intent);
+
+		}
+
+		if (intent == 'c') {
+			outFilename = "";
+		} else if ((intent == 'y') || (toAppend == true)) {
+			file.open(outFilename, ios::app);
+			append = true;
+		} else if ((intent == 'n') || (toAppend == false)) {
+			file.open(outFilename);
+		}
+
+	}
+	fileCheck.close();
+
+}
+
 // Request json file path, opens it and imports it into the json struct.
 void readFile(bool ignore = false) {
 	ifstream jsonFile;
@@ -744,54 +789,24 @@ void readFile(bool ignore = false) {
 
 	jsonFile >> properties;
 
+	// If filepath property exist then load it as default path, and change behaviour accordingly
+	if (properties.contains("outFile")) {
+		cout << "json file contains outFile" << endl;
+		if (properties["outFile"][0].contains("filePath")) {
+			outFilename = returnString(properties["outFile"][0]["filePath"]);
+			cout << "outfileName = " << outFilename << endl;
+		}
+		if (properties["outFile"][0].contains("defaultAppend")) {
+			append = properties["outFile"][0]["defaultAppend"];
+		}
+		fileFunc(false, outFilename, append);
+	}
+
 	cout << "File succesfully imported." << endl;
 
 	jsonFile.close();
 }
 
-// Function to load output file.
-void fileFunc(bool ignore = false) {
-	cout << "File path for output file? ";
-	if (ignore) {
-		cin.ignore();
-	}
-	getline(cin, outFilename);
-
-	if (outFilename == "d") {
-		outFilename = defaultOutFileName;
-	}
-
-	fileCheck.open(outFilename);
-	if (!fileCheck) {
-		cout << "File does not exist, create file? (y/n)";
-		char intent;
-		cin >> intent;
-		intent = tolower(intent);
-
-		// If 'y' then create file else go back main menu
-		if (intent == 'y') {
-			file.open(outFilename);
-		}
-
-	} else {
-		cout << "File exists, append? (y/n/c) \nSelecting 'n' will clear the existing file. Press 'c' to cancel. " << endl;
-		char intent;
-		cin >> intent;
-		intent = tolower(intent);
-
-		if (intent == 'y') {
-			file.open(outFilename, ios::app);
-			append = true;
-		} else if (intent == 'n') {
-			file.open(outFilename);
-		} else {
-			outFilename = "";
-		}
-
-	}
-	fileCheck.close();
-
-}
 
 // Outputs everything stored in current entry to the output file.
 void writeToFile() {
