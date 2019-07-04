@@ -1,5 +1,11 @@
 {
     "jsonType" : "Simple",
+    "outFile":[
+        {
+            "filePath" : "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\outputfile.csv",
+            "defaultAppend" : true
+        }
+    ],
 
     "presetLists":[
         {    
