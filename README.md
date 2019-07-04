@@ -23,6 +23,7 @@ http://www.bluecoinsapp.com/import-guide/
 
 ## json file terminology
 - `jsonType` simply means the type of the json file, there are `simple` and `advanced`. For more details refer to the [bluecoins import guide](http://www.bluecoinsapp.com/import-guide/).
+- `outFile` describes the output file, which its members `filePath` signify the csv file path and `defaultAppend` determines if the default action is to append the existing file.
 - `presetLists` is an array of objects consisting of `account type` and `category list`
 - `type` is the type of account/transaction. Can be any value, but recommended values are `Account`, `Expense`, `Income`. You must have at least one category and child for each type.
 - `cat` is the main category
@@ -37,6 +38,12 @@ Currently you are not required to fill in `jsonType`, but it is recommended for 
 ```
 {
     "jsonType" : "Simple",
+    "outFile":[
+    {
+        "filePath" : "<Your csv file path>",
+        "defaultAppend" : true / false
+    }
+    ],
     "presetLists":[
         {    
             "type" : "a",
@@ -69,7 +76,7 @@ You may also refer to "./Tests/ktn.json" for a real life sample file.
 #### (Future) Advanced json
 To be announced, depending on project popularity.
 
-### (Future) Program creation
+### (Future) Prompted json file creation
 Depending the popularity of this project, a tool may be created to facilitate this use case. You are always welcome to fork my project.
 
 ## Specifying default path
@@ -87,6 +94,8 @@ const string defaultOutFileName = "<Your path>";
 - CMake. Not tried yet.
 
 ## Project Milestones
+- 5 July 2019, v1.2 released
+- 1 July 2019, v1.1 released
 - 27 June 2019, Project announcement to the BlueCoins Community
 - 26 June 2019, Transfers logic completed
 - 24 June 2019, Overall completed
