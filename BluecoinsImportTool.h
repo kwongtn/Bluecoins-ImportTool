@@ -791,10 +791,8 @@ void readFile(bool ignore = false) {
 
 	// If filepath property exist then load it as default path, and change behaviour accordingly
 	if (properties.contains("outFile")) {
-		cout << "json file contains outFile" << endl;
 		if (properties["outFile"][0].contains("filePath")) {
 			outFilename = returnString(properties["outFile"][0]["filePath"]);
-			cout << "outfileName = " << outFilename << endl;
 		}
 		if (properties["outFile"][0].contains("defaultAppend")) {
 			append = properties["outFile"][0]["defaultAppend"];
