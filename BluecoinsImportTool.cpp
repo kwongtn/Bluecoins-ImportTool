@@ -17,6 +17,8 @@ int main() {
 			readFile();
 		}
 
+		cout << "Bluecoins Import Tool v1.1 by KwongTN" << endl;
+
 		cout << endl;
 		cout << "Json file path: \"" << jsonFilename << "\"" << endl;
 		cout << "Output file path: \"" << outFilename << "\"" << endl;
