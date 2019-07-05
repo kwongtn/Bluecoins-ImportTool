@@ -234,8 +234,15 @@ void inputted() {
 // Outputs all properties and their respective values.
 void outAllProperties() {
 	cout << "json type : " << returnString(properties["jsonType"]) << endl;
-	cout << "default output path : " << returnString(properties["outFile"][0]["filePath"]) << endl;
-	cout << "    Default is append : " << returnString(properties["outFile"][0]["defaultAppend"]) << endl;
+	// If filepath property exist then load it as default path, and change behaviour accordingly
+	if (properties.contains("outFile")) {
+		if (properties["outFile"][0].contains("filePath")) {
+			cout << "default output path : " << returnString(properties["outFile"][0]["filePath"]) << endl;
+		}
+		if (properties["outFile"][0].contains("defaultAppend")) {
+			cout << "    Default is append : " << properties["outFile"][0]["defaultAppend"] << endl;
+		}
+	}
 
 	int i = 0,
 		j = 0,
