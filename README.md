@@ -34,7 +34,7 @@ http://www.bluecoinsapp.com/import-guide/
 
 ## json file terminology
 - `jsonType` simply means the type of the json file, there are `simple` and `advanced`. For more details refer to the [bluecoins import guide](http://www.bluecoinsapp.com/import-guide/).
-- `outFile` describes the output file, which its members `filePath` signify the csv file path and `defaultAppend` determines if the default action is to append the existing file.
+- `outFile` *(optional)* describes the output file, which its members `filePath` signify the csv file path and `defaultAppend` determines if the default action is to append the existing file.
 - `presetLists` is an array of objects consisting of `account type` and `category list`
 - `type` is the type of account/transaction. Can be any value, but recommended values are `Account`, `Expense`, `Income`. You must have at least one category and child for each type.
 - `cat` is the main category
@@ -62,8 +62,17 @@ Currently you are not required to fill in `jsonType`, but it is recommended for 
                 {
                     "cat" : "Category1",
                     "child" : [
-                        "Child1.1",
-                        "Child1.2"
+                        {
+                            "childName" : "Child1.1",
+                            "currency" : "MYR",
+                            "currentBal" : 2000.00,
+                            "actualBal" : 1000.00
+                        },{
+                            "childName" : "Child1.1",
+                            "currency" : "USD",
+                            "currentBal" : 2000.00,
+                            "actualBal" : 1000.00
+                        }
                     ]
                 }
             ]
@@ -84,12 +93,6 @@ Currently you are not required to fill in `jsonType`, but it is recommended for 
 ```
 You may also refer to "./Tests/ktn.json" for a real life sample file.
 
-#### (Future) Advanced json
-To be announced, depending on project popularity.
-
-### (Future) Prompted json file creation
-Depending the popularity of this project, a tool may be created to facilitate this use case. You are always welcome to fork my project.
-
 ## Specifying default path
 If you are compiling yourself, you may edit in your default path that you use to store your json and csv file so that you are not required to manual key in every time:
 - In ".\BlueCoinsImportTool.h", you edit the following variable:
@@ -101,9 +104,9 @@ const string defaultJsonFileName = "<Your path>";
 
 ## No support / not tested
 - Compilers other than the one default in Visual Studio 2019
-- CMake. Not tried yet.
 
 ## Project Milestones
+- 6 July 2019, Development for v2.0 started at branch "development"
 - 5 July 2019, v1.2 released
 - 1 July 2019, v1.1 released
 - 27 June 2019, Project announcement to the BlueCoins Community
@@ -129,3 +132,21 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 
 This tool contains code from "json for modern C++" from Niels Lohmann which is licensed under the [MIT License](http://opensource.org/licenses/MIT) (see above).   
 Copyright &copy; 2013-2019 [Niels Lohmann](http://nlohmann.me/) <mail@nlohmann.me>
+
+
+## Future functionality
+### Backlog tool
+Will be completed in the near future, json file will be future proofed for advanced json support.
+The backlog tool will enable users to define current balance (balance as recorded in the bluecoins app) and actual balance (balance in the real world). As transactions are being input, the current balance will be updated accordingly in memory and in the json file. The goal is for the user to match both the current and actual balance.
+
+### Softcode default json file location
+Selecting "d" on the json file selection page will no longer be required to be hardcoded. Default path will be defined as ".\Bluecoins-Import.json".
+
+### Defaulting file output location
+If nothing is specified in the json file and user inputs "d", the file will be created at the current directory.
+
+### Advanced json support
+To be announced, depending on project popularity.
+
+### Prompted json file creation
+Depending the popularity of this project, a tool may be created to facilitate this use case. You are always welcome to fork my project.
