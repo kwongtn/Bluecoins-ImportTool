@@ -233,9 +233,11 @@ void inputted() {
 
 // Outputs all properties and their respective values.
 void outAllProperties() {
-	cout << "json type : " << returnString(properties["jsonType"]) << endl;
 	// If filepath property exist then load it as default path, and change behaviour accordingly
 	if (properties.contains("outFile")) {
+		if (properties["outFile"][0].contains("advFormat")) {
+			cout << "Advanced file type : " << properties["outFile"][0]["advFormat"] << endl;
+		}
 		if (properties["outFile"][0].contains("filePath")) {
 			cout << "default output path : " << returnString(properties["outFile"][0]["filePath"]) << endl;
 		}
@@ -260,7 +262,22 @@ void outAllProperties() {
 
 			while (k < properties["presetLists"][i]["catList"][j]["child"].size()) {
 				line(8, ' ', false);
-				cout << returnString(properties["presetLists"][i]["catList"][j]["child"][k]) << endl;
+				cout << "Child Name: " << returnString(properties["presetLists"][i]["catList"][j]["child"][k]["childName"]) << endl;
+
+				// If exist then only display
+				if (properties["presetLists"][i]["catList"][j]["child"][k].contains("currency")) {
+					line(8, ' ', false);
+					cout << "Currency: " << returnString(properties["presetLists"][i]["catList"][j]["child"][k]["currency"]) << endl;
+				}
+				if (properties["presetLists"][i]["catList"][j]["child"][k].contains("currentBal")) {
+					line(8, ' ', false);
+					cout << "Current Balance: " << returnString(properties["presetLists"][i]["catList"][j]["child"][k]["currentBal"]) << endl;
+				}
+				if (properties["presetLists"][i]["catList"][j]["child"][k].contains("actualBal")) {
+					line(8, ' ', false);
+					cout << "Actual Balance: " << returnString(properties["presetLists"][i]["catList"][j]["child"][k]["actualBal"]) << endl;
+				}
+
 				k++;
 			}
 			j++;
@@ -311,7 +328,12 @@ void outArray(string type, string cat = " ") {
 							found1 = true;
 
 							while (k < properties["presetLists"][i]["catList"][j]["child"].size()) {
-								cout << returnString(properties["presetLists"][i]["catList"][j]["child"][k]) << endl;
+								cout << returnString(properties["presetLists"][i]["catList"][j]["child"][k]["childName"]);
+								if (properties["presetLists"][i]["catList"][j]["child"][k].contains("currency")) {
+								cout << " (" << returnString(properties["presetLists"][i]["catList"][j]["child"][k]["currency"]) << ") ";
+								}
+
+								cout << endl;
 								k++;
 							}
 
@@ -373,7 +395,12 @@ void outArray(bool isAccount = false, int type = 10000, int cat = 10000) {
 				if (cat < properties["presetLists"][type]["catList"].size()) {
 					attrib();
 					while (j < properties["presetLists"][type]["catList"][cat]["child"].size()) {
-						cout << left << setw(5) << j << returnString(properties["presetLists"][type]["catList"][cat]["child"][j]) << endl;
+						cout << left << setw(5) << j << returnString(properties["presetLists"][type]["catList"][cat]["child"][j]["childName"]) << endl;
+						if (properties["presetLists"][type]["catList"][cat]["child"][j].contains("currency")) {
+							cout << " (" << returnString(properties["presetLists"][type]["catList"][cat]["child"][j]["currency"]) << ") ";
+						}
+
+						cout << endl;
 						j++;
 					}
 
@@ -477,7 +504,7 @@ bool entryInput() {
 				continue;
 			}
 		}
-		entry.sourceAccChild = returnString(properties["presetLists"][0]["catList"][j]["child"][k]);
+		entry.sourceAccChild = returnString(properties["presetLists"][0]["catList"][j]["child"][k]["childName"]);
 
 		// To determine destination account.
 		j = 0;
@@ -517,7 +544,7 @@ bool entryInput() {
 				system("pause");
 				continue;
 			}
-			entry.destAccChild = returnString(properties["presetLists"][0]["catList"][j]["child"][k]);
+			entry.destAccChild = returnString(properties["presetLists"][0]["catList"][j]["child"][k]["childName"]);
 
 		}
 
@@ -605,7 +632,7 @@ bool entryInput() {
 			}
 
 		}
-		entry.accChild = returnString(properties["presetLists"][0]["catList"][j]["child"][k]);
+		entry.accChild = returnString(properties["presetLists"][0]["catList"][j]["child"][k]["childName"]);
 
 	}
 

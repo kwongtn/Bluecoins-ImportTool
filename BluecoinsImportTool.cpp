@@ -17,7 +17,8 @@ int main() {
 			readFile();
 		}
 
-		cout << "Bluecoins Import Tool v1.1 by KwongTN" << endl;
+		cout << "Bluecoins Import Tool v2.0-beta by KwongTN" << endl;
+		cout << "Please make sure that your json file is updated to the latest format." << endl;
 
 		cout << endl;
 		cout << "Json file path: \"" << jsonFilename << "\"" << endl;
