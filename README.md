@@ -43,14 +43,15 @@ http://www.bluecoinsapp.com/import-guide/
 
 ## Creating the json file
 ### Manual Creation
-#### Simple json
-This is a sample file for a simple json configuration. `a`(or, `account`) must be the first object in the `presetLists` array.
-Currently you are not required to fill in `jsonType`, but it is recommended for future releases.
+#### json v2.0
+As of version 2.0, the json file will be unified for a single format that encompasses simple and advanced file type. It also has sections for backlogging support. 
+This is a sample file for a the json configuration. `a`(or, `account`) must be the first object in the `presetLists` array.
+
 ```
 {
-    "jsonType" : "Simple",
     "outFile":[
     {
+        "advFormat" : true / false,
         "filePath" : "<Your csv file path>",
         "defaultAppend" : true / false
     }
