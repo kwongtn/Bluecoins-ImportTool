@@ -141,6 +141,9 @@ Copyright &copy; 2013-2019 [Niels Lohmann](http://nlohmann.me/) <mail@nlohmann.m
 Will be completed in the near future, json file will be future proofed for advanced json support.
 The backlog tool will enable users to define current balance (balance as recorded in the bluecoins app) and actual balance (balance in the real world). As transactions are being input, the current balance will be updated accordingly in memory and in the json file. The goal is for the user to match both the current and actual balance.
 
+### Placeholder support
+Transaction creator to match current balance and actual balance.
+
 ### Softcode default json file location
 Selecting "d" on the json file selection page will no longer be required to be hardcoded. Default path will be defined as ".\Bluecoins-Import.json".
 
