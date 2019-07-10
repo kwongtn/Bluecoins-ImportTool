@@ -34,7 +34,7 @@ http://www.bluecoinsapp.com/import-guide/
 
 ## json file terminology
 - `jsonType` simply means the type of the json file, there are `simple` and `advanced`. For more details refer to the [bluecoins import guide](http://www.bluecoinsapp.com/import-guide/).
-- `outFile` *(optional)* describes the output file, which its members `filePath` signify the csv file path and `defaultAppend` determines if the default action is to append the existing file.
+- `outFile` *(optional)* describes the output file, which its members `filePath` signify the csv file path and `defaultAppend` determines if the default action is to append the existing file. `writeConfirm` determines if write confirmation has to be done.
 - `presetLists` is an array of objects consisting of `account type` and `category list`
 - `type` is the type of account/transaction. Can be any value, but recommended values are `Account`, `Expense`, `Income`. You must have at least one category and child for each type.
 - `cat` is the main category
@@ -53,7 +53,8 @@ This is a sample file for a the json configuration. `a`(or, `account`) must be t
     {
         "advFormat" : true / false,
         "filePath" : "<Your csv file path>",
-        "defaultAppend" : true / false
+        "defaultAppend" : true / false,
+        "writeConfirm" : true
     }
     ],
     "presetLists":[
@@ -145,6 +146,9 @@ Selecting "d" on the json file selection page will no longer be required to be h
 
 ### Defaulting file output location
 If nothing is specified in the json file and user inputs "d", the file will be created at the current directory.
+
+### Preset Titles
+The user will be able to preset commonly used titles in the json file.
 
 ### Advanced json support
 To be announced, depending on project popularity.
