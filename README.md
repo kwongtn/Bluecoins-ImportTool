@@ -14,8 +14,6 @@
 [![Average time to resolve an issue](http://isitmaintained.com/badge/resolution/kwongtn/Bluecoins-ImportTool.svg)](http://isitmaintained.com/project/kwongtn/Bluecoins-ImportTool "Average time to resolve an issue")
 [![Percentage of issues still open](http://isitmaintained.com/badge/open/kwongtn/Bluecoins-ImportTool.svg)](http://isitmaintained.com/project/kwongtn/Bluecoins-ImportTool "Percentage of issues still open")
 
-[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/289/badge)](https://bestpractices.coreinfrastructure.org/projects/289)
-
 
 ## Introduction
 This is a little tool created for the import of transactions for the Bluecoins app.  
@@ -150,8 +148,8 @@ Selecting "d" on the json file selection page will no longer be required to be h
 ### Defaulting file output location
 If nothing is specified in the json file and user inputs "d", the file will be created at the current directory.
 
-### Preset Titles
-The user will be able to preset commonly used titles in the json file.
+### Preset Titles & Templates
+The user will be able to preset commonly used titles in the json file, and during runtime define templates for input.
 
 ### Advanced json support
 To be announced, depending on project popularity.
