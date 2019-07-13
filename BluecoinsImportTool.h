@@ -621,20 +621,38 @@ bool entryInput() {
 	cin >> entry.year;
 
 	// User input : Month
-	cout << "Month? ";
-	cin >> entry.month;
+	illegal = true;
+	while (true) {
+		cout << "Month? ";
+		cin >> entry.month;
+		if ((entry.month <= 12) && (entry.month > 0)) {
+			illegal = false;
+		}
+	}
 
 	// User input : Day
 	cout << "Day? ";
 	cin >> entry.day;
 
 	// User input : Hour
-	cout << "Hour? ";
-	cin >> entry.hour;
+	illegal = true;
+	while (true) {
+		cout << "Hour? ";
+		cin >> entry.hour;
+		if ((entry.hour < 23) && (entry.hour >= 0)) {
+			illegal = false;
+		}
+	}
 
 	// User input : Mins
-	cout << "Mins? ";
-	cin >> entry.mins;
+	illegal = true;
+	while (true) {
+		cout << "Mins? ";
+		cin >> entry.mins;
+		if ((entry.mins < 60) && (entry.mins >= 0)) {
+			illegal = false;
+		}
+	}
 	// ==================================================
 
 	// User input : Amount
@@ -702,18 +720,23 @@ bool entryInput() {
 	}
 
 	// Review entry, then press key to return commit intent.
-	system("cls");
-	inputted();
-	line(50, '-');
-	char commit;
-	cout << "Commit changes? (y/n) ";
-	cin >> commit;
-	commit = tolower(commit);
+	illegal = true;
+	while (illegal) {
+		system("cls");
+		inputted();
+		line(50, '-');
+		char commit;
+		cout << "Commit changes? (y/n) ";
+		cin >> commit;
+		commit = tolower(commit);
 
-	if (commit == 'y') {
-		return true;
-	} else {
-		return false;
+		if (commit == 'y' || commit == '1') {
+			illegal = false;
+			return true;
+		} else if (commit == 'n' || commit == '0') {
+			illegal = false;
+			return false;
+		}
 	}
 }
 
