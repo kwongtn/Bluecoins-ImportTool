@@ -62,17 +62,8 @@ This is a sample file for a the json configuration. `a`(or, `account`) must be t
                 {
                     "cat" : "Category1",
                     "child" : [
-                        {
-                            "childName" : "Child1.1",
-                            "currency" : "MYR",
-                            "currentBal" : 2000.00,
-                            "actualBal" : 1000.00
-                        },{
-                            "childName" : "Child1.1",
-                            "currency" : "USD",
-                            "currentBal" : 2000.00,
-                            "actualBal" : 1000.00
-                        }
+                        "Child1.1",
+                        "Child1.2"
                     ]
                 }
             ]
@@ -93,6 +84,12 @@ This is a sample file for a the json configuration. `a`(or, `account`) must be t
 ```
 You may also refer to "./Tests/ktn.json" for a real life sample file.
 
+#### (Future) Advanced json
+To be announced, depending on project popularity.
+
+### (Future) Prompted json file creation
+Depending the popularity of this project, a tool may be created to facilitate this use case. You are always welcome to fork my project.
+
 ## Specifying default path
 If you are compiling yourself, you may edit in your default path that you use to store your json and csv file so that you are not required to manual key in every time:
 - In ".\BlueCoinsImportTool.h", you edit the following variable:
@@ -104,9 +101,9 @@ const string defaultJsonFileName = "<Your path>";
 
 ## No support / not tested
 - Compilers other than the one default in Visual Studio 2019
+- CMake. Not tried yet.
 
 ## Project Milestones
-- 6 July 2019, Development for v2.0 started at branch "development"
 - 5 July 2019, v1.2 released
 - 1 July 2019, v1.1 released
 - 27 June 2019, Project announcement to the BlueCoins Community
