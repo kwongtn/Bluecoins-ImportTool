@@ -87,7 +87,7 @@ You may also refer to "./Tests/ktn.json" for a real life sample file.
 #### (Future) Advanced json
 To be announced, depending on project popularity.
 
-### (Future) Prompted json file creation
+#### (Future) Prompted json file creation
 Depending the popularity of this project, a tool may be created to facilitate this use case. You are always welcome to fork my project.
 
 ## Specifying default path
@@ -99,11 +99,20 @@ const string defaultJsonFileName = "<Your path>";
 - Take note that you need to add extra backslashes for directory paths, e.g.:
 ``` D:\Bluecoins-ImportTool\Tests\ktn.json ``` would be ``` D:\\Bluecoins-ImportTool\\Tests\\ktn.json ```
 
+## Split Transaction Support
+Starting from v1.3, there will be suppot for split transactions. Just toggle option no. 6 at the main menu. You will see an extra section of text when the option is toggled to "true".
+- Do take note that for split transactions to work, the following need to be the same. Future versions of the program will add functionality to lock in required lock-in : 
+  - Transaction Type
+  - Title
+  - Date, Time
+- Using different label sets or status for each split is not currently supported. Only those from the first row will be used for each split transaction
+
 ## No support / not tested
 - Compilers other than the one default in Visual Studio 2019
 - CMake. Not tried yet.
 
 ## Project Milestones
+- 23 July 2019, v1.3 released
 - 5 July 2019, v1.2 released
 - 1 July 2019, v1.1 released
 - 27 June 2019, Project announcement to the BlueCoins Community
@@ -128,4 +137,4 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 * * *
 
 This tool contains code from "json for modern C++" from Niels Lohmann which is licensed under the [MIT License](http://opensource.org/licenses/MIT) (see above).   
-Copyright &copy; 2013-2019 [Niels Lohmann](http://nlohmann.me/) <mail@nlohmann.me>
+Copyright &copy; 2013-2019 [Niels Lohmann](http://nlohmann.me/) , <mail@nlohmann.me>
