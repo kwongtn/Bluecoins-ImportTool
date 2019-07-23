@@ -16,6 +16,7 @@ using namespace std;
 
 const int menusize = 10;
 const string defaultJsonFileName = "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\ktn.json";
+bool splitTransac = false;
 
 
 // Used to store all properties in the json file.
@@ -120,19 +121,32 @@ int mainMenu() {
 	menu[4].count = 4;
 	menu[4].content = "Input New Entry";
 
+	menu[6].count = 6;
+	menu[6].content = "Toggle split entry status";
+
 	menu[9].count = 9;
 	menu[9].content = "Exit";
 
 	// Output menu.
 	attrib();
-	for (int j = 0; j < menusize - 2; j++) {
-		if (menu[j].content != "") {
-			cout << left << setw(5) << menu[j].count << menu[j].content << endl;
+	for (int j = 0; j < menusize; j++) {
+		if (menu[j].content != "" && menu[j].count != 0) {
+			cout << left << setw(5) << menu[j].count << menu[j].content;
 		}
+		cout << endl;
 	}
+
 	cout << endl;
-	cout << left << setw(5) << menu[menusize - 1].count << menu[menusize - 1].content << endl;
-	cout << endl;
+
+	// To output the status of split transaction mode if there is.
+	if (splitTransac) {
+	line(50, '-', true);
+	cout << "Split transaction mode : True" << endl;
+	cout << "Do take note that split transction mode will be switched on until you manually toggle it off. Please make sure that the date, time and title are the same." << endl;
+	cout << "Using different label sets and status for each split is not currently supported. Only the first row of those will be used for each split transaction." << endl;
+	line(50, '-', true);
+	}
+	
 	cout << "Your Selection? : ";
 	cin >> selection;
 
@@ -648,39 +662,21 @@ bool entryInput() {
 	cin >> entry.year;
 
 	// User input : Month
-	illegal = true;
-	while (true) {
-		cout << "Month? ";
-		cin >> entry.month;
-		if ((entry.month <= 12) && (entry.month > 0)) {
-			illegal = false;
-		}
-	}
+	cout << "Month? ";
+	cin >> entry.month;
 
-	// User input : Day
+// User input : Day
 	cout << "Day? ";
 	cin >> entry.day;
 
 	// User input : Hour
-	illegal = true;
-	while (true) {
-		cout << "Hour? ";
-		cin >> entry.hour;
-		if ((entry.hour < 23) && (entry.hour >= 0)) {
-			illegal = false;
-		}
-	}
+	cout << "Hour? ";
+	cin >> entry.hour;
 
-	// User input : Mins
-	illegal = true;
-	while (true) {
-		cout << "Mins? ";
-		cin >> entry.mins;
-		if ((entry.mins < 60) && (entry.mins >= 0)) {
-			illegal = false;
-		}
-	}
-	// ==================================================
+// User input : Mins
+	cout << "Mins? ";
+	cin >> entry.mins;
+// ==================================================
 
 	// User input : Amount
 	system("cls");
@@ -867,7 +863,7 @@ void readFile(bool ignore = false) {
 void writeToFile() {
 	// If user selects to append or is not first entry then will not output this line.
 	if (!append) {
-		file << "(1)Type,(2)Date,(3)Item or Payee,(4)Amount,(5)Parent Category,(6)Category,(7)Account Type,(8)Account,(9)Notes,(10) Label,(11) Status" << endl;
+		file << "(1)Type,(2)Date,(3)Item or Payee,(4)Amount,(5)Parent Category,(6)Category,(7)Account Type,(8)Account,(9)Notes,(10) Label,(11) Status,(12) Split" << endl;
 	}
 
 	// There are different logics for transfers and normal transactions.
@@ -892,6 +888,10 @@ void writeToFile() {
 		if(entry.status != '\0'){
 			file << entry.status;
 		}
+		file << ",";
+		if (splitTransac) {
+			file << "split";
+		}
 		file << endl;
 	// Destination Account
 		file << "Transfer" << ",";
@@ -912,6 +912,10 @@ void writeToFile() {
 		file << entry.label << ",";
 		if(entry.status != '\0'){
 			file << entry.status;
+		}
+		file << ",";
+		if (splitTransac) {
+			file << "split";
 		}
 		file << endl;
 
@@ -935,6 +939,10 @@ void writeToFile() {
 		file << entry.label << ",";
 		if(entry.status != '\0'){
 			file << entry.status;
+		}
+		file << ",";
+		if (splitTransac) {
+			file << "split";
 		}
 		file << endl;
 

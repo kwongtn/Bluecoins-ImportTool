@@ -89,6 +89,13 @@ int main() {
 				system("pause");
 				break;
 			}
+			// To toggle split transaction mode
+			case 6:
+			{
+				splitTransac = !splitTransac;
+				break;
+			}
+
 			case 9:
 			{
 				cout << "Thank you for using. Throughout this session, you have: " << endl;
