@@ -84,9 +84,6 @@ This is a sample file for a the json configuration. `a`(or, `account`) must be t
 ```
 You may also refer to "./Tests/ktn.json" for a real life sample file.
 
-#### (Future) Advanced json
-To be announced, depending on project popularity.
-
 #### (Future) Prompted json file creation
 Depending the popularity of this project, a tool may be created to facilitate this use case. You are always welcome to fork my project.
 
@@ -100,7 +97,7 @@ const string defaultJsonFileName = "<Your path>";
 ``` D:\Bluecoins-ImportTool\Tests\ktn.json ``` would be ``` D:\\Bluecoins-ImportTool\\Tests\\ktn.json ```
 
 ## Split Transaction Support
-Starting from v1.3, there will be suppot for split transactions. Just toggle option no. 6 at the main menu. You will see an extra section of text when the option is toggled to "true".
+Starting from v1.3, there will be support for split transactions. Just toggle option no. 6 at the main menu. You will see an extra section of text when the option is toggled to "true".
 - Do take note that for split transactions to work, the following need to be the same. Future versions of the program will add functionality to lock in required lock-in : 
   - Transaction Type
   - Title
@@ -113,6 +110,7 @@ Starting from v1.3, there will be suppot for split transactions. Just toggle opt
 
 ## Project Milestones
 - 23 July 2019, v1.3 released
+- 6 July 2019, Development for v2.0 started at branch "development"
 - 5 July 2019, v1.2 released
 - 1 July 2019, v1.1 released
 - 27 June 2019, Project announcement to the BlueCoins Community
