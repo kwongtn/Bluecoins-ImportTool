@@ -2,7 +2,7 @@
     "jsonType" : "Simple",
     "outFile":[
         {
-            "filePath" : "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\outputfile.csv",
+            "filePath" : "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\outputfile2.csv",
             "defaultAppend" : true
         }
     ],
