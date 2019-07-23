@@ -17,7 +17,7 @@ int main() {
 			readFile();
 		}
 
-		cout << "Bluecoins Import Tool v1.1 by KwongTN" << endl;
+		cout << "Bluecoins Import Tool v1.3 by KwongTN" << endl;
 
 		cout << endl;
 		cout << "Json file path: \"" << jsonFilename << "\"" << endl;
@@ -88,6 +88,13 @@ int main() {
 				system("pause");
 				break;
 			}
+			// To toggle split transaction mode
+			case 6:
+			{
+				splitTransac = !splitTransac;
+				break;
+			}
+
 			case 9:
 			{
 				cout << "Thank you for using. Throughout this session, you have: " << endl;
