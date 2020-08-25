@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "utils.h"
 #include "json.hpp"
 using json = nlohmann::json;
 
@@ -79,26 +80,6 @@ void introduction() {
 
 }
 
-// Outputs a line of j length of character k.
-void line(int j = 50, char k = '=', bool nextLineAtEnd = true) {
-	for (int i = 0; i < j; i++) {
-		cout << k;
-	}
-	if (nextLineAtEnd) {
-		cout << endl;
-	}
-}
-
-// Outputs the following in the console
-// --------------------------------------------------
-// ID   Details
-// --------------------------------------------------
-void attrib() {
-	line(50, '-');
-	cout << left << setw(5) << "ID" << "Description" << endl;
-	line(50, '-');
-}
-
 // Main menu for program.
 int mainMenu() {
 	int selection;
@@ -128,7 +109,7 @@ int mainMenu() {
 	menu[9].content = "Exit";
 
 	// Output menu.
-	attrib();
+	menuHeading();
 	for (int j = 0; j < menusize; j++) {
 		if (menu[j].content != "" && menu[j].count != 0) {
 			cout << left << setw(5) << menu[j].count << menu[j].content;
@@ -140,22 +121,18 @@ int mainMenu() {
 
 	// To output the status of split transaction mode if there is.
 	if (splitTransac) {
-	line(50, '-', true);
-	cout << "Split transaction mode : True" << endl;
-	cout << "Do take note that split transction mode will be switched on until you manually toggle it off. Please make sure that the date, time and title are the same." << endl;
-	cout << "Using different label sets and status for each split is not currently supported. Only the first row of those will be used for each split transaction." << endl;
-	line(50, '-', true);
+		line(50, '-', true);
+		cout << "Split transaction mode : True" << endl;
+		cout << "Do take note that split transction mode will be switched on until you manually toggle it off. Please make sure that the date, time and title are the same." << endl;
+		cout << "Using different label sets and status for each split is not currently supported. Only the first row of those will be used for each split transaction." << endl;
+		cout << "As of 5 Aug 2019, you can only import one split transaction per csv file." << endl;
+		line(50, '-', true);
 	}
-	
-	cout << "Your Selection? : ";
-	cin >> selection;
+
+	cout << "Your Selection";
+	selection = inputNumber<int>();
 
 	return selection;
-}
-
-// Returns the json string without the quotes
-string returnString(json i) {
-	return(i);
 }
 
 // Returns all current inputted items in entry.
@@ -196,7 +173,8 @@ void inputted() {
 			cout << "Destination Account Child: " << entry.destAccChild << endl;
 		}
 
-	} else {
+	}
+	else {
 		if (entry.accCat != "") {
 			cout << "Account Type: " << entry.accCat << endl;
 		}
@@ -315,7 +293,8 @@ void outArray(string type, string cat = " ") {
 			cout << returnString(properties["presetLists"][i]["type"]) << endl;
 			i++;
 		}
-	} else {
+	}
+	else {
 
 
 		while (i < properties["presetLists"].size()) {
@@ -332,7 +311,8 @@ void outArray(string type, string cat = " ") {
 
 					break;
 
-				} else { // Else if stated then output child
+				}
+				else { // Else if stated then output child
 					int j = 0;
 					bool found1 = false;
 
@@ -380,34 +360,37 @@ void outArray(bool isAccount = false, int type = 10000, int cat = 10000) {
 	// If selection is account, then start from array entry 1.
 	if (isAccount) {
 		i = 0;
-	} else {
+	}
+	else {
 		i = 1;
 	}
 
 
 	if (type == 10000) { // If type is unspecified show all types.
-		attrib();
+		menuHeading();
 		while (i < properties["presetLists"].size()) {
 			cout << left << setw(5) << i << returnString(properties["presetLists"][i]["type"]) << endl;
 			i++;
 		}
-	} else {
+	}
+	else {
 
 		if (type < properties["presetLists"].size()) { // Only display if type is less than size of presetList
 			if (cat == 10000) { // If only type stated then only output list of categories.
 				int j = 0;
-				attrib();
+				menuHeading();
 
 				while (j < properties["presetLists"][type]["catList"].size()) {
 					cout << left << setw(5) << j << returnString(properties["presetLists"][type]["catList"][j]["cat"]) << endl;
 					j++;
 				}
 
-			} else { // If type and cat stated then output child.
+			}
+			else { // If type and cat stated then output child.
 				int j = 0;
 
 				if (cat < properties["presetLists"][type]["catList"].size()) {
-					attrib();
+					menuHeading();
 					while (j < properties["presetLists"][type]["catList"][cat]["child"].size()) {
 						cout << left << setw(5) << j << returnString(properties["presetLists"][type]["catList"][cat]["child"][j]["childName"]) << endl;
 						if (properties["presetLists"][type]["catList"][cat]["child"][j].contains("currency")) {
@@ -418,14 +401,16 @@ void outArray(bool isAccount = false, int type = 10000, int cat = 10000) {
 						j++;
 					}
 
-				} else {
+				}
+				else {
 					cout << "Category number invalid." << endl;
 				}
 
 			}
 
 
-		} else {
+		}
+		else {
 			cout << "Type number invalid." << endl;
 		}
 	}
@@ -447,25 +432,24 @@ bool entryInput() {
 	system("cls");
 	inputted();
 	line(50, '-');
-	cout << "Transaction title? (Only press 'enter' when done, no multi-line support yet)" << endl;
+	cout << "Transaction title? " << endl;
 	line(50, '-');
-	cin.ignore();
 	getline(cin, entry.item);
 
 	// User input : Type of Transaction
-	illegal = true;
-	while (illegal) {
+	while (true) {
 		system("cls");
 		inputted();
 		outArray(false);
 		cout << endl << left << setw(5) << "5" << "Transfer" << endl;
 
 		cout << endl << "Type? ";
-		cin >> i;
+		i = inputNumber<int>();
 
 		if ((i == 1) || (i == 2) || (i == 5)) {
-			illegal = false;
-		} else {
+			break;
+		}
+		else {
 			cout << "Illegal action!" << endl;
 			system("pause");
 			continue;
@@ -481,8 +465,7 @@ bool entryInput() {
 
 		//To determine source account
 		// User input : Account Type
-		illegal = true;
-		while (illegal) {
+		while (true) {
 			system("cls");
 			inputted();
 			outArray(true, 0);
@@ -491,8 +474,9 @@ bool entryInput() {
 			cin >> j;
 
 			if ((j < properties["presetLists"][0]["catList"].size()) && (j >= 0)) {
-				illegal = false;
-			} else {
+				break;
+			}
+			else {
 				cout << "Illegal action!" << endl;
 				system("pause");
 				continue;
@@ -501,8 +485,7 @@ bool entryInput() {
 		entry.sourceAccCat = returnString(properties["presetLists"][0]["catList"][j]["cat"]);
 
 		// User input : Account
-		illegal = true;
-		while (illegal) {
+		while (true) {
 			system("cls");
 			inputted();
 			outArray(true, 0, j);
@@ -511,8 +494,9 @@ bool entryInput() {
 			cin >> k;
 
 			if ((k < properties["presetLists"][0]["catList"][j]["child"].size()) && (k >= 0)) {
-				illegal = false;
-			} else {
+				break;
+			}
+			else {
 				cout << "Illegal action!" << endl;
 				system("pause");
 				continue;
@@ -524,8 +508,7 @@ bool entryInput() {
 		j = 0;
 		k = 0;
 		// User input : Account Type
-		illegal = true;
-		while (illegal) {
+		while (true) {
 			system("cls");
 			inputted();
 			outArray(true, 0);
@@ -534,8 +517,9 @@ bool entryInput() {
 			cin >> j;
 
 			if ((j < properties["presetLists"][0]["catList"].size()) && (j >= 0)) {
-				illegal = false;
-			} else {
+				break;
+			}
+			else {
 				cout << "Illegal action!" << endl;
 				system("pause");
 				continue;
@@ -544,16 +528,16 @@ bool entryInput() {
 		entry.destAccCat = returnString(properties["presetLists"][0]["catList"][j]["cat"]);
 
 		// User input : Account
-		illegal = true;
-		while (illegal) {
+		while (true) {
 			system("cls");
 			inputted();
 			outArray(true, 0, j);
 			cout << "Destination Account Child? ";
 			cin >> k;
 			if ((k < properties["presetLists"][0]["catList"][j]["child"].size()) && (k >= 0)) {
-				illegal = false;
-			} else {
+				break;
+			}
+			else {
 				cout << "Illegal action!" << endl;
 				system("pause");
 				continue;
@@ -562,11 +546,11 @@ bool entryInput() {
 
 		}
 
-	} else {
-	// User input : Expense / Income Parent Category
+	}
+	else {
+		// User input : Expense / Income Parent Category
 		entry.type = returnString(properties["presetLists"][i]["type"]);
-		illegal = true;
-		while (illegal) {
+		while (true) {
 			system("cls");
 			inputted();
 			outArray(false, i);
@@ -575,8 +559,9 @@ bool entryInput() {
 			cin >> j;
 
 			if ((j < properties["presetLists"][i]["catList"].size()) && (j >= 0)) {
-				illegal = false;
-			} else {
+				break;
+			}
+			else {
 				cout << "Illegal action!" << endl;
 				system("pause");
 				continue;
@@ -586,18 +571,18 @@ bool entryInput() {
 		entry.transCat = returnString(properties["presetLists"][i]["catList"][j]["cat"]);
 
 		// User input : Expense / Income Category
-		illegal = true;
-		while (illegal) {
+		while (true) {
 			system("cls");
 			inputted();
 			outArray(false, i, j);
 
 			cout << "Category Child? ";
-			cin >> k;
+			k = inputNumber<int>(false);
 
 			if ((k < properties["presetLists"][i]["catList"][j]["child"].size()) && (k >= 0)) {
-				illegal = false;
-			} else {
+				break;
+			}
+			else {
 				cout << "Illegal action!" << endl;
 				system("pause");
 				continue;
@@ -607,18 +592,18 @@ bool entryInput() {
 		entry.transChild = returnString(properties["presetLists"][i]["catList"][j]["child"][k]);
 
 		// User input : Account Type
-		illegal = true;
-		while (illegal) {
+		while (true) {
 			system("cls");
 			inputted();
 			outArray(true, 0);
 
 			cout << "Account Type? ";
-			cin >> j;
+			j = inputNumber<int>(false);
 
 			if ((j < properties["presetLists"][0]["catList"].size()) && (j >= 0)) {
-				illegal = false;
-			} else {
+				break;
+			}
+			else {
 				cout << "Illegal action!" << endl;
 				system("pause");
 				continue;
@@ -628,18 +613,18 @@ bool entryInput() {
 		entry.accCat = returnString(properties["presetLists"][0]["catList"][j]["cat"]);
 
 		// User input : Account
-		illegal = true;
-		while (illegal) {
+		while (true) {
 			system("cls");
 			inputted();
 			outArray(true, 0, j);
 
 			cout << "Account Child? ";
-			cin >> k;
+			k = inputNumber<int>(false);
 
 			if ((k < properties["presetLists"][0]["catList"][j]["child"].size()) && (k >= 0)) {
-				illegal = false;
-			} else {
+				break;
+			}
+			else {
 				cout << "Illegal action!" << endl;
 				system("pause");
 				continue;
@@ -659,32 +644,31 @@ bool entryInput() {
 
 	// User input : Year
 	cout << "Year? ";
-	cin >> entry.year;
+	entry.year = inputNumber<int>(false);
 
 	// User input : Month
 	cout << "Month? ";
-	cin >> entry.month;
+	entry.month = inputNumber<int>(false);
 
-// User input : Day
+	// User input : Day
 	cout << "Day? ";
-	cin >> entry.day;
+	entry.day = inputNumber<int>(false);
 
 	// User input : Hour
 	cout << "Hour? ";
-	cin >> entry.hour;
+	entry.hour = inputNumber<int>(false);
 
-// User input : Mins
+	// User input : Mins
 	cout << "Mins? ";
-	cin >> entry.mins;
-// ==================================================
+	entry.mins = inputNumber<int>(false);
+	// ==================================================
 
 	// User input : Amount
 	system("cls");
 	inputted();
 	line(50, '-');
 	cout << "Amount? ";
-	cin >> entry.amount;
-
+	entry.amount = inputNumber<double>(false);
 
 	// User input : Notes (No multi-line)
 	system("cls");
@@ -692,40 +676,32 @@ bool entryInput() {
 	line(50, '-');
 	cout << "Notes? (Only press 'enter' when done, no multi-line support yet)" << endl;
 	line(50, '-');
-	cin.ignore();
 	getline(cin, entry.notes);
 
 	// User input : Status
-	illegal = true;
-	while (illegal) {
+	while (true) {
 		system("cls");
 		inputted();
-		attrib();
-		char statusSelect = '\0';
+		menuHeading();
+		string statusSelect = "\0";
 		cout << left << setw(5) << "R" << "Reconciled" << endl;
 		cout << left << setw(5) << "C" << "Cleared" << endl;
 		cout << left << setw(5) << "0" << "<None>" << endl;
 		cout << "Status? ";
-		cin >> statusSelect;
-		statusSelect = toupper(statusSelect);
-		switch (statusSelect) {
-			case 'R':
-			{
-				entry.status = 'R';
-				illegal = false;
-				break;
-			} case 'C':
-			{
-				entry.status = 'C';
-				illegal = false;
-				break;
-			} case '0':
-			{
-				illegal = false;
-				break;
-			}
-			default:
-				break;
+		getline(cin, statusSelect);
+
+		if (statusSelect == "R" || statusSelect == "r") {
+			entry.status = 'R';
+			break;
+
+		}
+		else if (statusSelect == "C" || statusSelect == "c") {
+			entry.status = 'C';
+			break;
+
+		}
+		else {
+			break;
 		}
 
 	}
@@ -737,27 +713,22 @@ bool entryInput() {
 	int thisYear = now.tm_year + 1900;
 	if (now.tm_mon < 10) {
 		entry.label = "Import " + to_string(thisYear) + "0" + to_string(now.tm_mon);
-	} else {
+	}
+	else {
 		entry.label = "Import " + to_string(thisYear) + to_string(now.tm_mon);
 
 	}
 
 	// Review entry, then press key to return commit intent.
-	illegal = true;
-	while (illegal) {
+	while (true) {
 		system("cls");
 		inputted();
 		line(50, '-');
-		char commit;
-		cout << "Commit changes? (y/n) ";
-		cin >> commit;
-		commit = tolower(commit);
-
-		if (commit == 'y' || commit == '1') {
-			illegal = false;
+		cout << "Commit changes? ";
+		if (decider()) {
 			return true;
-		} else if (commit == 'n' || commit == '0') {
-			illegal = false;
+		}
+		else {
 			return false;
 		}
 	}
@@ -767,46 +738,40 @@ bool entryInput() {
 ifstream fileCheck;
 ofstream file;
 bool append = false;
-string outFilename, 
-	jsonFilename;
+string outFilename = "",
+jsonFilename = "";
 
 // Function to load output file.
-void fileFunc(bool ignore = false, string path = "", bool toAppend = false) {
+void fileFunc(string path = "", bool toAppend = false) {
 	if (path == "") {
 		cout << "File path for output file? ";
-		if (ignore) {
-			cin.ignore();
-		}
 		getline(cin, outFilename);
 	}
 
 	fileCheck.open(outFilename);
 	if (!fileCheck) {
-		cout << "Output file does not exist, create file? (y/n)";
-		char intent;
-		cin >> intent;
-		intent = tolower(intent);
-
-		// If 'y' then create file else go back main menu
-		if (intent == 'y') {
+		cout << "Output file does not exist, create file? ";
+		if (decider()) {
 			file.open(outFilename);
 		}
 
-	} else {
-		char intent = '\0';
+	}
+	else {
+		// TODO: Fix logic to prioritize file-defined append action
+		string intent = "\0";
 		if (!toAppend) {
 			cout << "Output file exists, append? (y/n/c) \nSelecting 'n' will clear the existing file. Press 'c' to cancel. " << endl;
-			cin >> intent;
-			intent = tolower(intent);
-
+			getline(cin, intent);
 		}
 
-		if (intent == 'c') {
+		if (intent == "c") {
 			outFilename = "";
-		} else if ((intent == 'y') || (toAppend == true)) {
+		}
+		else if ((intent == "y") || (toAppend == true)) {
 			file.open(outFilename, ios::app);
 			append = true;
-		} else if ((intent == 'n') || (toAppend == false)) {
+		}
+		else if ((intent == "n") || (toAppend == false)) {
 			file.open(outFilename);
 		}
 
@@ -816,13 +781,11 @@ void fileFunc(bool ignore = false, string path = "", bool toAppend = false) {
 }
 
 // Request json file path, opens it and imports it into the json struct.
-void readFile(bool ignore = false) {
+void readFile() {
+	heading("JSON File Import");
 	ifstream jsonFile;
 	while (true) {
 		cout << "File path for json file ? ";
-		if (ignore) {
-			cin.ignore();
-		}
 		getline(cin, jsonFilename);
 
 		if (jsonFilename == "d") {
@@ -834,12 +797,14 @@ void readFile(bool ignore = false) {
 		if (!jsonFile) {
 			cout << "File does not exist. " << endl;
 			continue;
-		} else {
+		}
+		else {
 			break;
 		}
 
 	}
 
+	// TODO: Try-catch for read errors
 	jsonFile >> properties;
 
 	// If filepath property exist then load it as default path, and change behaviour accordingly
@@ -850,7 +815,9 @@ void readFile(bool ignore = false) {
 		if (properties["outFile"][0].contains("defaultAppend")) {
 			append = properties["outFile"][0]["defaultAppend"];
 		}
-		fileFunc(false, outFilename, append);
+
+		// TODO: Loop till there is a filename
+		fileFunc(outFilename, append);
 	}
 
 	cout << "File succesfully imported." << endl;
@@ -868,7 +835,7 @@ void writeToFile() {
 
 	// There are different logics for transfers and normal transactions.
 	if (entry.type == "Transfer") {
-	// Source Account
+		// Source Account
 		file << "Transfer" << ",";
 		file << right << setfill('0')
 			<< setw(2) << entry.month << "/"
@@ -885,7 +852,7 @@ void writeToFile() {
 		file << entry.sourceAccChild << ",";
 		file << entry.notes << ",";
 		file << entry.label << ",";
-		if(entry.status != '\0'){
+		if (entry.status != '\0') {
 			file << entry.status;
 		}
 		file << ",";
@@ -893,7 +860,7 @@ void writeToFile() {
 			file << "split";
 		}
 		file << endl;
-	// Destination Account
+		// Destination Account
 		file << "Transfer" << ",";
 		file << right << setfill('0')
 			<< setw(2) << entry.month << "/"
@@ -910,7 +877,7 @@ void writeToFile() {
 		file << entry.destAccChild << ",";
 		file << entry.notes << ",";
 		file << entry.label << ",";
-		if(entry.status != '\0'){
+		if (entry.status != '\0') {
 			file << entry.status;
 		}
 		file << ",";
@@ -919,7 +886,8 @@ void writeToFile() {
 		}
 		file << endl;
 
-	} else { // For normal use cases.
+	}
+	else { // For normal use cases.
 		file << entry.type << ",";
 		file << right << setfill('0')
 			<< setw(2) << entry.month << "/"
@@ -937,7 +905,7 @@ void writeToFile() {
 		file << entry.accChild << ",";
 		file << entry.notes << ",";
 		file << entry.label << ",";
-		if(entry.status != '\0'){
+		if (entry.status != '\0') {
 			file << entry.status;
 		}
 		file << ",";

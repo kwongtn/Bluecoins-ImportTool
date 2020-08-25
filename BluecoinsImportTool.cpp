@@ -11,14 +11,11 @@ int main() {
 	// Future feature: json file creator.
 
 	while (true) {
-		system("cls");
 		// If json file is empty then load.
 		if (properties.empty()) {
 			readFile();
 		}
-
-		cout << "Bluecoins Import Tool v2.0-beta by KwongTN" << endl;
-		cout << "Please make sure that your json file is updated to the latest format." << endl;
+		heading("Please make sure that your json file is updated to the latest format.");
 
 		cout << endl;
 		cout << "Json file path: \"" << jsonFilename << "\"" << endl;
@@ -30,86 +27,85 @@ int main() {
 		system("cls");
 
 		switch (selection) {
-		// Load a new json file.
-			case 0:
-			{
-				char intent;
-				cout << "Are you sure you want to clear the current json configuration and load a new one? (y/n)" << endl;
-				cin >> intent;
-				intent = tolower(intent);
+			// Load a new json file.
+		case 0:
+		{
+			cout << "Are you sure you want to clear the current json configuration and load a new one? " << endl;
 
-				if (intent == 'y') {
-					properties.clear();
-					cout << "json file cleared. " << endl;
-					readFile(true);
-				} else {
-					cout << "No actions taken. ";
-					system("pause");
+			if (decider()) {
+				properties.clear();
+				cout << "json file cleared. " << endl;
+				readFile();
+			}
+			else {
+				cout << "No actions taken. ";
+				system("pause");
+			}
+
+
+			break;
+		}
+		// Set a new output file.
+		case 1:
+		{
+			fileFunc();
+			break;
+		}
+		// Outputs all properties.
+		case 2:
+		{
+			outAllProperties();
+			system("pause");
+			break;
+		}
+		// View last inputted entry.
+		case 3:
+		{
+			inputted();
+			system("pause");
+			break;
+		}
+		// Creates a new entry.
+		case 4:
+		{
+			reset();
+			if (entryInput()) {
+				if (!file.is_open()) {
+					fileFunc();
 				}
+				writeToFile();
+				append = true;
+				cout << "Written to file. ";
+				countEntry++;
+			}
+			else {
+				cout << "Entry discarded. ";
+				countDiscard++;
+			}
+			system("pause");
+			break;
+		}
+		// To toggle split transaction mode
+		case 6:
+		{
+			splitTransac = !splitTransac;
+			break;
+		}
 
+		case 9:
+		{
+			cout << "Thank you for using the bluecoins import tool. Throughout this session, you have: " << endl;
+			cout << endl;
+			cout << "Inserted " << countEntry << " entries." << endl;
+			cout << "Discarded " << countDiscard << " entries." << endl;
+			cout << endl;
 
-				break;
-			}
-			// Set a new output file.
-			case 1:
-			{
-				fileFunc(true);
-				break;
-			}
-			// Outputs all properties.
-			case 2:
-			{
-				outAllProperties();
-				system("pause");
-				break;
-			}
-			// View last inputted entry.
-			case 3:
-			{
-				inputted();
-				system("pause");
-				break;
-			}
-			// Creates a new entry.
-			case 4:
-			{
-				reset();
-				if (entryInput()) {
-					if (!file.is_open()) {
-						fileFunc(true);
-					}
-					writeToFile();
-					append = true;
-					cout << "Written to file. ";
-					countEntry++;
-				} else {
-					cout << "Entry discarded. ";
-					countDiscard++;
-				}
-				system("pause");
-				break;
-			}
-			// To toggle split transaction mode
-			case 6:
-			{
-				splitTransac = !splitTransac;
-				break;
-			}
+			system("pause");
+			exit(0);
+		}
 
-			case 9:
-			{
-				cout << "Thank you for using. Throughout this session, you have: " << endl;
-				cout << endl;
-				cout << "Inserted " << countEntry << " entries." << endl;
-				cout << "Discarded " << countDiscard << " entries." << endl;
-				cout << endl;
-
-				system("pause");
-				exit(0);
-			}
-
-			default:
-				break;
+		default:
+			break;
 		}
 	}
 
