@@ -471,7 +471,7 @@ bool entryInput() {
 			outArray(true, 0);
 
 			cout << "Source Account Type? ";
-			cin >> j;
+			j = inputNumber<int>();
 
 			if ((j < properties["presetLists"][0]["catList"].size()) && (j >= 0)) {
 				break;
@@ -491,7 +491,7 @@ bool entryInput() {
 			outArray(true, 0, j);
 
 			cout << "Source Account Child? ";
-			cin >> k;
+			k = inputNumber<int>();
 
 			if ((k < properties["presetLists"][0]["catList"][j]["child"].size()) && (k >= 0)) {
 				break;
@@ -514,7 +514,7 @@ bool entryInput() {
 			outArray(true, 0);
 
 			cout << "Destination Account Type? ";
-			cin >> j;
+			j = inputNumber<int>();
 
 			if ((j < properties["presetLists"][0]["catList"].size()) && (j >= 0)) {
 				break;
@@ -533,7 +533,8 @@ bool entryInput() {
 			inputted();
 			outArray(true, 0, j);
 			cout << "Destination Account Child? ";
-			cin >> k;
+			k = inputNumber<int>();
+
 			if ((k < properties["presetLists"][0]["catList"][j]["child"].size()) && (k >= 0)) {
 				break;
 			}
@@ -556,7 +557,7 @@ bool entryInput() {
 			outArray(false, i);
 
 			cout << "Category? ";
-			cin >> j;
+			j = inputNumber<int>();
 
 			if ((j < properties["presetLists"][i]["catList"].size()) && (j >= 0)) {
 				break;
@@ -917,4 +918,3 @@ void writeToFile() {
 	}
 }
 
-// TODO: Reference additional headers your program requires here.

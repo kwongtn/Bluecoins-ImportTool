@@ -183,15 +183,12 @@ inline T1 inputNumber(bool prompter = true, bool forceInput = true) {
 		{
 			if (*dataType == 'i') {
 				value = std::stoi(myString);
-				cout << "Integer processed";
 			}
 			else if (*dataType == 'd') {
 				value = std::stod(myString);
-				cout << "Double processed";
 			}
 			else if (*dataType == 'f') {
 				value = std::stof(myString);
-				cout << "Float processed.";
 			}
 			else {
 				throw;
@@ -215,7 +212,6 @@ inline T1 inputNumber(bool prompter = true, bool forceInput = true) {
 		}
 
 	}
-	pause();
 	cin.clear();
 	return value;
 }
