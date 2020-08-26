@@ -712,13 +712,7 @@ bool entryInput() {
 	struct tm now;
 	localtime_s(&now, &rawtime);
 	int thisYear = now.tm_year + 1900;
-	if (now.tm_mon < 10) {
-		entry.label = "Import " + to_string(thisYear) + "0" + to_string(now.tm_mon);
-	}
-	else {
-		entry.label = "Import " + to_string(thisYear) + to_string(now.tm_mon);
-
-	}
+	entry.label = "Import " + to_string(thisYear) + return_fixed_digits(now.tm_mon, 2);
 
 	// Review entry, then press key to return commit intent.
 	while (true) {

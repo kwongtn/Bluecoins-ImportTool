@@ -9,6 +9,7 @@
 #include <windows.h>
 #include <cstdlib>
 #include <chrono>
+#include <math.h>
 
 using ::std::cout;
 using ::std::cin;
@@ -259,4 +260,16 @@ inline std::string return_current_time_and_date()
 	std::stringstream ss;
 	ss << std::put_time(std::localtime(&in_time_t), "%Y-%m-%d %X");
 	return ss.str();
+}
+
+inline std::string return_fixed_digits(int number, int digits = 2) {
+	std::string temp = "";
+	for (int i = 0; i < digits; i++) {
+		if (number < pow(10, i)) {
+			temp = temp + "0";
+		}
+	}
+	temp += std::to_string(number);
+
+	return temp;
 }
