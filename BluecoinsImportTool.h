@@ -80,60 +80,6 @@ void introduction() {
 
 }
 
-// Main menu for program.
-int mainMenu() {
-	int selection;
-
-	struct MENU {
-		int count = 0;
-		string content = "";
-	};
-	MENU menu[menusize];
-
-	// Define menus
-	menu[0].count = 0;
-	menu[0].content = "Load New Json File";
-	menu[1].count = 1;
-	menu[1].content = "Set New Output File";
-	menu[2].count = 2;
-	menu[2].content = "View All Current Categories";
-	menu[3].count = 3;
-	menu[3].content = "View Last Entry";
-	menu[4].count = 4;
-	menu[4].content = "Input New Entry";
-
-	menu[6].count = 6;
-	menu[6].content = "Toggle split entry status";
-
-	menu[9].count = 9;
-	menu[9].content = "Exit";
-
-	// Output menu.
-	menuHeading();
-	for (int j = 0; j < menusize; j++) {
-		if (menu[j].content != "" && menu[j].count != 0) {
-			cout << left << setw(5) << menu[j].count << menu[j].content;
-		}
-		cout << endl;
-	}
-
-	cout << endl;
-
-	// To output the status of split transaction mode if there is.
-	if (splitTransac) {
-		line(50, '-', true);
-		cout << "Split transaction mode : True" << endl;
-		cout << "Do take note that split transction mode will be switched on until you manually toggle it off. Please make sure that the date, time and title are the same." << endl;
-		cout << "Using different label sets and status for each split is not currently supported. Only the first row of those will be used for each split transaction." << endl;
-		cout << "As of 5 Aug 2019, you can only import one split transaction per csv file." << endl;
-		line(50, '-', true);
-	}
-
-	cout << "Your Selection";
-	selection = inputNumber<int>();
-
-	return selection;
-}
 
 // Returns all current inputted items in entry.
 void inputted() {
