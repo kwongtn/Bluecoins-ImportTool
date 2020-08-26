@@ -10,6 +10,7 @@ int main() {
 
 	// Future feature: json file creator.
 
+	pause();
 	while (true) {
 		// If json file is empty then load.
 		if (properties.empty()) {
@@ -61,7 +62,14 @@ int main() {
 		// View last inputted entry.
 		case 3:
 		{
-			inputted();
+			if (countEntry == 0 && countDiscard == 0) {
+				cout << "There are no entries inputted before this." << endl;
+
+			}
+			else {
+				inputted();
+
+			}
 			system("pause");
 			break;
 		}
@@ -111,12 +119,6 @@ int main() {
 
 
 	//outAllProperties();
-
-
-
-	// testbed
-
-
 
 	return 0;
 	system("pause");
