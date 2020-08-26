@@ -16,7 +16,7 @@ using json = nlohmann::json;
 using namespace std;
 
 const int menusize = 10;
-const string defaultJsonFileName = "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\ktn.json";
+const string defaultJsonFileName = "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\ktn_new.json";
 bool splitTransac = false;
 
 
@@ -254,20 +254,20 @@ void outAllProperties() {
 
 			while (k < properties["presetLists"][i]["catList"][j]["child"].size()) {
 				line(8, ' ', false);
-				cout << "Child Name: " << returnString(properties["presetLists"][i]["catList"][j]["child"][k]["childName"]) << endl;
+				cout << returnString(properties["presetLists"][i]["catList"][j]["child"][k]["childName"]);
 
 				// If exist then only display
 				if (properties["presetLists"][i]["catList"][j]["child"][k].contains("currency")) {
-					line(8, ' ', false);
-					cout << "Currency: " << returnString(properties["presetLists"][i]["catList"][j]["child"][k]["currency"]) << endl;
+					cout << " (" << returnString(properties["presetLists"][i]["catList"][j]["child"][k]["currency"]) << ") ";
 				}
+				cout << endl;
 				if (properties["presetLists"][i]["catList"][j]["child"][k].contains("currentBal")) {
-					line(8, ' ', false);
-					cout << "Current Balance: " << returnString(properties["presetLists"][i]["catList"][j]["child"][k]["currentBal"]) << endl;
+					line(10, ' ', false);
+					cout << "Current Balance: " << properties["presetLists"][i]["catList"][j]["child"][k]["currentBal"] << endl;
 				}
 				if (properties["presetLists"][i]["catList"][j]["child"][k].contains("actualBal")) {
-					line(8, ' ', false);
-					cout << "Actual Balance: " << returnString(properties["presetLists"][i]["catList"][j]["child"][k]["actualBal"]) << endl;
+					line(10, ' ', false);
+					cout << "Actual Balance: " << properties["presetLists"][i]["catList"][j]["child"][k]["actualBal"] << endl;
 				}
 
 				k++;
@@ -324,7 +324,7 @@ void outArray(string type, string cat = " ") {
 							while (k < properties["presetLists"][i]["catList"][j]["child"].size()) {
 								cout << returnString(properties["presetLists"][i]["catList"][j]["child"][k]["childName"]);
 								if (properties["presetLists"][i]["catList"][j]["child"][k].contains("currency")) {
-								cout << " (" << returnString(properties["presetLists"][i]["catList"][j]["child"][k]["currency"]) << ") ";
+									cout << " (" << returnString(properties["presetLists"][i]["catList"][j]["child"][k]["currency"]) << ") ";
 								}
 
 								cout << endl;
@@ -392,7 +392,7 @@ void outArray(bool isAccount = false, int type = 10000, int cat = 10000) {
 				if (cat < properties["presetLists"][type]["catList"].size()) {
 					menuHeading();
 					while (j < properties["presetLists"][type]["catList"][cat]["child"].size()) {
-						cout << left << setw(5) << j << returnString(properties["presetLists"][type]["catList"][cat]["child"][j]["childName"]) << endl;
+						cout << left << setw(5) << j << returnString(properties["presetLists"][type]["catList"][cat]["child"][j]["childName"]);
 						if (properties["presetLists"][type]["catList"][cat]["child"][j].contains("currency")) {
 							cout << " (" << returnString(properties["presetLists"][type]["catList"][cat]["child"][j]["currency"]) << ") ";
 						}
@@ -589,7 +589,7 @@ bool entryInput() {
 			}
 
 		}
-		entry.transChild = returnString(properties["presetLists"][i]["catList"][j]["child"][k]);
+		entry.transChild = returnString(properties["presetLists"][i]["catList"][j]["child"][k]["childName"]);
 
 		// User input : Account Type
 		while (true) {
