@@ -37,7 +37,7 @@ struct ENTRY {
 		hour = 1000,
 		mins = 1000;
 	double amount = 3.14159265359;
-	string item = "";			// Title of transaction.
+	string title = "";			// Title of transaction.
 	string notes = "";
 	char status = '\0';
 	string label = "";
@@ -65,7 +65,7 @@ void reset() {
 	entry.hour = 1000;
 	entry.mins = 1000;
 	entry.amount = 3.14159265359;
-	entry.item = "";
+	entry.title = "";
 	entry.notes = "";
 	entry.status = '\0';
 	entry.label = "";
@@ -139,8 +139,8 @@ int mainMenu() {
 void inputted() {
 	cout << endl;
 
-	if (entry.item != "") {
-		cout << "Title: " << entry.item << endl;
+	if (entry.title != "") {
+		cout << "Title: " << entry.title << endl;
 	}
 
 	if (entry.type != "") {
@@ -434,7 +434,7 @@ bool entryInput() {
 	line(50, '-');
 	cout << "Transaction title? " << endl;
 	line(50, '-');
-	getline(cin, entry.item);
+	getline(cin, entry.title);
 
 	// User input : Type of Transaction
 	while (true) {
@@ -839,7 +839,7 @@ void writeToFile() {
 			<< setw(2) << entry.hour << ":"
 			<< setw(2) << entry.mins << ","
 			<< setfill(' ');
-		file << entry.item << ",";
+		file << entry.title << ",";
 		file << entry.amount * -1 << ",";
 		file << "(Transfer)" << ",";
 		file << "(Transfer)" << ",";
@@ -864,7 +864,7 @@ void writeToFile() {
 			<< setw(2) << entry.hour << ":"
 			<< setw(2) << entry.mins << ","
 			<< setfill(' ');
-		file << entry.item << ",";
+		file << entry.title << ",";
 		file << entry.amount << ",";
 		file << "(Transfer)" << ",";
 		file << "(Transfer)" << ",";
@@ -892,7 +892,7 @@ void writeToFile() {
 			<< setw(2) << entry.mins << ","
 			<< setfill(' ');
 
-		file << entry.item << ",";
+		file << entry.title << ",";
 		file << entry.amount << ",";
 		file << entry.transCat << ",";
 		file << entry.transChild << ",";
