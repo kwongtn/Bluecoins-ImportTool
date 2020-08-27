@@ -184,45 +184,39 @@ void outAllProperties() {
 		}
 	}
 
-	int i = 0,
-		j = 0,
-		k = 0;
+	for (json type : properties["presetLists"]) {
+		cout << returnString(type["type"]) << " : " << endl;
 
-	while (i < properties["presetLists"].size()) {
-		j = 0;
-		k = 0;
-		cout << returnString(properties["presetLists"][i]["type"]) << " : " << endl;
-
-		while (j < properties["presetLists"][i]["catList"].size()) {
-			k = 0;
+		for (json cat : type["catList"]) {
 			line(4, ' ', false);
-			cout << returnString(properties["presetLists"][i]["catList"][j]["cat"]) << " : " << endl;
+			cout << returnString(cat["cat"]) << " : " << endl;
 
-			while (k < properties["presetLists"][i]["catList"][j]["child"].size()) {
+			for (json child : cat["child"]) {
 				line(8, ' ', false);
-				cout << returnString(properties["presetLists"][i]["catList"][j]["child"][k]["childName"]);
+				cout << returnString(child["childName"]);
 
 				// If exist then only display
-				if (properties["presetLists"][i]["catList"][j]["child"][k].contains("currency")) {
-					cout << " (" << returnString(properties["presetLists"][i]["catList"][j]["child"][k]["currency"]) << ") ";
+				if (child.contains("currency")) {
+					cout << " (" << returnString(child["currency"]) << ") ";
 				}
 				cout << endl;
-				if (properties["presetLists"][i]["catList"][j]["child"][k].contains("currentBal")) {
+				if (child.contains("currentBal")) {
 					line(10, ' ', false);
-					cout << "Current Balance: " << properties["presetLists"][i]["catList"][j]["child"][k]["currentBal"] << endl;
+					cout << "Current Balance: " << child["currentBal"] << endl;
 				}
-				if (properties["presetLists"][i]["catList"][j]["child"][k].contains("actualBal")) {
+				if (child.contains("actualBal")) {
 					line(10, ' ', false);
-					cout << "Actual Balance: " << properties["presetLists"][i]["catList"][j]["child"][k]["actualBal"] << endl;
+					cout << "Actual Balance: " << child["actualBal"] << endl;
 				}
 
-				k++;
 			}
-			j++;
+
 		}
+
 		line();
-		i++;
 	}
+
+	system("pause");
 }
 
 // === Unused function ===
@@ -230,56 +224,50 @@ void outAllProperties() {
 // Place a space if want to output all types.
 // If only type provided, list cat.
 // If both type and cat provided, list child.
-void outArray(string type, string cat = " ") {
-	int i = 0;
+void outArray(string selectionType, string cat = " ") {
 	bool found0 = false;
 
-	if (type == " ") { // If type is space show all types.
-		while (i < properties["presetLists"].size()) {
-			cout << returnString(properties["presetLists"][i]["type"]) << endl;
-			i++;
+	if (selectionType == " ") { // If type is space show all types.
+		for (json type : properties["presetLists"]) {
+			cout << returnString(type["type"]) << endl;
+
 		}
 	}
 	else {
-
-
-		while (i < properties["presetLists"].size()) {
-			if (returnString(properties["presetLists"][i]["type"]) == type) {
+		for (json type : properties["presetLists"]) {
+			if (returnString(type["type"]) == selectionType) {
 				found0 = true;
 
 				if (cat == " ") { // If only type stated then only output list of categories.
-					int j = 0;
+					for (json cat : type["catList"]) {
+						cout << returnString(cat["cat"]) << endl;
 
-					while (j < properties["presetLists"][i]["catList"].size()) {
-						cout << returnString(properties["presetLists"][i]["catList"][j]["cat"]) << endl;
-						j++;
 					}
-
 					break;
 
 				}
 				else { // Else if stated then output child
-					int j = 0;
 					bool found1 = false;
 
-					while (j < properties["presetLists"][i]["catList"].size()) {
-						if (returnString(properties["presetLists"][i]["catList"][j]["cat"]) == cat) {
-							int k = 0;
+					for (json cat : type["catList"]) {
+						if (returnString(cat["cat"]) == cat) {
 							found1 = true;
 
-							while (k < properties["presetLists"][i]["catList"][j]["child"].size()) {
-								cout << returnString(properties["presetLists"][i]["catList"][j]["child"][k]["childName"]);
-								if (properties["presetLists"][i]["catList"][j]["child"][k].contains("currency")) {
-									cout << " (" << returnString(properties["presetLists"][i]["catList"][j]["child"][k]["currency"]) << ") ";
+							for (json child : cat["child"]) {
+								cout << returnString(child["childName"]);
+								if (child.contains("currency")) {
+									cout << " (" << returnString(child["currency"]) << ") ";
 								}
 
 								cout << endl;
-								k++;
+
 							}
 
 						}
 						break;
+
 					}
+
 
 					if (!found1) { // If not found in list then category not found.
 						cout << "Category not found." << endl;
@@ -289,8 +277,8 @@ void outArray(string type, string cat = " ") {
 				break;
 			}
 
-			i++;
 		}
+
 		if (!found0) { // If not found in list then type not found.
 			cout << "Type not found." << endl;
 		}
@@ -300,35 +288,30 @@ void outArray(string type, string cat = " ") {
 // Outputs all elements one level below according to the index number.
 // Also provides index number in the process.
 // *Does not output bank accounts unless specified.
-void outArray(bool isAccount = false, int type = 10000, int cat = 10000) {
+void outArray(bool isAccount = false, int type = -1, int cat = -1) {
 	int i = 0;
 
 	// If selection is account, then start from array entry 1.
-	if (isAccount) {
-		i = 0;
-	}
-	else {
+	if (!isAccount) {
 		i = 1;
 	}
 
-
-	if (type == 10000) { // If type is unspecified show all types.
+	if (type == -1) { // If type is unspecified show all types.
 		menuHeading();
-		while (i < properties["presetLists"].size()) {
+		for (i; i < properties["presetLists"].size(); i++) {
 			cout << left << setw(5) << i << returnString(properties["presetLists"][i]["type"]) << endl;
-			i++;
+
 		}
+
 	}
 	else {
-
 		if (type < properties["presetLists"].size()) { // Only display if type is less than size of presetList
-			if (cat == 10000) { // If only type stated then only output list of categories.
-				int j = 0;
+			if (cat == -1) { // If only type stated then only output list of categories.
 				menuHeading();
 
-				while (j < properties["presetLists"][type]["catList"].size()) {
+				for (int j = 0; j < properties["presetLists"][type]["catList"].size(); j++) {
 					cout << left << setw(5) << j << returnString(properties["presetLists"][type]["catList"][j]["cat"]) << endl;
-					j++;
+
 				}
 
 			}
@@ -337,14 +320,16 @@ void outArray(bool isAccount = false, int type = 10000, int cat = 10000) {
 
 				if (cat < properties["presetLists"][type]["catList"].size()) {
 					menuHeading();
-					while (j < properties["presetLists"][type]["catList"][cat]["child"].size()) {
+
+					for (int j = 0; j < properties["presetLists"][type]["catList"][cat]["child"].size(); j++) {
 						cout << left << setw(5) << j << returnString(properties["presetLists"][type]["catList"][cat]["child"][j]["childName"]);
 						if (properties["presetLists"][type]["catList"][cat]["child"][j].contains("currency")) {
 							cout << " (" << returnString(properties["presetLists"][type]["catList"][cat]["child"][j]["currency"]) << ") ";
+
 						}
 
 						cout << endl;
-						j++;
+
 					}
 
 				}
@@ -353,7 +338,6 @@ void outArray(bool isAccount = false, int type = 10000, int cat = 10000) {
 				}
 
 			}
-
 
 		}
 		else {
@@ -648,6 +632,7 @@ bool entryInput() {
 
 		}
 		else {
+			entry.status = '\0';
 			break;
 		}
 
