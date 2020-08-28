@@ -31,7 +31,7 @@ int mainMenu() {
 	menu[6].count = 6;
 	menu[6].content = "Toggle split entry status";
 	if (splitTransac) {
-		menu[6].content += " [Enabled]";
+		menu[6].content += " [!! Enabled !!]";
 	}
 	else {
 		menu[6].content += " [Disabled]";
@@ -57,9 +57,9 @@ int mainMenu() {
 	// To output the status of split transaction mode if there is.
 	if (splitTransac) {
 		line(50, '-', true);
-		cout << "Do take note that split transction mode will be switched on until you manually toggle it off. Please make sure that the date, time and title are the same." << endl;
-		cout << "Using different label sets and status for each split is not currently supported. Only the first row of those will be used for each split transaction." << endl;
-		cout << "As of 26 Aug 2020, you can only import one split transaction per csv file." << endl;
+		cout << "- Please make sure that the date, time and title are the same." << endl;
+		cout << "- Using different label sets and status for each split is not currently supported. Only the first row of those will be used for each split transaction." << endl;
+		cout << "- You can only import one split transaction per csv file." << endl;
 		line(50, '-', true);
 	}
 
@@ -73,39 +73,35 @@ int main() {
 
 	// Future feature: json file creator.
 
-	pause();
 	while (true) {
 		// If json file is empty then load.
 		if (properties.empty()) {
 			readFile();
 		}
-		heading("Please make sure that your json file is updated to the latest format.");
+		heading("Main Menu");
+		cout << "Json file path   : \"" << jsonFilename << "\"" << endl;
+		cout << "Output file path : \"" << outFilename << "\"" << endl;
 
-		cout << endl;
-		cout << "Json file path: \"" << jsonFilename << "\"" << endl;
-		cout << "Output file path: \"" << outFilename << "\"" << endl;
-		cout << endl;
-
-		cout << "Next action?" << endl;
 		int selection = mainMenu();
-		system("cls");
 
 		switch (selection) {
 			// Load a new json file.
 		case 0:
 		{
+			heading("Reload JSON File");
 			cout << "Are you sure you want to clear the current json configuration and load a new one? " << endl;
 
 			if (decider()) {
 				properties.clear();
 				cout << "json file cleared. " << endl;
 				readFile();
+
 			}
 			else {
 				cout << "No actions taken. ";
 				system("pause");
-			}
 
+			}
 
 			break;
 		}
@@ -119,12 +115,12 @@ int main() {
 		case 2:
 		{
 			outAllProperties();
-			system("pause");
 			break;
 		}
 		// View last inputted entry.
 		case 3:
 		{
+			heading("View Last Entry");
 			if (countEntry == 0 && countDiscard == 0) {
 				cout << "There are no entries inputted before this." << endl;
 
@@ -165,6 +161,7 @@ int main() {
 
 		case 9:
 		{
+			heading("Exit");
 			cout << "Thank you for using the bluecoins import tool. Throughout this session, you have: " << endl;
 			cout << endl;
 			cout << "Inserted " << countEntry << " entries." << endl;

@@ -83,8 +83,6 @@ void introduction() {
 
 // Returns all current inputted items in entry.
 void inputted() {
-	cout << endl;
-
 	if (entry.title != "") {
 		cout << "Title: " << entry.title << endl;
 	}
@@ -171,13 +169,16 @@ void inputted() {
 
 // Outputs all properties and their respective values.
 void outAllProperties() {
+	heading("Output all fields");
+
 	// If filepath property exist then load it as default path, and change behaviour accordingly
+	cout << "Current output path : " << outFilename << endl;
 	if (properties.contains("outFile")) {
+		if (properties["outFile"][0].contains("filePath")) {
+			cout << "JSON output path : " << returnString(properties["outFile"][0]["filePath"]) << endl;
+		}
 		if (properties["outFile"][0].contains("advFormat")) {
 			cout << "Advanced file type : " << properties["outFile"][0]["advFormat"] << endl;
-		}
-		if (properties["outFile"][0].contains("filePath")) {
-			cout << "default output path : " << returnString(properties["outFile"][0]["filePath"]) << endl;
 		}
 		if (properties["outFile"][0].contains("defaultAppend")) {
 			cout << "    Default is append : " << properties["outFile"][0]["defaultAppend"] << endl;
@@ -225,6 +226,8 @@ void outAllProperties() {
 // If only type provided, list cat.
 // If both type and cat provided, list child.
 void outArray(string selectionType, string cat = " ") {
+	heading("Output all fields one level below");
+
 	bool found0 = false;
 
 	if (selectionType == " ") { // If type is space show all types.
@@ -359,16 +362,14 @@ bool entryInput() {
 	bool illegal = true;
 
 	// User input : Short Description
-	system("cls");
+	heading("Transaction input");
 	inputted();
-	line(50, '-');
-	cout << "Transaction title? " << endl;
-	line(50, '-');
+	cout << "Transaction title? " << endl << "> ";
 	getline(cin, entry.title);
 
 	// User input : Type of Transaction
 	while (true) {
-		system("cls");
+		heading("Transaction input");
 		inputted();
 		outArray(false);
 		cout << endl << left << setw(5) << "5" << "Transfer" << endl;
@@ -388,6 +389,7 @@ bool entryInput() {
 
 	// If transaction type is transfer
 	if (i == 5) {
+		heading("Transaction input: Transfer");
 		// Transfer cases
 		entry.transCat = "(Transfer)";
 		entry.transChild = "(Transfer)";
@@ -396,7 +398,7 @@ bool entryInput() {
 		//To determine source account
 		// User input : Account Type
 		while (true) {
-			system("cls");
+			heading("Transaction input: Transfer -> Select Source Account");
 			inputted();
 			outArray(true, 0);
 
@@ -416,7 +418,7 @@ bool entryInput() {
 
 		// User input : Account
 		while (true) {
-			system("cls");
+			heading("Transaction input: Transfer -> Select Source Account");
 			inputted();
 			outArray(true, 0, j);
 
@@ -439,7 +441,7 @@ bool entryInput() {
 		k = 0;
 		// User input : Account Type
 		while (true) {
-			system("cls");
+			heading("Transaction input: Transfer -> Select Destination Account");
 			inputted();
 			outArray(true, 0);
 
@@ -459,7 +461,7 @@ bool entryInput() {
 
 		// User input : Account
 		while (true) {
-			system("cls");
+			heading("Transaction input: Transfer -> Select Destination Account");
 			inputted();
 			outArray(true, 0, j);
 			cout << "Destination Account Child? ";
@@ -567,11 +569,10 @@ bool entryInput() {
 	}
 
 	// Date & time input :
-	system("cls");
+	heading("Transaction input");
 	inputted();
 	line(50, '-');
 	cout << "Date & time input: " << endl;
-	line(50, '-');
 
 	// User input : Year
 	cout << "Year? ";
@@ -595,14 +596,14 @@ bool entryInput() {
 	// ==================================================
 
 	// User input : Amount
-	system("cls");
+	heading("Transaction input");
 	inputted();
 	line(50, '-');
 	cout << "Amount? ";
 	entry.amount = inputNumber<double>(false);
 
 	// User input : Notes (No multi-line)
-	system("cls");
+	heading("Transaction input");
 	inputted();
 	line(50, '-');
 	cout << "Notes? (Only press 'enter' when done, no multi-line support yet)" << endl;
@@ -611,7 +612,7 @@ bool entryInput() {
 
 	// User input : Status
 	while (true) {
-		system("cls");
+		heading("Transaction input");
 		inputted();
 		menuHeading();
 		string statusSelect = "\0";
@@ -647,7 +648,7 @@ bool entryInput() {
 
 	// Review entry, then press key to return commit intent.
 	while (true) {
-		system("cls");
+		heading("Transaction input -> Entry Review");
 		inputted();
 		line(50, '-');
 		cout << "Commit changes? ";
@@ -669,12 +670,14 @@ jsonFilename = "";
 
 // Function to load output file.
 void fileFunc(string path = "", bool toAppend = false) {
+	heading("Select Output File");
 	if (path == "") {
 		cout << "File path for output file? ";
 		getline(cin, outFilename);
 	}
 
 	fileCheck.open(outFilename);
+	heading("Select Output File");
 	if (!fileCheck) {
 		cout << "Output file does not exist, create file? ";
 		if (decider()) {
@@ -709,6 +712,7 @@ void fileFunc(string path = "", bool toAppend = false) {
 // Request json file path, opens it and imports it into the json struct.
 void readFile() {
 	heading("JSON File Import");
+	cout << "Please make sure that your json file is updated to the latest format." << endl << endl;
 	ifstream jsonFile;
 	while (true) {
 		cout << "File path for json file ? ";

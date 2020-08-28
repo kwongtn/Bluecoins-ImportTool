@@ -45,6 +45,7 @@ inline void heading(std::string additional = "") {
 
 	if (additional != "") {
 		cout << additional << endl;
+		cout << "-------------------------------------------------------------" << endl;
 	}
 }
 
