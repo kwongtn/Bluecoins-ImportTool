@@ -15,10 +15,16 @@ using json = nlohmann::json;
 
 using namespace std;
 
-const int menusize = 10;
 const string defaultJsonFileName = "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\ktn_new.json";
 bool splitTransac = false;
 
+
+// Global variables related with file output.
+ifstream fileCheck;
+ofstream file;
+bool append = false;
+string outFilename = "",
+jsonFilename = "";
 
 // Used to store all properties in the json file.
 json properties;
@@ -757,12 +763,6 @@ bool entryInput() {
 	}
 }
 
-// Global variables related with file output.
-ifstream fileCheck;
-ofstream file;
-bool append = false;
-string outFilename = "",
-jsonFilename = "";
 
 // Function to load output file.
 void fileFunc(string path = "", bool toAppend = false) {
@@ -776,7 +776,9 @@ void fileFunc(string path = "", bool toAppend = false) {
 	heading("Select Output File");
 	if (!fileCheck) {
 		cout << "Output file does not exist, create file? ";
+		// TODO: outFilename get overridden no matter file status
 		if (decider()) {
+			// TODO: File Creation does not work.
 			file.open(outFilename);
 		}
 

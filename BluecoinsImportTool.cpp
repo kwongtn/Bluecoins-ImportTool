@@ -6,6 +6,8 @@
 int countEntry = 0,
 countDiscard = 0;
 
+const int menusize = 10;
+
 // Main menu for program.
 int mainMenu() {
 	int selection;
@@ -46,7 +48,7 @@ int mainMenu() {
 	// Output menu.
 	menuHeading();
 	for (int j = 0; j < menusize; j++) {
-		if (menu[j].content != "" && menu[j].count != 0) {
+		if (menu[j].content != "") {
 			cout << left << setw(5) << menu[j].count << menu[j].content;
 		}
 		cout << endl;
@@ -72,6 +74,7 @@ int mainMenu() {
 int main() {
 
 	// Future feature: json file creator.
+	introduction();
 
 	while (true) {
 		// If json file is empty then load.

@@ -121,7 +121,7 @@ inline bool decider(std::string custString = "Your selection (y / n): ") {
 		}
 		catch (...) {
 			cout << "Please enter a valid character." << endl;
-			pause();
+
 		}
 	}
 	return x;
@@ -218,24 +218,6 @@ inline T1 inputNumber(bool prompter = true, bool forceInput = true) {
 	return value;
 }
 #pragma warning( pop ) 
-
-//
-//inline int toInt(std::string myString) {
-//	try
-//	{
-//		int i = std::stoi(myString);
-//		return i;
-//	}
-//	catch (std::invalid_argument const& e)
-//	{
-//		cout << "Bad input: std::invalid_argument thrown." << '\n';
-//	}
-//	catch (std::out_of_range const& e)
-//	{
-//		cout << "Integer overflow: std::out_of_range thrown. Please re-input." << '\n';
-//	}
-//	return 0;
-//}
 
 inline std::string random_string(size_t length = rand() + 1) {
 	srand((unsigned int)time(NULL));
