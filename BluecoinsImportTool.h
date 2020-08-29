@@ -484,7 +484,7 @@ bool entryInput() {
 		// User input : Expense / Income Parent Category
 		entry.type = returnString(properties["presetLists"][i]["type"]);
 		while (true) {
-			system("cls");
+			heading("Transaction input");
 			inputted();
 			outArray(false, i);
 
@@ -505,7 +505,7 @@ bool entryInput() {
 
 		// User input : Expense / Income Category
 		while (true) {
-			system("cls");
+			heading("Transaction input");
 			inputted();
 			outArray(false, i, j);
 
@@ -526,7 +526,7 @@ bool entryInput() {
 
 		// User input : Account Type
 		while (true) {
-			system("cls");
+			heading("Transaction input");
 			inputted();
 			outArray(true, 0);
 
@@ -547,7 +547,7 @@ bool entryInput() {
 
 		// User input : Account
 		while (true) {
-			system("cls");
+			heading("Transaction input");
 			inputted();
 			outArray(true, 0, j);
 
