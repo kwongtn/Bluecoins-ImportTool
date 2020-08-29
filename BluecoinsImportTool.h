@@ -92,40 +92,72 @@ void inputted() {
 	}
 
 	if (entry.transCat != "") {
-		cout << "Category: " << entry.transCat << endl;
-	}
+		cout << "Category: " << entry.transCat;
 
-	if (entry.transChild != "") {
-		cout << "Category Child: " << entry.transChild << endl;
+		if (entry.transChild != "") {
+			cout << " -> " << entry.transChild;
+
+		}
+		else {
+			cout << " -> ?";
+
+		}
+
+		cout << endl;
+
 	}
 
 
 	if (entry.type == "Transfer") {
 		if (entry.sourceAccCat != "") {
-			cout << "Source Account Category: " << entry.sourceAccCat << endl;
-		}
+			cout << "Source Account: " << entry.sourceAccCat;
 
-		if (entry.sourceAccChild != "") {
-			cout << "Source Account Child: " << entry.sourceAccChild << endl;
+			if (entry.sourceAccChild != "") {
+				cout << " -> " << entry.sourceAccChild;
+
+			}
+			else {
+				cout << " -> ?";
+
+			}
+
+			cout << endl;
 		}
 
 		if (entry.destAccCat != "") {
-			cout << "Destination Account Category: " << entry.destAccCat << endl;
-		}
+			cout << "Destination Account: " << entry.destAccCat;
 
-		if (entry.destAccChild != "") {
-			cout << "Destination Account Child: " << entry.destAccChild << endl;
+			if (entry.destAccChild != "") {
+				cout << " -> " << entry.destAccChild;
+
+			}
+			else {
+				cout << " -> ?";
+
+			}
+
+			cout << endl;
+
 		}
 
 	}
 	else {
 		if (entry.accCat != "") {
-			cout << "Account Type: " << entry.accCat << endl;
+			cout << "Account: " << entry.accCat;
+
+			if (entry.accChild != "") {
+				cout << " -> " << entry.accChild;
+
+			}
+			else {
+				cout << "-> ?";
+
+			}
+
+			cout << endl;
+
 		}
 
-		if (entry.accChild != "") {
-			cout << "Account Child: " << entry.accChild << endl;
-		}
 	}
 
 	if ((entry.year != 0) &&
