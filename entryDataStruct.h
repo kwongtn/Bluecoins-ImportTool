@@ -4,27 +4,42 @@
 
 // Used to store current entry before writing into file.
 struct ENTRY {
-	string type = "";			// Transaction category.
-	string transCat = "";		// Transaction parent.
-	string transChild = "";		// Transaction child.
-	string accCat = "";			// Account category.
-	string accChild = "";		// Account child.
-	unsigned short int		// Date & time.
-		year = 0,
-		month = 0,
-		day = 0,
-		hour = 1000,
-		mins = 1000;
-	double amount = 3.14159265359;
-	string title = "";			// Title of transaction.
-	string notes = "";
-	char status = '\0';
-	string label = "";
+	template <typename T1>
+	struct DATA_ROW {
+		T1 value;
+		bool isUsed = false;
+		bool isFixed = false;
+	};
+
+	// Transaction type
+	DATA_ROW<string> type;
+
+	// Transaction parent category & children type
+	DATA_ROW<string> transCat, transChild;
+
+	// Account parent category & children type
+	DATA_ROW<string> accCat, accChild;
+
+	// Date data declarations
+	DATA_ROW<unsigned short int> year, month, day, hour, mins;
+
+	// Transaction amount
+	DATA_ROW<double> amount;
+
+	// Transaction title
+	DATA_ROW<string> title;
+
+	// Transaction notes
+	DATA_ROW<string> notes;
+
+	// Transaction label
+	DATA_ROW<string> label;
+
+	// Transaction status
+	DATA_ROW<char> status;
 
 	// Special variables for transfers
-	string sourceAccCat = "";
-	string sourceAccChild = "";
-	string destAccCat = "";
-	string destAccChild = "";
+	DATA_ROW<string> sourceAccCat, sourceAccChild, destAccCat, destAccChild;
+
 };
 ENTRY entry;

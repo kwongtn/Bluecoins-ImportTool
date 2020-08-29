@@ -29,25 +29,82 @@ json properties;
 
 // Resets all entry to initial values.
 void reset() {
-	entry.type = "";
-	entry.transCat = "";
-	entry.transChild = "";
-	entry.accCat = "";
-	entry.accChild = "";
-	entry.year = 0;
-	entry.month = 0;
-	entry.day = 0;
-	entry.hour = 1000;
-	entry.mins = 1000;
-	entry.amount = 3.14159265359;
-	entry.title = "";
-	entry.notes = "";
-	entry.status = '\0';
-	entry.label = "";
-	entry.sourceAccCat = "";
-	entry.sourceAccChild = "";
-	entry.destAccCat = "";
-	entry.destAccChild = "";
+	if (!entry.type.isFixed) {
+		entry.type.isUsed = false;
+		entry.type.value = "";
+	}
+	if (!entry.transCat.isFixed) {
+		entry.transCat.isUsed = false;
+		entry.transCat.value = "";
+	}
+	if (!entry.transChild.isFixed) {
+		entry.transChild.isUsed = false;
+		entry.transChild.value = "";
+	}
+	if (!entry.accCat.isFixed) {
+		entry.accCat.isUsed = false;
+		entry.accCat.value = "";
+	}
+	if (!entry.accChild.isFixed) {
+		entry.accChild.isUsed = false;
+		entry.accChild.value = "";
+	}
+	if (!entry.year.isFixed) {
+		entry.year.isUsed = false;
+		entry.year.value = 0;
+	}
+	if (!entry.month.isFixed) {
+		entry.month.isUsed = false;
+		entry.month.value = 0;
+	}
+	if (!entry.day.isFixed) {
+		entry.day.isUsed = false;
+		entry.day.value = 0;
+	}
+	if (!entry.hour.isFixed) {
+		entry.hour.isUsed = false;
+		entry.hour.value = 0;
+	}
+	if (!entry.mins.isFixed) {
+		entry.mins.isUsed = false;
+		entry.mins.value = 0;
+	}
+	if (!entry.amount.isFixed) {
+		entry.amount.isUsed = false;
+		entry.amount.value = 0;
+	}
+	if (!entry.title.isFixed) {
+		entry.title.isUsed = false;
+		entry.title.value = "";
+	}
+	if (!entry.notes.isFixed) {
+		entry.notes.isUsed = false;
+		entry.notes.value = "";
+	}
+	if (!entry.status.isFixed) {
+		entry.status.isUsed = false;
+		entry.status.value = '\0';
+	}
+	if (!entry.label.isFixed) {
+		entry.label.isUsed = false;
+		entry.label.value = "";
+	}
+	if (!entry.sourceAccCat.isFixed) {
+		entry.sourceAccCat.isUsed = false;
+		entry.sourceAccCat.value = "";
+	}
+	if (!entry.sourceAccChild.isFixed) {
+		entry.sourceAccChild.isUsed = false;
+		entry.sourceAccChild.value = "";
+	}
+	if (!entry.destAccCat.isFixed) {
+		entry.destAccCat.isUsed = false;
+		entry.destAccCat.value = "";
+	}
+	if (!entry.destAccChild.isFixed) {
+		entry.destAccChild.isUsed = false;
+		entry.destAccChild.value = "";
+	}
 }
 
 // Some arbituary introduction to the program during launch.
@@ -58,19 +115,21 @@ void introduction() {
 
 // Returns all current inputted items in entry.
 void inputted() {
-	if (entry.title != "") {
-		cout << "Title: " << entry.title << endl;
+	if (entry.title.isUsed) {
+		cout << "Title: " << entry.title.value << endl;
+
 	}
 
-	if (entry.type != "") {
-		cout << "Type: " << entry.type << endl;
+	if (entry.type.isUsed) {
+		cout << "Type: " << entry.type.value << endl;
+
 	}
 
-	if (entry.transCat != "") {
-		cout << "Category: " << entry.transCat;
+	if (entry.transCat.isUsed) {
+		cout << "Category: " << entry.transCat.value;
 
-		if (entry.transChild != "") {
-			cout << " -> " << entry.transChild;
+		if (entry.transChild.isUsed) {
+			cout << " -> " << entry.transChild.value;
 
 		}
 		else {
@@ -83,12 +142,12 @@ void inputted() {
 	}
 
 
-	if (entry.type == "Transfer") {
-		if (entry.sourceAccCat != "") {
-			cout << "Source Account: " << entry.sourceAccCat;
+	if (entry.type.isUsed) {
+		if (entry.sourceAccCat.isUsed) {
+			cout << "Source Account: " << entry.sourceAccCat.value;
 
-			if (entry.sourceAccChild != "") {
-				cout << " -> " << entry.sourceAccChild;
+			if (entry.sourceAccChild.isUsed) {
+				cout << " -> " << entry.sourceAccChild.value;
 
 			}
 			else {
@@ -99,11 +158,11 @@ void inputted() {
 			cout << endl;
 		}
 
-		if (entry.destAccCat != "") {
-			cout << "Destination Account: " << entry.destAccCat;
+		if (entry.destAccCat.isUsed) {
+			cout << "Destination Account: " << entry.destAccCat.value;
 
-			if (entry.destAccChild != "") {
-				cout << " -> " << entry.destAccChild;
+			if (entry.destAccChild.isUsed) {
+				cout << " -> " << entry.destAccChild.value;
 
 			}
 			else {
@@ -117,11 +176,11 @@ void inputted() {
 
 	}
 	else {
-		if (entry.accCat != "") {
-			cout << "Account: " << entry.accCat;
+		if (entry.accCat.isUsed) {
+			cout << "Account: " << entry.accCat.value;
 
-			if (entry.accChild != "") {
-				cout << " -> " << entry.accChild;
+			if (entry.accChild.isUsed) {
+				cout << " -> " << entry.accChild.value;
 
 			}
 			else {
@@ -135,40 +194,45 @@ void inputted() {
 
 	}
 
-	if ((entry.year != 0) &&
-		(entry.month != 0) &&
-		(entry.day != 0) &&
-		(entry.hour != 1000) &&
-		(entry.mins != 1000)
+	if ((entry.year.isUsed) &&
+		(entry.month.isUsed) &&
+		(entry.day.isUsed) &&
+		(entry.hour.isUsed) &&
+		(entry.mins.isUsed)
 		) {
 		cout << "Date (YYYY/MM/DD): "
-			<< right << entry.year << "/"
-			<< setfill('0') << setw(2) << entry.month << "/"
-			<< setfill('0') << setw(2) << entry.day
+			<< right << entry.year.value << "/"
+			<< setfill('0') << setw(2) << entry.month.value << "/"
+			<< setfill('0') << setw(2) << entry.day.value
 			<< endl;
 
 		cout << "Time (HH:MM): "
-			<< setfill('0') << setw(2) << entry.hour << ":"
-			<< setfill('0') << setw(2) << entry.mins
+			<< setfill('0') << setw(2) << entry.hour.value << ":"
+			<< setfill('0') << setw(2) << entry.mins.value
 			<< endl;
 		cout << setfill(' ');
+
 	}
 
-	if (entry.amount != 3.14159265359) {
-		cout << "Amount: " << fixed << showpoint << setprecision(2) << entry.amount << endl;
+	if (entry.amount.isUsed) {
+		cout << "Amount: " << fixed << showpoint << setprecision(2) << entry.amount.value << endl;
+
 	}
 
 
-	if (entry.status != '\0') {
-		cout << "Status: " << entry.status << endl;
+	if (entry.status.isUsed) {
+		cout << "Status: " << entry.status.value << endl;
+
 	}
 
-	if (entry.label != "") {
-		cout << "Label: " << entry.label << endl;
+	if (entry.label.isUsed) {
+		cout << "Label: " << entry.label.value << endl;
+
 	}
 
-	if (entry.notes != "") {
-		cout << "\nNotes:\n" << entry.notes << endl << endl;
+	if (entry.notes.isUsed) {
+		cout << "\nNotes:\n" << entry.notes.value << endl << endl;
+
 	}
 
 
@@ -372,7 +436,8 @@ bool entryInput() {
 	heading("Transaction input");
 	inputted();
 	cout << "Transaction title? " << endl << "> ";
-	getline(cin, entry.title);
+	getline(cin, entry.title.value);
+	entry.title.isUsed = true;
 
 	// User input : Type of Transaction
 	while (true) {
@@ -398,9 +463,13 @@ bool entryInput() {
 	if (i == 5) {
 		heading("Transaction input: Transfer");
 		// Transfer cases
-		entry.transCat = "(Transfer)";
-		entry.transChild = "(Transfer)";
-		entry.type = "Transfer";
+		entry.transCat.value = "(Transfer)";
+		entry.transChild.value = "(Transfer)";
+		entry.type.value = "Transfer";
+		entry.transCat.isUsed = true;
+		entry.transChild.isUsed = true;
+		entry.type.isUsed = true;
+
 
 		//To determine source account
 		// User input : Account Type
@@ -421,7 +490,8 @@ bool entryInput() {
 				continue;
 			}
 		}
-		entry.sourceAccCat = returnString(properties["presetLists"][0]["catList"][j]["cat"]);
+		entry.sourceAccCat.value = returnString(properties["presetLists"][0]["catList"][j]["cat"]);
+		entry.sourceAccCat.isUsed = true;
 
 		// User input : Account
 		while (true) {
@@ -441,7 +511,8 @@ bool entryInput() {
 				continue;
 			}
 		}
-		entry.sourceAccChild = returnString(properties["presetLists"][0]["catList"][j]["child"][k]["childName"]);
+		entry.sourceAccChild.value = returnString(properties["presetLists"][0]["catList"][j]["child"][k]["childName"]);
+		entry.sourceAccChild.isUsed = true;
 
 		// To determine destination account.
 		j = 0;
@@ -464,7 +535,8 @@ bool entryInput() {
 				continue;
 			}
 		}
-		entry.destAccCat = returnString(properties["presetLists"][0]["catList"][j]["cat"]);
+		entry.destAccCat.value = returnString(properties["presetLists"][0]["catList"][j]["cat"]);
+		entry.destAccCat.isUsed = true;
 
 		// User input : Account
 		while (true) {
@@ -482,14 +554,17 @@ bool entryInput() {
 				system("pause");
 				continue;
 			}
-			entry.destAccChild = returnString(properties["presetLists"][0]["catList"][j]["child"][k]["childName"]);
-
 		}
+		entry.destAccChild.value = returnString(properties["presetLists"][0]["catList"][j]["child"][k]["childName"]);
+		entry.destAccChild.isUsed = true;
+
 
 	}
 	else {
 		// User input : Expense / Income Parent Category
-		entry.type = returnString(properties["presetLists"][i]["type"]);
+		entry.type.value = returnString(properties["presetLists"][i]["type"]);
+		entry.type.isUsed = true;
+
 		while (true) {
 			heading("Transaction input");
 			inputted();
@@ -508,7 +583,8 @@ bool entryInput() {
 			}
 
 		}
-		entry.transCat = returnString(properties["presetLists"][i]["catList"][j]["cat"]);
+		entry.transCat.value = returnString(properties["presetLists"][i]["catList"][j]["cat"]);
+		entry.transCat.value = true;
 
 		// User input : Expense / Income Category
 		while (true) {
@@ -529,7 +605,8 @@ bool entryInput() {
 			}
 
 		}
-		entry.transChild = returnString(properties["presetLists"][i]["catList"][j]["child"][k]["childName"]);
+		entry.transChild.value = returnString(properties["presetLists"][i]["catList"][j]["child"][k]["childName"]);
+		entry.transChild.isUsed = true;
 
 		// User input : Account Type
 		while (true) {
@@ -550,7 +627,8 @@ bool entryInput() {
 			}
 
 		}
-		entry.accCat = returnString(properties["presetLists"][0]["catList"][j]["cat"]);
+		entry.accCat.value = returnString(properties["presetLists"][0]["catList"][j]["cat"]);
+		entry.accCat.isUsed = true;
 
 		// User input : Account
 		while (true) {
@@ -571,7 +649,8 @@ bool entryInput() {
 			}
 
 		}
-		entry.accChild = returnString(properties["presetLists"][0]["catList"][j]["child"][k]["childName"]);
+		entry.accChild.value = returnString(properties["presetLists"][0]["catList"][j]["child"][k]["childName"]);
+		entry.accChild.isUsed = true;
 
 	}
 
@@ -583,23 +662,29 @@ bool entryInput() {
 
 	// User input : Year
 	cout << "Year? ";
-	entry.year = inputNumber<int>(false);
+	entry.year.value = inputNumber<int>(false);
+	entry.year.isUsed = true;
 
 	// User input : Month
 	cout << "Month? ";
-	entry.month = inputNumber<int>(false);
+	entry.month.value = inputNumber<int>(false);
+	entry.month.isUsed = true;
 
 	// User input : Day
 	cout << "Day? ";
-	entry.day = inputNumber<int>(false);
+	entry.day.value = inputNumber<int>(false);
+	entry.day.isUsed = true;
 
 	// User input : Hour
 	cout << "Hour? ";
-	entry.hour = inputNumber<int>(false);
+	entry.hour.value = inputNumber<int>(false);
+	entry.hour.isUsed = true;
 
 	// User input : Mins
 	cout << "Mins? ";
-	entry.mins = inputNumber<int>(false);
+	entry.mins.value = inputNumber<int>(false);
+	entry.mins.isUsed = true;
+
 	// ==================================================
 
 	// User input : Amount
@@ -607,7 +692,8 @@ bool entryInput() {
 	inputted();
 	line(50, '-');
 	cout << "Amount? ";
-	entry.amount = inputNumber<double>(false);
+	entry.amount.value = inputNumber<double>(false);
+	entry.amount.isUsed = true;
 
 	// User input : Notes (No multi-line)
 	heading("Transaction input");
@@ -615,7 +701,8 @@ bool entryInput() {
 	line(50, '-');
 	cout << "Notes? (Only press 'enter' when done, no multi-line support yet)" << endl;
 	line(50, '-');
-	getline(cin, entry.notes);
+	getline(cin, entry.notes.value);
+	entry.notes.isUsed = true;
 
 	// User input : Status
 	while (true) {
@@ -630,28 +717,30 @@ bool entryInput() {
 		getline(cin, statusSelect);
 
 		if (statusSelect == "R" || statusSelect == "r") {
-			entry.status = 'R';
+			entry.status.value = 'R';
 			break;
 
 		}
 		else if (statusSelect == "C" || statusSelect == "c") {
-			entry.status = 'C';
+			entry.status.value = 'C';
 			break;
 
 		}
 		else {
-			entry.status = '\0';
+			entry.status.value = '\0';
 			break;
 		}
 
 	}
+	entry.status.isUsed = true;
 
 	// System generate : Label
 	time_t rawtime = time(&rawtime);
 	struct tm now;
 	localtime_s(&now, &rawtime);
 	int thisYear = now.tm_year + 1900;
-	entry.label = "Import " + to_string(thisYear) + return_fixed_digits(now.tm_mon, 2);
+	entry.label.value = "Import " + to_string(thisYear) + return_fixed_digits(now.tm_mon, 2);
+	entry.label.isUsed = true;
 
 	// Review entry, then press key to return commit intent.
 	while (true) {
@@ -771,26 +860,26 @@ void writeToFile() {
 	}
 
 	// There are different logics for transfers and normal transactions.
-	if (entry.type == "Transfer") {
+	if (entry.type.value == "Transfer") {
 		// Source Account
 		file << "Transfer" << ",";
 		file << right << setfill('0')
-			<< setw(2) << entry.month << "/"
-			<< setw(2) << entry.day << "/"
-			<< entry.year << " "
-			<< setw(2) << entry.hour << ":"
-			<< setw(2) << entry.mins << ","
+			<< setw(2) << entry.month.value << "/"
+			<< setw(2) << entry.day.value << "/"
+			<< entry.year.value << " "
+			<< setw(2) << entry.hour.value << ":"
+			<< setw(2) << entry.mins.value << ","
 			<< setfill(' ');
-		file << entry.title << ",";
-		file << entry.amount * -1 << ",";
+		file << entry.title.value << ",";
+		file << entry.amount.value * -1 << ",";
 		file << "(Transfer)" << ",";
 		file << "(Transfer)" << ",";
-		file << entry.sourceAccCat << ",";
-		file << entry.sourceAccChild << ",";
-		file << entry.notes << ",";
-		file << entry.label << ",";
-		if (entry.status != '\0') {
-			file << entry.status;
+		file << entry.sourceAccCat.value << ",";
+		file << entry.sourceAccChild.value << ",";
+		file << entry.notes.value << ",";
+		file << entry.label.value << ",";
+		if (entry.status.value != '\0') {
+			file << entry.status.value;
 		}
 		file << ",";
 		if (splitTransac) {
@@ -800,22 +889,22 @@ void writeToFile() {
 		// Destination Account
 		file << "Transfer" << ",";
 		file << right << setfill('0')
-			<< setw(2) << entry.month << "/"
-			<< setw(2) << entry.day << "/"
-			<< entry.year << " "
-			<< setw(2) << entry.hour << ":"
-			<< setw(2) << entry.mins << ","
+			<< setw(2) << entry.month.value << "/"
+			<< setw(2) << entry.day.value << "/"
+			<< entry.year.value << " "
+			<< setw(2) << entry.hour.value << ":"
+			<< setw(2) << entry.mins.value << ","
 			<< setfill(' ');
-		file << entry.title << ",";
-		file << entry.amount << ",";
+		file << entry.title.value << ",";
+		file << entry.amount.value << ",";
 		file << "(Transfer)" << ",";
 		file << "(Transfer)" << ",";
-		file << entry.destAccCat << ",";
-		file << entry.destAccChild << ",";
-		file << entry.notes << ",";
-		file << entry.label << ",";
-		if (entry.status != '\0') {
-			file << entry.status;
+		file << entry.destAccCat.value << ",";
+		file << entry.destAccChild.value << ",";
+		file << entry.notes.value << ",";
+		file << entry.label.value << ",";
+		if (entry.status.value != '\0') {
+			file << entry.status.value;
 		}
 		file << ",";
 		if (splitTransac) {
@@ -825,25 +914,25 @@ void writeToFile() {
 
 	}
 	else { // For normal use cases.
-		file << entry.type << ",";
+		file << entry.type.value << ",";
 		file << right << setfill('0')
-			<< setw(2) << entry.month << "/"
-			<< setw(2) << entry.day << "/"
-			<< entry.year << " "
-			<< setw(2) << entry.hour << ":"
-			<< setw(2) << entry.mins << ","
+			<< setw(2) << entry.month.value << "/"
+			<< setw(2) << entry.day.value << "/"
+			<< entry.year.value << " "
+			<< setw(2) << entry.hour.value << ":"
+			<< setw(2) << entry.mins.value << ","
 			<< setfill(' ');
 
-		file << entry.title << ",";
-		file << entry.amount << ",";
-		file << entry.transCat << ",";
-		file << entry.transChild << ",";
-		file << entry.accCat << ",";
-		file << entry.accChild << ",";
-		file << entry.notes << ",";
-		file << entry.label << ",";
-		if (entry.status != '\0') {
-			file << entry.status;
+		file << entry.title.value << ",";
+		file << entry.amount.value << ",";
+		file << entry.transCat.value << ",";
+		file << entry.transChild.value << ",";
+		file << entry.accCat.value << ",";
+		file << entry.accChild.value << ",";
+		file << entry.notes.value << ",";
+		file << entry.label.value << ",";
+		if (entry.status.value != '\0') {
+			file << entry.status.value;
 		}
 		file << ",";
 		if (splitTransac) {
