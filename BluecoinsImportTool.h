@@ -147,56 +147,49 @@ void inputted() {
 
 	}
 
+	if (entry.sourceAccCat.isUsed) {
+		cout << "Source Account: " << entry.sourceAccCat.value;
 
-	if (entry.type.isUsed) {
-		if (entry.sourceAccCat.isUsed) {
-			cout << "Source Account: " << entry.sourceAccCat.value;
-
-			if (entry.sourceAccChild.isUsed) {
-				cout << " -> " << entry.sourceAccChild.value;
-
-			}
-			else {
-				cout << " -> ?";
-
-			}
-
-			cout << endl;
-		}
-
-		if (entry.destAccCat.isUsed) {
-			cout << "Destination Account: " << entry.destAccCat.value;
-
-			if (entry.destAccChild.isUsed) {
-				cout << " -> " << entry.destAccChild.value;
-
-			}
-			else {
-				cout << " -> ?";
-
-			}
-
-			cout << endl;
+		if (entry.sourceAccChild.isUsed) {
+			cout << " -> " << entry.sourceAccChild.value;
 
 		}
+		else {
+			cout << " -> ?";
+
+		}
+
+		cout << endl;
+	}
+
+	if (entry.destAccCat.isUsed) {
+		cout << "Destination Account: " << entry.destAccCat.value;
+
+		if (entry.destAccChild.isUsed) {
+			cout << " -> " << entry.destAccChild.value;
+
+		}
+		else {
+			cout << " -> ?";
+
+		}
+
+		cout << endl;
 
 	}
-	else {
-		if (entry.accCat.isUsed) {
-			cout << "Account: " << entry.accCat.value;
 
-			if (entry.accChild.isUsed) {
-				cout << " -> " << entry.accChild.value;
+	if (entry.accCat.isUsed) {
+		cout << "Account: " << entry.accCat.value;
 
-			}
-			else {
-				cout << "-> ?";
-
-			}
-
-			cout << endl;
+		if (entry.accChild.isUsed) {
+			cout << " -> " << entry.accChild.value;
 
 		}
+		else {
+			cout << "-> ?";
+
+		}
+		cout << endl;
 
 	}
 
@@ -590,7 +583,7 @@ bool entryInput() {
 
 		}
 		entry.transCat.value = returnString(properties["presetLists"][i]["catList"][j]["cat"]);
-		entry.transCat.value = true;
+		entry.transCat.isUsed = true;
 
 		// User input : Expense / Income Category
 		while (true) {
