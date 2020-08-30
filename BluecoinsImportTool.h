@@ -422,33 +422,80 @@ void outArray(bool isAccount = false, int type = -1, int cat = -1) {
 }
 
 // For user to input all entry information.
-bool entryInput() {
+/*
+	There are 3 types of codes to be returned:
+	- 0 -> Everything is good, write result to file.
+	- 1 -> Everything is good, but discard results.
+	- 9 -> User exit halfway through input.
+*/
+int entryInput() {
+	// tempEntry copies from entry, to have respect to selected "fixed" fields
+	ENTRY tempEntry = entry;
 	// Integer for expense, income category parent and child.
+
+	// Variables that will be used to determine json index & position
 	int
-		i = 0, // To describe type of transaction
-		j = 0, // To describe parent
-		k = 0; // To describe child
+		type_index = 0, // To describe type of transaction
+		sourceParent_index = 0, // To describe parent
+		sourceChild_index = 0, // To describe child
+		// Only used in transfers
+		destParent_index = 0,
+		destChild_index = 0;
 
 	bool illegal = true;
 
 	// User input : Short Description
-	heading("Transaction input");
-	inputted();
-	cout << "Transaction title? " << endl << "> ";
-	getline(cin, entry.title.value);
-	entry.title.isUsed = true;
+Title_input:
+	while (true) {
+		string userInput = "";
+
+		// To cancel changes done by current section, if being called back.
+		tempEntry.title.isUsed = false;
+
+		heading("Transaction input");
+		inputted(tempEntry);
+		cout << "Transaction title? " << endl << "> ";
+
+		getline(cin, userInput);
+		USER_INPUT_STRING_RETURN else if (userInput == "-1") { return 9; }
+
+		if (userInput == "") {
+			cout << "Please insert a title." << endl;
+			pause();
+			continue;
+
+		}
+		else {
+			tempEntry.title.value = userInput;
+			tempEntry.title.isUsed = true;
+			break;
+
+		}
+
+	}
 
 	// User input : Type of Transaction
+Type_input:
 	while (true) {
+		int userInput = 0;
+
+		// To cancel changes done by current section, if being called back.
+		tempEntry.transCat.isUsed = false;
+		tempEntry.transChild.isUsed = false;
+		tempEntry.type.isUsed = false;
+
 		heading("Transaction input");
-		inputted();
+		inputted(tempEntry);
 		outArray(false);
 		cout << endl << left << setw(5) << "5" << "Transfer" << endl;
 
 		cout << endl << "Type? ";
-		i = inputNumber<int>();
+		userInput = inputNumber<int>();
 
-		if ((i == 1) || (i == 2) || (i == 5)) {
+		USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto Title_input; }
+
+		if ((userInput == 1) || (userInput == 2) || (userInput == 5)) {
+			type_index = userInput;
 			break;
 		}
 		else {
@@ -459,28 +506,36 @@ bool entryInput() {
 	}
 
 	// If transaction type is transfer
-	if (i == 5) {
+	if (type_index == 5) {
 		heading("Transaction input: Transfer");
 		// Transfer cases
-		entry.transCat.value = "(Transfer)";
-		entry.transChild.value = "(Transfer)";
-		entry.type.value = "Transfer";
-		entry.transCat.isUsed = true;
-		entry.transChild.isUsed = true;
-		entry.type.isUsed = true;
-
+		tempEntry.transCat.value = "(Transfer)";
+		tempEntry.transChild.value = "(Transfer)";
+		tempEntry.type.value = "Transfer";
+		tempEntry.transCat.isUsed = true;
+		tempEntry.transChild.isUsed = true;
+		tempEntry.type.isUsed = true;
 
 		//To determine source account
 		// User input : Account Type
+	TransferSourceAccType_input:
 		while (true) {
+			int userInput = 0;
+
+			// To cancel changes done by current section, if being called back.
+			tempEntry.sourceAccCat.isUsed = false;
+
 			heading("Transaction input: Transfer -> Select Source Account");
-			inputted();
+			inputted(tempEntry);
 			outArray(true, 0);
 
 			cout << "Source Account Type? ";
-			j = inputNumber<int>();
+			userInput = inputNumber<int>();
 
-			if ((j < properties["presetLists"][0]["catList"].size()) && (j >= 0)) {
+			USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto Type_input; }
+
+			if ((userInput < properties["presetLists"][0]["catList"].size()) && (userInput >= 0)) {
+				sourceParent_index = userInput;
 				break;
 			}
 			else {
@@ -489,19 +544,28 @@ bool entryInput() {
 				continue;
 			}
 		}
-		entry.sourceAccCat.value = returnString(properties["presetLists"][0]["catList"][j]["cat"]);
-		entry.sourceAccCat.isUsed = true;
+		tempEntry.sourceAccCat.value = returnString(properties["presetLists"][0]["catList"][sourceParent_index]["cat"]);
+		tempEntry.sourceAccCat.isUsed = true;
 
 		// User input : Account
+	TransferSourceAcc_input:
 		while (true) {
+			int userInput = 0;
+
+			// To cancel changes done by current section, if being called back.
+			tempEntry.sourceAccChild.isUsed = false;
+
 			heading("Transaction input: Transfer -> Select Source Account");
-			inputted();
-			outArray(true, 0, j);
+			inputted(tempEntry);
+			outArray(true, 0, sourceParent_index);
 
 			cout << "Source Account Child? ";
-			k = inputNumber<int>();
+			userInput = inputNumber<int>();
 
-			if ((k < properties["presetLists"][0]["catList"][j]["child"].size()) && (k >= 0)) {
+			USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto TransferSourceAccType_input; }
+
+			if ((userInput < properties["presetLists"][0]["catList"][sourceParent_index]["child"].size()) && (userInput >= 0)) {
+				sourceChild_index = userInput;
 				break;
 			}
 			else {
@@ -510,22 +574,28 @@ bool entryInput() {
 				continue;
 			}
 		}
-		entry.sourceAccChild.value = returnString(properties["presetLists"][0]["catList"][j]["child"][k]["childName"]);
-		entry.sourceAccChild.isUsed = true;
+		tempEntry.sourceAccChild.value = returnString(properties["presetLists"][0]["catList"][sourceParent_index]["child"][sourceChild_index]["childName"]);
+		tempEntry.sourceAccChild.isUsed = true;
 
-		// To determine destination account.
-		j = 0;
-		k = 0;
 		// User input : Account Type
+	TransferDestAccType_input:
 		while (true) {
+			int userInput = 0;
+
+			// To cancel changes done by current section, if being called back.
+			tempEntry.destAccCat.isUsed = false;
+
 			heading("Transaction input: Transfer -> Select Destination Account");
-			inputted();
+			inputted(tempEntry);
 			outArray(true, 0);
 
 			cout << "Destination Account Type? ";
-			j = inputNumber<int>();
+			userInput = inputNumber<int>();
 
-			if ((j < properties["presetLists"][0]["catList"].size()) && (j >= 0)) {
+			USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto TransferSourceAcc_input; }
+
+			if ((destParent_index < properties["presetLists"][0]["catList"].size()) && (destParent_index >= 0)) {
+				destParent_index = userInput;
 				break;
 			}
 			else {
@@ -534,18 +604,27 @@ bool entryInput() {
 				continue;
 			}
 		}
-		entry.destAccCat.value = returnString(properties["presetLists"][0]["catList"][j]["cat"]);
-		entry.destAccCat.isUsed = true;
+		tempEntry.destAccCat.value = returnString(properties["presetLists"][0]["catList"][destParent_index]["cat"]);
+		tempEntry.destAccCat.isUsed = true;
 
 		// User input : Account
+	TransferDestAcc_input:
 		while (true) {
-			heading("Transaction input: Transfer -> Select Destination Account");
-			inputted();
-			outArray(true, 0, j);
-			cout << "Destination Account Child? ";
-			k = inputNumber<int>();
+			int userInput = 0;
 
-			if ((k < properties["presetLists"][0]["catList"][j]["child"].size()) && (k >= 0)) {
+			// To cancel changes done by current section, if being called back.
+			tempEntry.destAccChild.isUsed = false;
+
+			heading("Transaction input: Transfer -> Select Destination Account");
+			inputted(tempEntry);
+			outArray(true, 0, destParent_index);
+			cout << "Destination Account Child? ";
+			userInput = inputNumber<int>();
+
+			USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto TransferDestAccType_input; }
+
+			if ((userInput < properties["presetLists"][0]["catList"][userInput]["child"].size()) && (userInput >= 0)) {
+				destChild_index = userInput;
 				break;
 			}
 			else {
@@ -554,25 +633,34 @@ bool entryInput() {
 				continue;
 			}
 		}
-		entry.destAccChild.value = returnString(properties["presetLists"][0]["catList"][j]["child"][k]["childName"]);
-		entry.destAccChild.isUsed = true;
+		tempEntry.destAccChild.value = returnString(properties["presetLists"][0]["catList"][destParent_index]["child"][destChild_index]["childName"]);
+		tempEntry.destAccChild.isUsed = true;
 
 
 	}
 	else {
-		// User input : Expense / Income Parent Category
-		entry.type.value = returnString(properties["presetLists"][i]["type"]);
-		entry.type.isUsed = true;
+		tempEntry.type.value = returnString(properties["presetLists"][type_index]["type"]);
+		tempEntry.type.isUsed = true;
 
+		// User input : Expense / Income Parent Category
+	TransCat_input:
 		while (true) {
+			int userInput = 0;
+
+			// To cancel changes done by current section, if being called back.
+			tempEntry.transCat.isUsed = false;
+
 			heading("Transaction input");
-			inputted();
-			outArray(false, i);
+			inputted(tempEntry);
+			outArray(false, type_index);
 
 			cout << "Category? ";
-			j = inputNumber<int>();
+			userInput = inputNumber<int>();
 
-			if ((j < properties["presetLists"][i]["catList"].size()) && (j >= 0)) {
+			USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto Type_input; }
+
+			if ((userInput < properties["presetLists"][type_index]["catList"].size()) && (userInput >= 0)) {
+				sourceParent_index = userInput;
 				break;
 			}
 			else {
@@ -582,19 +670,28 @@ bool entryInput() {
 			}
 
 		}
-		entry.transCat.value = returnString(properties["presetLists"][i]["catList"][j]["cat"]);
-		entry.transCat.isUsed = true;
+		tempEntry.transCat.value = returnString(properties["presetLists"][type_index]["catList"][sourceParent_index]["cat"]);
+		tempEntry.transCat.isUsed = true;
 
 		// User input : Expense / Income Category
+	TransType_input:
 		while (true) {
+			int userInput = 0;
+
+			// To cancel changes done by current section, if being called back.
+			tempEntry.transChild.isUsed = false;
+
 			heading("Transaction input");
-			inputted();
-			outArray(false, i, j);
+			inputted(tempEntry);
+			outArray(false, type_index, sourceParent_index);
 
 			cout << "Category Child? ";
-			k = inputNumber<int>(false);
+			userInput = inputNumber<int>(false);
 
-			if ((k < properties["presetLists"][i]["catList"][j]["child"].size()) && (k >= 0)) {
+			USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto TransCat_input; }
+
+			if ((userInput < properties["presetLists"][type_index]["catList"][sourceParent_index]["child"].size()) && (userInput >= 0)) {
+				sourceChild_index = userInput;
 				break;
 			}
 			else {
@@ -604,19 +701,28 @@ bool entryInput() {
 			}
 
 		}
-		entry.transChild.value = returnString(properties["presetLists"][i]["catList"][j]["child"][k]["childName"]);
-		entry.transChild.isUsed = true;
+		tempEntry.transChild.value = returnString(properties["presetLists"][type_index]["catList"][sourceParent_index]["child"][sourceChild_index]["childName"]);
+		tempEntry.transChild.isUsed = true;
 
 		// User input : Account Type
+	AccCat_input:
 		while (true) {
+			int userInput = 0;
+
+			// To cancel changes done by current section, if being called back.
+			tempEntry.accCat.isUsed = false;
+
 			heading("Transaction input");
-			inputted();
+			inputted(tempEntry);
 			outArray(true, 0);
 
 			cout << "Account Type? ";
-			j = inputNumber<int>(false);
+			userInput = inputNumber<int>(false);
 
-			if ((j < properties["presetLists"][0]["catList"].size()) && (j >= 0)) {
+			USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto TransType_input; }
+
+			if ((userInput < properties["presetLists"][0]["catList"].size()) && (userInput >= 0)) {
+				sourceParent_index = userInput;
 				break;
 			}
 			else {
@@ -626,19 +732,28 @@ bool entryInput() {
 			}
 
 		}
-		entry.accCat.value = returnString(properties["presetLists"][0]["catList"][j]["cat"]);
-		entry.accCat.isUsed = true;
+		tempEntry.accCat.value = returnString(properties["presetLists"][0]["catList"][sourceParent_index]["cat"]);
+		tempEntry.accCat.isUsed = true;
 
 		// User input : Account
+	AccType_input:
 		while (true) {
+			int userInput = 0;
+
+			// To cancel changes done by current section, if being called back.
+			tempEntry.accChild.isUsed = false;
+
 			heading("Transaction input");
-			inputted();
-			outArray(true, 0, j);
+			inputted(tempEntry);
+			outArray(true, 0, sourceParent_index);
 
 			cout << "Account Child? ";
-			k = inputNumber<int>(false);
+			userInput = inputNumber<int>(false);
 
-			if ((k < properties["presetLists"][0]["catList"][j]["child"].size()) && (k >= 0)) {
+			USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto AccCat_input; }
+
+			if ((userInput < properties["presetLists"][0]["catList"][sourceParent_index]["child"].size()) && (userInput >= 0)) {
+				sourceChild_index = userInput;
 				break;
 			}
 			else {
@@ -648,117 +763,312 @@ bool entryInput() {
 			}
 
 		}
-		entry.accChild.value = returnString(properties["presetLists"][0]["catList"][j]["child"][k]["childName"]);
-		entry.accChild.isUsed = true;
+		tempEntry.accChild.value = returnString(properties["presetLists"][0]["catList"][sourceParent_index]["child"][sourceChild_index]["childName"]);
+		tempEntry.accChild.isUsed = true;
 
 	}
 
 	// Date & time input :
-	heading("Transaction input");
-	inputted();
-	line(50, '-');
-	cout << "Date & time input: " << endl;
 
 	// User input : Year
-	cout << "Year? ";
-	entry.year.value = inputNumber<int>(false);
-	entry.year.isUsed = true;
-
-	// User input : Month
-	cout << "Month? ";
-	entry.month.value = inputNumber<int>(false);
-	entry.month.isUsed = true;
-
-	// User input : Day
-	cout << "Day? ";
-	entry.day.value = inputNumber<int>(false);
-	entry.day.isUsed = true;
-
-	// User input : Hour
-	cout << "Hour? ";
-	entry.hour.value = inputNumber<int>(false);
-	entry.hour.isUsed = true;
-
-	// User input : Mins
-	cout << "Mins? ";
-	entry.mins.value = inputNumber<int>(false);
-	entry.mins.isUsed = true;
-
-	// ==================================================
-
-	// User input : Amount
-	heading("Transaction input");
-	inputted();
-	line(50, '-');
-	cout << "Amount? ";
-	entry.amount.value = inputNumber<double>(false);
-	entry.amount.isUsed = true;
-
-	// User input : Notes (No multi-line)
-	heading("Transaction input");
-	inputted();
-	line(50, '-');
-	cout << "Notes? (Only press 'enter' when done, no multi-line support yet)" << endl;
-	line(50, '-');
-	getline(cin, entry.notes.value);
-	entry.notes.isUsed = true;
-
-	// User input : Status
+Year_input:
 	while (true) {
+		int userInput = 0;
+
+		// To cancel changes done by current section, if being called back.
+		tempEntry.year.isUsed = false;
+
 		heading("Transaction input");
-		inputted();
-		menuHeading();
-		string statusSelect = "\0";
-		cout << left << setw(5) << "R" << "Reconciled" << endl;
-		cout << left << setw(5) << "C" << "Cleared" << endl;
-		cout << left << setw(5) << "0" << "<None>" << endl;
-		cout << "Status? ";
-		getline(cin, statusSelect);
+		inputted(tempEntry);
+		line(50, '-');
+		cout << "Date & time input: " << endl;
+		cout << "Year? ";
 
-		if (statusSelect == "R" || statusSelect == "r") {
-			entry.status.value = 'R';
-			break;
+		userInput = inputNumber<int>(false);
+		USER_INPUT_NUMBER_RETURN else if ((type_index == 5) && (userInput == -1)) { goto TransferDestAcc_input; }
+		else if (userInput == -1) { goto AccType_input; }
 
-		}
-		else if (statusSelect == "C" || statusSelect == "c") {
-			entry.status.value = 'C';
+		if (userInput > 0) {
+			tempEntry.year.value = userInput;
+			tempEntry.year.isUsed = true;
 			break;
 
 		}
 		else {
-			entry.status.value = '\0';
+			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
+
+		}
+
+	}
+
+	// User input : Month
+Month_input:
+	while (true) {
+		int userInput = 0;
+
+		// To cancel changes done by current section, if being called back.
+		tempEntry.month.isUsed = false;
+
+		heading("Transaction input");
+		inputted(tempEntry);
+		line(50, '-');
+		cout << "Date & time input: " << endl;
+		cout << "Month? ";
+
+		userInput = inputNumber<int>(false);
+		USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto Year_input; }
+
+		if (userInput > 0 && userInput <= 12) {
+			tempEntry.month.value = userInput;
+			tempEntry.month.isUsed = true;
+			break;
+
+		}
+		else {
+			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
+
+		}
+
+	}
+
+	// User input : Day
+Day_input:
+	while (true) {
+		int userInput = 0;
+
+		// To cancel changes done by current section, if being called back.
+		tempEntry.day.isUsed = false;
+
+		heading("Transaction input");
+		inputted(tempEntry);
+		line(50, '-');
+		cout << "Date & time input: " << endl;
+		cout << "Day? ";
+
+		userInput = inputNumber<int>(false);
+		USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto Month_input; }
+
+		if (userInput > 0 && userInput <= 31) {
+			tempEntry.day.value = userInput;
+			tempEntry.day.isUsed = true;
+			break;
+
+		}
+		else {
+			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
+
+		}
+
+	}
+
+	// User input : Hour
+Hour_input:
+	while (true) {
+		int userInput = 0;
+
+		// To cancel changes done by current section, if being called back.
+		tempEntry.hour.isUsed = false;
+
+		heading("Transaction input");
+		inputted(tempEntry);
+		line(50, '-');
+		cout << "Date & time input: " << endl;
+		cout << "Hour? ";
+
+		userInput = inputNumber<int>(false);
+		USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto Day_input; }
+
+		if (userInput >= 0 && userInput <= 23) {
+			tempEntry.hour.value = userInput;
+			tempEntry.hour.isUsed = true;
+			break;
+
+		}
+		else {
+			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
+
+		}
+
+	}
+
+	// User input : Mins
+Min_input:
+	while (true) {
+		int userInput = 0;
+
+		// To cancel changes done by current section, if being called back.
+		tempEntry.mins.isUsed = false;
+
+		heading("Transaction input");
+		inputted(tempEntry);
+		line(50, '-');
+		cout << "Date & time input: " << endl;
+		cout << "Mins? ";
+
+		userInput = inputNumber<int>(false);
+		USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto Hour_input; }
+
+		if (userInput >= 0 && userInput <= 59) {
+			tempEntry.mins.value = userInput;
+			tempEntry.mins.isUsed = true;
+			break;
+
+		}
+		else {
+			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
+
+		}
+
+	}
+
+	// ==================================================
+
+	// User input : Amount
+Amount_input:
+	while (true) {
+		double userInput = 0;
+
+		// To cancel changes done by current section, if being called back.
+		tempEntry.amount.isUsed = false;
+
+		heading("Transaction input");
+		inputted(tempEntry);
+		line(50, '-');
+		cout << "Amount? ";
+
+		userInput = inputNumber<double>(false);
+		USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto Min_input; }
+
+		if (userInput >= 0) {
+			tempEntry.amount.value = userInput;
+			tempEntry.amount.isUsed = true;
+			break;
+
+		}
+		else {
+			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
+
+		}
+
+	}
+
+	// User input : Notes (No multi-line)
+Notes_input:
+	while (true) {
+		string userInput = "";
+
+		// To cancel changes done by current section, if being called back.
+		tempEntry.notes.isUsed = false;
+
+		heading("Transaction input");
+		inputted(tempEntry);
+		line(50, '-');
+		cout << "Notes? (Only press 'enter' when done, no multi-line support yet)" << endl;
+		line(50, '-');
+
+		getline(cin, userInput);
+		USER_INPUT_STRING_RETURN else if (userInput == "-1") { goto Amount_input; }
+
+		tempEntry.notes.value = userInput;
+		tempEntry.notes.isUsed = true;
+		break;
+	}
+
+	// User input : Status
+Status_input:
+	while (true) {
+		string userInput = "";
+
+		// To cancel changes done by current section, if being called back.
+		tempEntry.status.isUsed = false;
+
+		heading("Transaction input");
+		inputted(tempEntry);
+		menuHeading();
+		cout << left << setw(5) << "R" << "Reconciled" << endl;
+		cout << left << setw(5) << "C" << "Cleared" << endl;
+		cout << left << setw(5) << "0" << "<None>" << endl;
+		cout << "Status? ";
+
+		getline(cin, userInput);
+		USER_INPUT_STRING_RETURN else if (userInput == "-1") { goto Notes_input; }
+
+		if (userInput == "R" || userInput == "r") {
+			tempEntry.status.value = 'R';
+			break;
+
+		}
+		else if (userInput == "C" || userInput == "c") {
+			tempEntry.status.value = 'C';
+			break;
+
+		}
+		else {
+			tempEntry.status.value = '\0';
 			break;
 		}
 
 	}
-	entry.status.isUsed = true;
+	tempEntry.status.isUsed = true;
 
 	// System generate : Label
 	time_t rawtime = time(&rawtime);
 	struct tm now;
 	localtime_s(&now, &rawtime);
 	int thisYear = now.tm_year + 1900;
-	entry.label.value = "Import " + to_string(thisYear) + return_fixed_digits(now.tm_mon, 2);
-	entry.label.isUsed = true;
+	tempEntry.label.value = "Import " + to_string(thisYear) + return_fixed_digits(now.tm_mon, 2);
+	tempEntry.label.isUsed = true;
 
 	// Review entry, then press key to return commit intent.
 	while (true) {
+		string userInput = "";
+		entry = tempEntry;
+
 		heading("Transaction input -> Entry Review");
-		inputted();
+		inputted(tempEntry);
 		line(50, '-');
-		cout << "Commit changes? ";
-		if (decider()) {
-			return true;
+		cout << "Commit changes? (y / n / -1) : ";
+		getline(cin, userInput);
+
+		USER_INPUT_STRING_RETURN else if (userInput == "-1") { goto Status_input; }
+
+		if ((userInput == "Y") || (userInput == "y")) {
+			// 0 for "Everything fine, commit changes."
+			return 0;
+		}
+		else if ((userInput == "N") || (userInput == "n")) {
+			// 1 for "Everything fine, but discard changes."
+			return 1;
+
 		}
 		else {
-			return false;
+			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
 		}
 	}
+
 }
 
 
 // Function to load output file.
 void fileFunc(string path = "", bool toAppend = false) {
+	if (file.is_open()) {
+		file.close();
+
+	}
 	heading("Select Output File");
 	if (path == "") {
 		cout << "File path for output file? ";

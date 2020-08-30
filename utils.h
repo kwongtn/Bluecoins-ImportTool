@@ -256,3 +256,13 @@ inline std::string return_fixed_digits(int number, int digits = 2) {
 
 	return temp;
 }
+
+#define USER_INPUT_STRING_RETURN \
+	if(userInput == "-1234"){ \
+		return 9; \
+	}
+
+#define USER_INPUT_NUMBER_RETURN \
+	if(userInput == -1234){ \
+		return 9; \
+	}
