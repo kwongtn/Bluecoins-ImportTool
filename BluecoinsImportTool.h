@@ -120,22 +120,22 @@ void introduction() {
 
 
 // Returns all current inputted items in entry.
-void inputted() {
-	if (entry.title.isUsed) {
-		cout << "Title: " << entry.title.value << endl;
+void inputted(ENTRY myEntry) {
+	if (myEntry.title.isUsed) {
+		cout << "Title: " << myEntry.title.value << endl;
 
 	}
 
-	if (entry.type.isUsed) {
-		cout << "Type: " << entry.type.value << endl;
+	if (myEntry.type.isUsed) {
+		cout << "Type: " << myEntry.type.value << endl;
 
 	}
 
-	if (entry.transCat.isUsed) {
-		cout << "Category: " << entry.transCat.value;
+	if (myEntry.transCat.isUsed) {
+		cout << "Category: " << myEntry.transCat.value;
 
-		if (entry.transChild.isUsed) {
-			cout << " -> " << entry.transChild.value;
+		if (myEntry.transChild.isUsed) {
+			cout << " -> " << myEntry.transChild.value;
 
 		}
 		else {
@@ -147,11 +147,11 @@ void inputted() {
 
 	}
 
-	if (entry.sourceAccCat.isUsed) {
-		cout << "Source Account: " << entry.sourceAccCat.value;
+	if (myEntry.sourceAccCat.isUsed) {
+		cout << "Source Account: " << myEntry.sourceAccCat.value;
 
-		if (entry.sourceAccChild.isUsed) {
-			cout << " -> " << entry.sourceAccChild.value;
+		if (myEntry.sourceAccChild.isUsed) {
+			cout << " -> " << myEntry.sourceAccChild.value;
 
 		}
 		else {
@@ -162,11 +162,11 @@ void inputted() {
 		cout << endl;
 	}
 
-	if (entry.destAccCat.isUsed) {
-		cout << "Destination Account: " << entry.destAccCat.value;
+	if (myEntry.destAccCat.isUsed) {
+		cout << "Destination Account: " << myEntry.destAccCat.value;
 
-		if (entry.destAccChild.isUsed) {
-			cout << " -> " << entry.destAccChild.value;
+		if (myEntry.destAccChild.isUsed) {
+			cout << " -> " << myEntry.destAccChild.value;
 
 		}
 		else {
@@ -178,11 +178,11 @@ void inputted() {
 
 	}
 
-	if (entry.accCat.isUsed) {
-		cout << "Account: " << entry.accCat.value;
+	if (myEntry.accCat.isUsed) {
+		cout << "Account: " << myEntry.accCat.value;
 
-		if (entry.accChild.isUsed) {
-			cout << " -> " << entry.accChild.value;
+		if (myEntry.accChild.isUsed) {
+			cout << " -> " << myEntry.accChild.value;
 
 		}
 		else {
@@ -193,47 +193,69 @@ void inputted() {
 
 	}
 
-	if ((entry.year.isUsed) &&
-		(entry.month.isUsed) &&
-		(entry.day.isUsed) &&
-		(entry.hour.isUsed) &&
-		(entry.mins.isUsed)
-		) {
-		cout << "Date (YYYY/MM/DD): "
-			<< right << entry.year.value << "/"
-			<< setfill('0') << setw(2) << entry.month.value << "/"
-			<< setfill('0') << setw(2) << entry.day.value
-			<< endl;
+	if (myEntry.year.isUsed) {
+		cout << "Date (YYYY/MM/DD): " << return_fixed_digits(myEntry.year.value, 4) << "/";
 
-		cout << "Time (HH:MM): "
-			<< setfill('0') << setw(2) << entry.hour.value << ":"
-			<< setfill('0') << setw(2) << entry.mins.value
-			<< endl;
-		cout << setfill(' ');
+		if (myEntry.month.isUsed) {
+			cout << return_fixed_digits(myEntry.month.value, 2) << "/";
+		}
+		else {
+			cout << "--" << "/";
+		}
 
-	}
+		if (myEntry.day.isUsed) {
+			cout << return_fixed_digits(myEntry.day.value, 2) << endl;
 
-	if (entry.amount.isUsed) {
-		cout << "Amount: " << fixed << showpoint << setprecision(2) << entry.amount.value << endl;
+		}
+		else {
+			cout << "--" << endl;
+
+		}
 
 	}
 
+	if (myEntry.hour.isUsed) {
+		cout << "Time (HH:MM): " << return_fixed_digits(myEntry.hour.value, 2) << ":";
 
-	if (entry.status.isUsed) {
-		cout << "Status: " << entry.status.value << endl;
+		if (myEntry.mins.isUsed) {
+			cout << return_fixed_digits(myEntry.mins.value, 2) << endl;
 
-	}
-
-	if (entry.label.isUsed) {
-		cout << "Label: " << entry.label.value << endl;
-
-	}
-
-	if (entry.notes.isUsed) {
-		cout << "\nNotes:\n" << entry.notes.value << endl << endl;
+		}
+		else {
+			cout << "--" << endl;
+		}
 
 	}
 
+	if (myEntry.amount.isUsed) {
+		cout << "Amount: " << fixed << showpoint << setprecision(2) << myEntry.amount.value << endl;
+
+	}
+
+	if (myEntry.status.isUsed) {
+		cout << "Status: ";
+		if (myEntry.status.value == 'R') {
+			cout << "Reconciled";
+		}
+		else if (myEntry.status.value == 'C') {
+			cout << "Cleared";
+		}
+		else {
+			cout << "<None>";
+		}
+		cout << endl;
+
+	}
+
+	if (myEntry.label.isUsed) {
+		cout << "Label: " << myEntry.label.value << endl;
+
+	}
+
+	if (myEntry.notes.isUsed) {
+		cout << "\nNotes:\n" << myEntry.notes.value << endl << endl;
+
+	}
 
 }
 
