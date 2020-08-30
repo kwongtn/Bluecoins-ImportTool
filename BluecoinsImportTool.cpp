@@ -96,8 +96,7 @@ int main() {
 
 			if (decider()) {
 				properties.clear();
-				cout << "json file cleared. " << endl;
-				readFile();
+				continue;
 
 			}
 			else {
@@ -129,7 +128,7 @@ int main() {
 
 			}
 			else {
-				inputted();
+				inputted(entry);
 
 			}
 			system("pause");
@@ -139,20 +138,22 @@ int main() {
 		case 4:
 		{
 			reset();
-			if (entryInput()) {
+			int decision = entryInput();
+			if (decision == 0) {
 				if (!file.is_open()) {
 					fileFunc();
 				}
 				writeToFile();
 				append = true;
-				cout << "Written to file. ";
+				cout << "\nWritten to file. ";
 				countEntry++;
+				system("pause");
 			}
-			else {
-				cout << "Entry discarded. ";
+			else if (decision == 1) {
+				cout << "\nEntry discarded. ";
 				countDiscard++;
+				system("pause");
 			}
-			system("pause");
 			break;
 		}
 		// To toggle split transaction mode
