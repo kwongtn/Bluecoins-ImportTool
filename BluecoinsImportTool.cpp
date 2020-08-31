@@ -147,6 +147,7 @@ int main() {
 				append = true;
 				cout << "\nWritten to file. ";
 				countEntry++;
+				splitTransac ? usedSplit = true : 0;
 				system("pause");
 			}
 			else if (decision == 1) {
@@ -159,7 +160,27 @@ int main() {
 		// To toggle split transaction mode
 		case 6:
 		{
-			splitTransac = !splitTransac;
+			if (!splitTransac && usedSplit) {
+				cout << "Only one split transaction can be used per CSV file. Are you sure you want to continue?" << endl;
+				if (decider()) {
+					splitTransac = true;
+				}
+				else {
+					break;
+				}
+
+			}
+			else if (!splitTransac) {
+				splitTransac = true;
+			}
+			else {
+				splitTransac = false;
+			}
+			break;
+		}
+		case 7:
+		{
+			fixedEntryMenu(properties,  &entry);
 			break;
 		}
 

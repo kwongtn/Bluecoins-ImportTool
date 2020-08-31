@@ -2,8 +2,6 @@
 // BluecoinsImportTool.h : Include file for standard system include files,
 // or project specific include files.
 
-#pragma once
-
 #include "utils.h"
 #include "json.hpp"
 using json = nlohmann::json;
@@ -16,8 +14,8 @@ using json = nlohmann::json;
 using namespace std;
 
 const string defaultJsonFileName = "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\ktn_new.json";
-bool splitTransac = false;
-
+bool splitTransac = false,
+usedSplit = false;
 
 // Global variables related with file output.
 ifstream fileCheck;
@@ -30,6 +28,8 @@ jsonFilename = "";
 json properties;
 
 #include "./entryDataStruct.h"
+
+ENTRY entry;
 
 // Utility functions:
 
