@@ -3,6 +3,8 @@
 
 #include "BluecoinsImportTool.h"
 
+void fixedEntryMenu(json, ENTRY*);
+
 int countEntry = 0,
 countDiscard = 0;
 
