@@ -301,7 +301,8 @@ void fixedEntryMenu(json myProperties, ENTRY* myEntry) {
 		case 2: { // Transaction Category ("Car")
 			// Reset if transCat is fixed
 			if (entry->transCat.isFixed) {
-				// TODO: Reset if transCat already fixed
+				entry->transCat.reset();
+				entry->transChild.reset();
 				break;
 			}
 
@@ -318,7 +319,7 @@ void fixedEntryMenu(json myProperties, ENTRY* myEntry) {
 		case 21: { // Transaction Child ("Fuel")
 			// Reset if transChild is fixed
 			if (entry->transChild.isFixed) {
-				// TODO: Reset if transChild already fixed
+				entry->transChild.reset();
 				break;
 			}
 
@@ -335,7 +336,8 @@ void fixedEntryMenu(json myProperties, ENTRY* myEntry) {
 		case 3: {
 			// Reset if accCat is fixed
 			if (entry->accCat.isFixed) {
-				// TODO: Reset if accCat already fixed
+				entry->accCat.reset();
+				entry->accChild.reset();
 				break;
 			}
 
@@ -351,7 +353,7 @@ void fixedEntryMenu(json myProperties, ENTRY* myEntry) {
 		case 31: {
 			// Reset if accCat is fixed
 			if (entry->accChild.isFixed) {
-				// TODO: Reset if accChild already fixed
+				entry->accChild.reset();
 				break;
 			}
 
@@ -368,7 +370,8 @@ void fixedEntryMenu(json myProperties, ENTRY* myEntry) {
 		case 4: {
 			// Reset if sourceAccCat is fixed
 			if (entry->sourceAccCat.isFixed) {
-				// TODO: Reset if sourceAccCat already fixed
+				entry->sourceAccCat.reset();
+				entry->sourceAccChild.reset();
 				break;
 			}
 
@@ -385,7 +388,7 @@ void fixedEntryMenu(json myProperties, ENTRY* myEntry) {
 		case 41: {
 			// Reset if sourceAccChild is fixed
 			if (entry->sourceAccChild.isFixed) {
-				// TODO: Reset if sourceAccChild already fixed
+				entry->sourceAccChild.reset();
 				break;
 			}
 
@@ -403,7 +406,8 @@ void fixedEntryMenu(json myProperties, ENTRY* myEntry) {
 		case 5: {
 			// Reset if destAccCat is fixed
 			if (entry->destAccCat.isFixed) {
-				// TODO: Reset if destAccCat already fixed
+				entry->destAccCat.reset();
+				entry->destAccChild.reset();
 				break;
 			}
 
@@ -420,7 +424,7 @@ void fixedEntryMenu(json myProperties, ENTRY* myEntry) {
 		case 51: {
 			// Reset if destAccChild is fixed
 			if (entry->destAccChild.isFixed) {
-				// TODO: Reset if destAccChild already fixed
+				entry->destAccChild.reset();
 				break;
 			}
 
@@ -437,65 +441,71 @@ void fixedEntryMenu(json myProperties, ENTRY* myEntry) {
 		}
 		case 6: { // Date-time interactive mode
 			// Reset if any datetime is fixed
-			entry->is_dateTime_locked() ?
-				0 : // TODO: Reset datetime 
-				0; // TODO: Enter interactive mode
+			if (entry->is_dateTime_locked()) {
+				entry->year.reset();
+				entry->month.reset();
+				entry->day.reset();
+				entry->hour.reset();
+				entry->mins.reset();
+			}
+			else {
+			}// TODO: Enter interactive mode
 			break;
 
 		}
 		case 61: {
 			entry->year.isFixed ?
-				0 : // TODO: Reset year 
-				0; // TODO: Enter interactive mode
+				entry->year.reset() :
+				emptyVoidFunction(); // TODO: Enter interactive mode
 			break;
 
 		}
 		case 62: {
 			entry->month.isFixed ?
-				0 : // TODO: Reset month 
-				0; // TODO: Enter interactive mode
+				entry->month.reset() :
+				emptyVoidFunction(); // TODO: Enter interactive mode
 			break;
 
 		}
 		case 63: {
 			entry->day.isFixed ?
-				0 : // TODO: Reset day 
-				0; // TODO: Enter interactive mode
+				entry->day.reset() :
+				emptyVoidFunction(); // TODO: Enter interactive mode
 			break;
 
 		}
 		case 64: {
 			entry->hour.isFixed ?
-				0 : // TODO: Reset hour 
-				0; // TODO: Enter interactive mode
+				entry->hour.reset() :
+				emptyVoidFunction(); // TODO: Enter interactive mode
 			break;
 
 		}
 		case 65: {
 			entry->mins.isFixed ?
-				0 : // TODO: Reset mins 
-				0; // TODO: Enter interactive mode
+				entry->mins.reset() :
+				emptyVoidFunction(); // TODO: Enter interactive mode
 			break;
 
 		}
 		case 7: {
 			entry->title.isFixed ?
-				0 : // TODO: Reset title 
-				0; // TODO: Enter interactive mode
+				entry->title.reset() :
+				emptyVoidFunction(); // TODO: Enter interactive mode
 			break;
 
 		}
 		case 71: {
 			entry->notes.isFixed ?
-				0 : // TODO: Reset notes 
-				0; // TODO: Enter interactive mode
+				entry->notes.reset() :
+				emptyVoidFunction(); // TODO: Enter interactive mode
 			break;
 
 		}
 		case 8: {
 			entry->status.isFixed ?
-				0 : // TODO: Reset status 
-				0; // TODO: Enter interactive mode
+				entry->status.reset() :
+				emptyVoidFunction(); // TODO: Enter interactive mode
 			break;
 
 		}
