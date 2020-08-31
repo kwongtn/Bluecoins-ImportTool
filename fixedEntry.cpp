@@ -8,7 +8,7 @@ json props;
 
 void outArray(bool, int type = -1, int cat = -1);
 
-void fixTransactionType() {
+void lockTransactionType() {
 	heading("Lock Transaction Type");
 	while (true) {
 		int userInput = 0;
@@ -294,7 +294,7 @@ void fixedEntryMenu(json myProperties, ENTRY* myEntry) {
 		case 1: { // Transaction Type
 			entry->type.isFixed ?
 				resetTransactionType() :
-				fixTransactionType();
+				lockTransactionType();
 			break;
 
 		}
