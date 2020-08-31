@@ -1,6 +1,9 @@
 #pragma once
+#include "utils.h"
 
-#include "./utils.h"
+using namespace std;
+
+// Datatype for datarow
 
 // Used to store current entry before writing into file.
 struct ENTRY {
@@ -9,15 +12,24 @@ struct ENTRY {
 		T1 value;
 		bool isUsed = false;
 		bool isFixed = false;
-	};
+		void reset() {
+			// Resets te value to the default of that datatype
+			T1 tempValue;
+			value = tempValue;
 
+			isUsed = false;
+			isFixed = false;
+		}
+	};
 	// Transaction type
 	DATA_ROW<string> type;
 
-	// Transaction parent category & children type
+	/* Transaction parent category & children type, e.g. Car -> Fuel
+	- If type is "Transfer", both of these are "(Transfer)"
+	*/
 	DATA_ROW<string> transCat, transChild;
 
-	// Account parent category & children type
+	// Account parent category & children type, only used for non-transfers
 	DATA_ROW<string> accCat, accChild;
 
 	// Date data declarations
@@ -41,5 +53,40 @@ struct ENTRY {
 	// Special variables for transfers
 	DATA_ROW<string> sourceAccCat, sourceAccChild, destAccCat, destAccChild;
 
+	// If there is even one field locked it will return true
+	bool is_anything_locked() {
+		if (type.isFixed) return true;
+		if (transCat.isFixed) return true;
+		if (transChild.isFixed) return true;
+		if (accCat.isFixed) return true;
+		if (accChild.isFixed) return true;
+		if (year.isFixed) return true;
+		if (month.isFixed) return true;
+		if (day.isFixed) return true;
+		if (hour.isFixed) return true;
+		if (mins.isFixed) return true;
+		if (amount.isFixed) return true;
+		if (title.isFixed) return true;
+		if (notes.isFixed) return true;
+		if (label.isFixed) return true;
+		if (status.isFixed) return true;
+		if (sourceAccCat.isFixed) return true;
+		if (sourceAccChild.isFixed) return true;
+		if (destAccCat.isFixed) return true;
+		if (destAccChild.isFixed) return true;
+
+		return false;
+
+	}
+
+	bool is_dateTime_locked() {
+		if (year.isFixed) return true;
+		if (month.isFixed) return true;
+		if (day.isFixed) return true;
+		if (hour.isFixed) return true;
+		if (mins.isFixed) return true;
+
+		return false;
+	}
 };
-ENTRY entry;
+
