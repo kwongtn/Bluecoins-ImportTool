@@ -3,7 +3,7 @@
 
 #include "BluecoinsImportTool.h"
 
-ENTRY fixedEntryMenu(json, ENTRY*);
+ENTRY fixedEntryMenu(json, ENTRY);
 ENTRY entryTemplate;
 
 int countEntry = 0,
@@ -184,7 +184,7 @@ int main() {
 		}
 		case 7:
 		{
-			entryTemplate = fixedEntryMenu(properties,  &entryTemplate);
+			entryTemplate = fixedEntryMenu(properties, entryTemplate);
 			break;
 		}
 

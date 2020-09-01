@@ -4,7 +4,7 @@
 const int FIXED_MENU_SIZE = 10;
 
 #include "entryDataStruct.h"
-ENTRY* entry;
+ENTRY templateEntry;
 json props;
 
 void outArray(bool, int type = -1, int cat = -1);
@@ -25,16 +25,16 @@ void lockTransactionType() {
 		switch (userInput) {
 		case 1:
 		case 2:
-			entry->type.value = returnString(props["presetLists"][userInput]["type"]);
+			templateEntry.type.value = returnString(props["presetLists"][userInput]["type"]);
 			break;
 		case 5:
-			entry->type.value = "Transfer";
-			entry->transCat.value = "(Transfer)";
-			entry->transChild.value = "(Transfer)";
-			entry->transCat.isUsed = true;
-			entry->transCat.isFixed = true;
-			entry->transChild.isUsed = true;
-			entry->transChild.isFixed = true;
+			templateEntry.type.value = "Transfer";
+			templateEntry.transCat.value = "(Transfer)";
+			templateEntry.transChild.value = "(Transfer)";
+			templateEntry.transCat.isUsed = true;
+			templateEntry.transCat.isFixed = true;
+			templateEntry.transChild.isUsed = true;
+			templateEntry.transChild.isFixed = true;
 			break;
 		default:
 			cout << "Illegal action!" << endl;
@@ -42,19 +42,19 @@ void lockTransactionType() {
 			continue;
 		}
 
-		entry->type.isUsed = true;
-		entry->type.isFixed = true;
+		templateEntry.type.isUsed = true;
+		templateEntry.type.isFixed = true;
 		break;
 	}
 }
 
 void lockYear() {
 	while (true) {
-		entry->year.reset();
+		templateEntry.year.reset();
 		int userInput = 0;
 
 		heading("Transaction input");
-		show_fixed(*entry);
+		show_fixed(templateEntry);
 		line(50, '-');
 		cout << "Year? ";
 
@@ -64,7 +64,7 @@ void lockYear() {
 		if (userInput == -100000) return;
 
 		if (userInput >= 1) {
-			entry->year.fix(userInput);
+			templateEntry.year.fix(userInput);
 			break;
 
 		}
@@ -80,11 +80,11 @@ void lockYear() {
 
 void lockMonth() {
 	while (true) {
-		entry->month.reset();
+		templateEntry.month.reset();
 		int userInput = 0;
 
 		heading("Transaction input");
-		show_fixed(*entry);
+		show_fixed(templateEntry);
 		line(50, '-');
 		cout << "Month? ";
 
@@ -94,7 +94,7 @@ void lockMonth() {
 		if (userInput == -100000) return;
 
 		if (userInput >= 1 && userInput <= 12) {
-			entry->month.fix(userInput);
+			templateEntry.month.fix(userInput);
 			break;
 
 		}
@@ -110,11 +110,11 @@ void lockMonth() {
 
 void lockDay() {
 	while (true) {
-		entry->day.reset();
+		templateEntry.day.reset();
 		int userInput = 0;
 
 		heading("Transaction input");
-		show_fixed(*entry);
+		show_fixed(templateEntry);
 		line(50, '-');
 		cout << "Day? ";
 
@@ -124,7 +124,7 @@ void lockDay() {
 		if (userInput == -100000) return;
 
 		if (userInput > 0 && userInput <= 31) {
-			entry->day.fix(userInput);
+			templateEntry.day.fix(userInput);
 			break;
 
 		}
@@ -140,11 +140,11 @@ void lockDay() {
 
 void lockHour() {
 	while (true) {
-		entry->hour.reset();
+		templateEntry.hour.reset();
 		int userInput = 0;
 
 		heading("Transaction input");
-		show_fixed(*entry);
+		show_fixed(templateEntry);
 		line(50, '-');
 		cout << "Hour? ";
 
@@ -154,7 +154,7 @@ void lockHour() {
 		if (userInput == -100000) return;
 
 		if (userInput >= 0 && userInput <= 23) {
-			entry->hour.fix(userInput);
+			templateEntry.hour.fix(userInput);
 			break;
 
 		}
@@ -170,11 +170,11 @@ void lockHour() {
 
 void lockMins() {
 	while (true) {
-		entry->mins.reset();
+		templateEntry.mins.reset();
 		int userInput = 0;
 
 		heading("Transaction input");
-		show_fixed(*entry);
+		show_fixed(templateEntry);
 		line(50, '-');
 		cout << "Mins? ";
 
@@ -184,7 +184,7 @@ void lockMins() {
 		if (userInput == -100000) return;
 
 		if (userInput >= 0 && userInput <= 59) {
-			entry->mins.fix(userInput);
+			templateEntry.mins.fix(userInput);
 			break;
 
 		}
@@ -199,11 +199,11 @@ void lockMins() {
 }
 
 void dtInteractive() {
-	entry->year.reset();
-	entry->month.reset();
-	entry->day.reset();
-	entry->hour.reset();
-	entry->mins.reset();
+	templateEntry.year.reset();
+	templateEntry.month.reset();
+	templateEntry.day.reset();
+	templateEntry.hour.reset();
+	templateEntry.mins.reset();
 	lockYear();
 	lockMonth();
 	lockDay();
@@ -213,11 +213,11 @@ void dtInteractive() {
 
 void lockTitle() {
 	while (true) {
-		entry->title.reset();
+		templateEntry.title.reset();
 		string userInput = "";
 
 		heading("Transaction input");
-		show_fixed(*entry);
+		show_fixed(templateEntry);
 		line(50, '-');
 		cout << "Transaction title? " << endl << "> ";
 
@@ -230,7 +230,7 @@ void lockTitle() {
 
 		}
 		else {
-			entry->title.fix(userInput);
+			templateEntry.title.fix(userInput);
 			break;
 
 		}
@@ -239,10 +239,10 @@ void lockTitle() {
 }
 
 void lockNotes() {
-	entry->notes.reset();
+	templateEntry.notes.reset();
 
 	heading("Lock Field -> Notes");
-	show_fixed(*entry);
+	show_fixed(templateEntry);
 	line(50, '-');
 	cout << "Notes? (Only press 'enter' when done, no multi-line support yet)" << endl;
 	line(50, '-');
@@ -250,13 +250,13 @@ void lockNotes() {
 	string userInput;
 	getline(cin, userInput);
 
-	entry->notes.fix(userInput);
+	templateEntry.notes.fix(userInput);
 }
 
 // Option 0
 void resetAll() {
 	ENTRY newEntry;
-	entry = &newEntry;
+	templateEntry = newEntry;
 
 }
 
@@ -266,13 +266,13 @@ void interactiveMode() {
 }
 
 
-ENTRY fixedEntryMenu(json myProperties, ENTRY* entryTemplate) {
-	entry = entryTemplate;
+ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
+	templateEntry = entryTemplate;
 	props = myProperties;
 
 	while (true) {
 		heading("Lock Field Menu");
-		show_fixed(*entry);
+		show_fixed(templateEntry);
 		int selection = 0;
 
 		struct MENU {
@@ -323,79 +323,79 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY* entryTemplate) {
 		// Define menus
 		vector<MENU> menu;
 
-		entry->is_anything_locked() ?
+		templateEntry.is_anything_locked() ?
 			menu.push_back({ 0, "[!!!] Unlock everything" }) :
 			menu.push_back({ 0, "Interactive Lock, if \"enter\" without selecting anything means ignore / don't lock." });
 
 		// Menu entry for transaction type
-		entry->type.isFixed ?
-			menu.push_back({ 1, "[!] Reset Transaction Type, Current: " + entry->type.value }) :
+		templateEntry.type.isFixed ?
+			menu.push_back({ 1, "[!] Reset Transaction Type, Current: " + templateEntry.type.value }) :
 			menu.push_back({ 1, "Lock Transaction Type" });
 
 
 		// Show this section for expenses and income
-		if ((entry->type.value == "Expense" && entry->type.isFixed) ||
-			(entry->type.value == "Income" && entry->type.isFixed)) {
+		if ((templateEntry.type.value == "Expense" && templateEntry.type.isFixed) ||
+			(templateEntry.type.value == "Income" && templateEntry.type.isFixed)) {
 			menu.push_back({ 0, "" });
 
 			// Option to lock transaction category & child if entry type is expense & income
-			if (entry->transCat.isFixed) {
-				menu.push_back({ 2, "[!] Reset " + entry->type.value + " Category, Current: " + entry->transCat.value });
+			if (templateEntry.transCat.isFixed) {
+				menu.push_back({ 2, "[!] Reset " + templateEntry.type.value + " Category, Current: " + templateEntry.transCat.value });
 
-				entry->transChild.isFixed ?
-					menu.push_back({ 21, "[!] Reset " + entry->type.value + " Category Child, Current: " + entry->transChild.value }) :
-					menu.push_back({ 21, "Lock " + entry->type.value + " Category Child" });
+				templateEntry.transChild.isFixed ?
+					menu.push_back({ 21, "[!] Reset " + templateEntry.type.value + " Category Child, Current: " + templateEntry.transChild.value }) :
+					menu.push_back({ 21, "Lock " + templateEntry.type.value + " Category Child" });
 
 			}
 			else {
-				menu.push_back({ 2, "Lock " + entry->type.value + " Category" });
+				menu.push_back({ 2, "Lock " + templateEntry.type.value + " Category" });
 
 			}
 
 			// Option to lock target account category & children type
-			if (entry->accCat.isFixed) {
-				menu.push_back({ 3, "[!] Reset " + entry->type.value + " Account Category, Current: " + entry->accCat.value });
+			if (templateEntry.accCat.isFixed) {
+				menu.push_back({ 3, "[!] Reset " + templateEntry.type.value + " Account Category, Current: " + templateEntry.accCat.value });
 
-				entry->accChild.isFixed ?
-					menu.push_back({ 31, "[!] Reset " + entry->type.value + " Account Category Child, Current: " + entry->accChild.value }) :
-					menu.push_back({ 31, "Lock " + entry->type.value + " Account Category Child" });
+				templateEntry.accChild.isFixed ?
+					menu.push_back({ 31, "[!] Reset " + templateEntry.type.value + " Account Category Child, Current: " + templateEntry.accChild.value }) :
+					menu.push_back({ 31, "Lock " + templateEntry.type.value + " Account Category Child" });
 
 			}
 			else {
-				menu.push_back({ 3, "Lock " + entry->type.value + " Account Category" });
+				menu.push_back({ 3, "Lock " + templateEntry.type.value + " Account Category" });
 
 			}
 
 		}
 		// Else show this for transfers
-		else if (entry->type.value == "Transfer" && entry->type.isFixed) {
+		else if (templateEntry.type.value == "Transfer" && templateEntry.type.isFixed) {
 			menu.push_back({ 0, "" });
 
 			// Option to lock source account category & children type
-			if (entry->sourceAccCat.isFixed) {
-				menu.push_back({ 4, "[!] Reset " + entry->type.value + " Source Account Category, Current: " + entry->sourceAccCat.value });
+			if (templateEntry.sourceAccCat.isFixed) {
+				menu.push_back({ 4, "[!] Reset " + templateEntry.type.value + " Source Account Category, Current: " + templateEntry.sourceAccCat.value });
 
-				entry->sourceAccChild.isFixed ?
-					menu.push_back({ 41, "[!] Reset " + entry->type.value + " Source Account Category Child, Current: " + entry->sourceAccChild.value }) :
-					menu.push_back({ 41, "Lock " + entry->type.value + " Source Account Category Child" });
+				templateEntry.sourceAccChild.isFixed ?
+					menu.push_back({ 41, "[!] Reset " + templateEntry.type.value + " Source Account Category Child, Current: " + templateEntry.sourceAccChild.value }) :
+					menu.push_back({ 41, "Lock " + templateEntry.type.value + " Source Account Category Child" });
 
 			}
 			else {
-				menu.push_back({ 4, "Lock " + entry->type.value + " Source Account Category" });
+				menu.push_back({ 4, "Lock " + templateEntry.type.value + " Source Account Category" });
 
 			}
 
 			// Option to lock destination account category & children type
-			if (entry->destAccCat.isFixed) {
-				menu.push_back({ 5, "[!] Reset " + entry->type.value + " Destination Account Category, Current: " + entry->destAccCat.value });
+			if (templateEntry.destAccCat.isFixed) {
+				menu.push_back({ 5, "[!] Reset " + templateEntry.type.value + " Destination Account Category, Current: " + templateEntry.destAccCat.value });
 
-				entry->destAccChild.isFixed ?
-					menu.push_back({ 51, "[!] Reset " + entry->type.value + " Destination Account Category Child, Current: " + entry->destAccChild.value }) :
-					menu.push_back({ 51, "Lock " + entry->type.value + " Destination Account Category Child" });
+				templateEntry.destAccChild.isFixed ?
+					menu.push_back({ 51, "[!] Reset " + templateEntry.type.value + " Destination Account Category Child, Current: " + templateEntry.destAccChild.value }) :
+					menu.push_back({ 51, "Lock " + templateEntry.type.value + " Destination Account Category Child" });
 
 			}
 			else {
-				menu.push_back({ 5, "Lock " + entry->type.value + " Destination Account Category" });
+				menu.push_back({ 5, "Lock " + templateEntry.type.value + " Destination Account Category" });
 
 			}
 		}
@@ -427,18 +427,18 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY* entryTemplate) {
 			menu.push_back({ 64, "[!] Reset Minutes, Current: " + entry->mins.value }) :
 			menu.push_back({ 64, "Lock Minutes" });
 
-		entry->title.isFixed ?
-			menu.push_back({ 7, "[!] Reset Title, Current: " + entry->title.value }) :
+		templateEntry.title.isFixed ?
+			menu.push_back({ 7, "[!] Reset Title, Current: " + templateEntry.title.value }) :
 			menu.push_back({ 7, "Lock Title" });
 
 		menu.push_back({ 0, "" });
 
-		entry->notes.isFixed ?
-			menu.push_back({ 71, "[!] Reset Notes, Current: " + entry->notes.value }) :
+		templateEntry.notes.isFixed ?
+			menu.push_back({ 71, "[!] Reset Notes, Current: " + templateEntry.notes.value }) :
 			menu.push_back({ 71, "Lock Notes" });
 
-		entry->status.isFixed ?
-			menu.push_back({ 8, "[!] Reset Status, Current: " + entry->status.value }) :
+		templateEntry.status.isFixed ?
+			menu.push_back({ 8, "[!] Reset Status, Current: " + templateEntry.status.value }) :
 			menu.push_back({ 8, "Lock Status" });
 
 		menu.push_back({ 0, "" });
@@ -460,21 +460,21 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY* entryTemplate) {
 		switch (selection)
 		{
 		case 0: { // Interactive Mode
-			entry->is_anything_locked() ?
+			templateEntry.is_anything_locked() ?
 				resetAll() : // Reset everything 
 				interactiveMode(); // TODO: Enter interactive mode
 			break;
 
 		}
 		case 1: { // Transaction Type
-			if (entry->type.isFixed) {
-				entry->type.reset();
+			if (templateEntry.type.isFixed) {
+				templateEntry.type.reset();
 
-				entry->transCat.reset();
-				entry->transChild.reset();
+				templateEntry.transCat.reset();
+				templateEntry.transChild.reset();
 
-				entry->accCat.reset();
-				entry->accChild.reset();
+				templateEntry.accCat.reset();
+				templateEntry.accChild.reset();
 
 			}
 			else {
@@ -485,13 +485,13 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY* entryTemplate) {
 		}
 		case 2: { // Transaction Category ("Car")
 			// Reset if transCat is fixed
-			if (entry->transCat.isFixed) {
-				entry->transCat.reset();
-				entry->transChild.reset();
+			if (templateEntry.transCat.isFixed) {
+				templateEntry.transCat.reset();
+				templateEntry.transChild.reset();
 				break;
 			}
 
-			if (entry->type.value != "Transfer") {
+			if (templateEntry.type.value != "Transfer") {
 				goto InvalidSelection;
 			}
 			else {
@@ -503,12 +503,12 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY* entryTemplate) {
 		}
 		case 21: { // Transaction Child ("Fuel")
 			// Reset if transChild is fixed
-			if (entry->transChild.isFixed) {
-				entry->transChild.reset();
+			if (templateEntry.transChild.isFixed) {
+				templateEntry.transChild.reset();
 				break;
 			}
 
-			if ((entry->type.value != "Transfer") && !entry->transCat.isFixed) {
+			if ((templateEntry.type.value != "Transfer") && !templateEntry.transCat.isFixed) {
 				goto InvalidSelection;
 			}
 			else {
@@ -520,13 +520,13 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY* entryTemplate) {
 		}
 		case 3: {
 			// Reset if accCat is fixed
-			if (entry->accCat.isFixed) {
-				entry->accCat.reset();
-				entry->accChild.reset();
+			if (templateEntry.accCat.isFixed) {
+				templateEntry.accCat.reset();
+				templateEntry.accChild.reset();
 				break;
 			}
 
-			if (entry->type.value != "Transfer") {
+			if (templateEntry.type.value != "Transfer") {
 				goto InvalidSelection;
 			}
 			else {
@@ -537,12 +537,12 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY* entryTemplate) {
 		}
 		case 31: {
 			// Reset if accCat is fixed
-			if (entry->accChild.isFixed) {
-				entry->accChild.reset();
+			if (templateEntry.accChild.isFixed) {
+				templateEntry.accChild.reset();
 				break;
 			}
 
-			if ((entry->type.value != "Transfer") && !entry->accCat.isFixed) {
+			if ((templateEntry.type.value != "Transfer") && !templateEntry.accCat.isFixed) {
 				goto InvalidSelection;
 			}
 			else {
@@ -554,13 +554,13 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY* entryTemplate) {
 		}
 		case 4: {
 			// Reset if sourceAccCat is fixed
-			if (entry->sourceAccCat.isFixed) {
-				entry->sourceAccCat.reset();
-				entry->sourceAccChild.reset();
+			if (templateEntry.sourceAccCat.isFixed) {
+				templateEntry.sourceAccCat.reset();
+				templateEntry.sourceAccChild.reset();
 				break;
 			}
 
-			if ((entry->type.value != "Expense") || (entry->type.value != "Income")) {
+			if ((templateEntry.type.value != "Expense") || (templateEntry.type.value != "Income")) {
 				goto InvalidSelection;
 			}
 			else {
@@ -572,13 +572,13 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY* entryTemplate) {
 		}
 		case 41: {
 			// Reset if sourceAccChild is fixed
-			if (entry->sourceAccChild.isFixed) {
-				entry->sourceAccChild.reset();
+			if (templateEntry.sourceAccChild.isFixed) {
+				templateEntry.sourceAccChild.reset();
 				break;
 			}
 
-			if ((entry->type.value != "Expense") || (entry->type.value != "Income")
-				|| !entry->sourceAccCat.isFixed) {
+			if ((templateEntry.type.value != "Expense") || (templateEntry.type.value != "Income")
+				|| !templateEntry.sourceAccCat.isFixed) {
 				goto InvalidSelection;
 			}
 			else {
@@ -590,13 +590,13 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY* entryTemplate) {
 		}
 		case 5: {
 			// Reset if destAccCat is fixed
-			if (entry->destAccCat.isFixed) {
-				entry->destAccCat.reset();
-				entry->destAccChild.reset();
+			if (templateEntry.destAccCat.isFixed) {
+				templateEntry.destAccCat.reset();
+				templateEntry.destAccChild.reset();
 				break;
 			}
 
-			if ((entry->type.value != "Expense") || (entry->type.value != "Income")) {
+			if ((templateEntry.type.value != "Expense") || (templateEntry.type.value != "Income")) {
 				goto InvalidSelection;
 			}
 			else {
@@ -608,13 +608,13 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY* entryTemplate) {
 		}
 		case 51: {
 			// Reset if destAccChild is fixed
-			if (entry->destAccChild.isFixed) {
-				entry->destAccChild.reset();
+			if (templateEntry.destAccChild.isFixed) {
+				templateEntry.destAccChild.reset();
 				break;
 			}
 
-			if ((entry->type.value != "Expense") || (entry->type.value != "Income")
-				|| !entry->destAccChild.isFixed) {
+			if ((templateEntry.type.value != "Expense") || (templateEntry.type.value != "Income")
+				|| !templateEntry.destAccChild.isFixed) {
 				goto InvalidSelection;
 			}
 			else {
@@ -626,12 +626,12 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY* entryTemplate) {
 		}
 		case 6: { // Date-time interactive mode
 			// Reset if any datetime is fixed
-			if (entry->is_dateTime_locked()) {
-				entry->year.reset();
-				entry->month.reset();
-				entry->day.reset();
-				entry->hour.reset();
-				entry->mins.reset();
+			if (templateEntry.is_dateTime_locked()) {
+				templateEntry.year.reset();
+				templateEntry.month.reset();
+				templateEntry.day.reset();
+				templateEntry.hour.reset();
+				templateEntry.mins.reset();
 			}
 			else {
 				dtInteractive();
@@ -640,63 +640,63 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY* entryTemplate) {
 
 		}
 		case 61: { // Lock year
-			entry->year.isFixed ?
-				entry->year.reset() :
+			templateEntry.year.isFixed ?
+				templateEntry.year.reset() :
 				lockYear();
 			break;
 
 		}
 		case 62: { // Lock month
-			entry->month.isFixed ?
-				entry->month.reset() :
+			templateEntry.month.isFixed ?
+				templateEntry.month.reset() :
 				lockMonth();
 			break;
 
 		}
 		case 63: { // Lock day
-			entry->day.isFixed ?
-				entry->day.reset() :
+			templateEntry.day.isFixed ?
+				templateEntry.day.reset() :
 				lockDay();
 			break;
 
 		}
 		case 64: { // Lock hour
-			entry->hour.isFixed ?
-				entry->hour.reset() :
+			templateEntry.hour.isFixed ?
+				templateEntry.hour.reset() :
 				lockHour();
 			break;
 
 		}
 		case 65: { // Lock mins
-			entry->mins.isFixed ?
-				entry->mins.reset() :
+			templateEntry.mins.isFixed ?
+				templateEntry.mins.reset() :
 				lockMins();
 			break;
 
 		}
 		case 7: { // Lock title
-			entry->title.isFixed ?
-				entry->title.reset() :
+			templateEntry.title.isFixed ?
+				templateEntry.title.reset() :
 				lockTitle();
 			break;
 
 		}
 		case 71: { // Lock notes
-			entry->notes.isFixed ?
-				entry->notes.reset() :
+			templateEntry.notes.isFixed ?
+				templateEntry.notes.reset() :
 				lockNotes();
 			break;
 
 		}
 		case 8: {
-			entry->status.isFixed ?
-				entry->status.reset() :
+			templateEntry.status.isFixed ?
+				templateEntry.status.reset() :
 				emptyVoidFunction(); // TODO: Enter interactive mode
 			break;
 
 		}
 		case 9:
-			return *entry;
+			return templateEntry;
 			break;
 		InvalidSelection:
 		default:
