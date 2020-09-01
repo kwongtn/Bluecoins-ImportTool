@@ -403,29 +403,34 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 		menu.push_back({ 0, "" });
 
 		// Date time (Interactive)
-		entry->is_dateTime_locked() ?
-			menu.push_back({ 6, "[!] Reset Datetime, Current: " + return_dt_string(*entry) }) :
+		templateEntry.is_dateTime_locked() ?
+			menu.push_back({ 6, "[!] Reset Datetime, Current: " + return_dt_string(templateEntry) }) :
 			menu.push_back({ 6, "Lock Datetime (Interactive)" });
 
-		entry->year.isFixed ?
-			menu.push_back({ 61, "[!] Reset Year, Current: " + entry->year.value }) :
+		templateEntry.year.isFixed ?
+			menu.push_back({ 61, 
+				"[!] Reset Year, Current: " + return_fixed_digits(templateEntry.year.value, 4) }) :
 			menu.push_back({ 61, "Lock Year" });
 
-		entry->month.isFixed ?
-			menu.push_back({ 62, "[!] Reset Month, Current: " + entry->month.value }) :
+		templateEntry.month.isFixed ?
+			menu.push_back({ 62, 
+				"[!] Reset Month, Current: " + return_fixed_digits(templateEntry.month.value, 2) }) :
 			menu.push_back({ 62, "Lock Month" });
 
-		entry->day.isFixed ?
-			menu.push_back({ 63, "[!] Reset Day, Current: " + entry->day.value }) :
+		templateEntry.day.isFixed ?
+			menu.push_back({ 63, 
+				"[!] Reset Day, Current: " + return_fixed_digits(templateEntry.day.value) }) :
 			menu.push_back({ 63, "Lock Day" });
 
-		entry->hour.isFixed ?
-			menu.push_back({ 64, "[!] Reset Hour, Current: " + entry->hour.value }) :
+		templateEntry.hour.isFixed ?
+			menu.push_back({ 64, 
+				"[!] Reset Hour, Current: " + return_fixed_digits(templateEntry.hour.value) }) :
 			menu.push_back({ 64, "Lock Hour" });
 
-		entry->mins.isFixed ?
-			menu.push_back({ 64, "[!] Reset Minutes, Current: " + entry->mins.value }) :
-			menu.push_back({ 64, "Lock Minutes" });
+		templateEntry.mins.isFixed ?
+			menu.push_back({ 65, 
+				"[!] Reset Minutes, Current: " + return_fixed_digits(templateEntry.mins.value) }) :
+			menu.push_back({ 65, "Lock Minutes" });
 
 		templateEntry.title.isFixed ?
 			menu.push_back({ 7, "[!] Reset Title, Current: " + templateEntry.title.value }) :
