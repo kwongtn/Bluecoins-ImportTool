@@ -1,16 +1,16 @@
-#include "entryDataStruct.h"
 #include "utils.h"
 #include "displayUtils.h"
 
 const int FIXED_MENU_SIZE = 10;
 
+#include "entryDataStruct.h"
 ENTRY* entry;
 json props;
 
 void outArray(bool, int type = -1, int cat = -1);
 
 void lockTransactionType() {
-	heading("Lock Transaction Type");
+	heading("Lock Field -> Transaction Type");
 	while (true) {
 		int userInput = 0;
 
@@ -48,14 +48,221 @@ void lockTransactionType() {
 	}
 }
 
-void resetTransactionType() {
-	entry->type.reset();
+void lockYear() {
+	while (true) {
+		entry->year.reset();
+		int userInput = 0;
 
-	entry->transCat.reset();
-	entry->transChild.reset();
+		heading("Transaction input");
+		show_fixed(*entry);
+		line(50, '-');
+		cout << "Year? ";
 
-	entry->accCat.reset();
-	entry->accChild.reset();
+		userInput = inputNumber<int>(false, false);
+
+		// -100000 is the value returned if there are no inputs
+		if (userInput == -100000) return;
+
+		if (userInput >= 1) {
+			entry->year.fix(userInput);
+			break;
+
+		}
+		else {
+			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
+
+		}
+
+	}
+}
+
+void lockMonth() {
+	while (true) {
+		entry->month.reset();
+		int userInput = 0;
+
+		heading("Transaction input");
+		show_fixed(*entry);
+		line(50, '-');
+		cout << "Month? ";
+
+		userInput = inputNumber<int>(false, false);
+
+		// -100000 is the value returned if there are no inputs
+		if (userInput == -100000) return;
+
+		if (userInput >= 1 && userInput <= 12) {
+			entry->month.fix(userInput);
+			break;
+
+		}
+		else {
+			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
+
+		}
+
+	}
+}
+
+void lockDay() {
+	while (true) {
+		entry->day.reset();
+		int userInput = 0;
+
+		heading("Transaction input");
+		show_fixed(*entry);
+		line(50, '-');
+		cout << "Day? ";
+
+		userInput = inputNumber<int>(false, false);
+
+		// -100000 is the value returned if there are no inputs
+		if (userInput == -100000) return;
+
+		if (userInput > 0 && userInput <= 31) {
+			entry->day.fix(userInput);
+			break;
+
+		}
+		else {
+			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
+
+		}
+
+	}
+}
+
+void lockHour() {
+	while (true) {
+		entry->hour.reset();
+		int userInput = 0;
+
+		heading("Transaction input");
+		show_fixed(*entry);
+		line(50, '-');
+		cout << "Hour? ";
+
+		userInput = inputNumber<int>(false, false);
+
+		// -100000 is the value returned if there are no inputs
+		if (userInput == -100000) return;
+
+		if (userInput >= 0 && userInput <= 23) {
+			entry->hour.fix(userInput);
+			break;
+
+		}
+		else {
+			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
+
+		}
+
+	}
+}
+
+void lockMins() {
+	while (true) {
+		entry->mins.reset();
+		int userInput = 0;
+
+		heading("Transaction input");
+		show_fixed(*entry);
+		line(50, '-');
+		cout << "Mins? ";
+
+		userInput = inputNumber<int>(false, false);
+
+		// -100000 is the value returned if there are no inputs
+		if (userInput == -100000) return;
+
+		if (userInput >= 0 && userInput <= 59) {
+			entry->mins.fix(userInput);
+			break;
+
+		}
+		else {
+			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
+
+		}
+
+	}
+}
+
+void dtInteractive() {
+	entry->year.reset();
+	entry->month.reset();
+	entry->day.reset();
+	entry->hour.reset();
+	entry->mins.reset();
+	lockYear();
+	lockMonth();
+	lockDay();
+	lockHour();
+	lockMins();
+}
+
+void lockTitle() {
+	while (true) {
+		entry->title.reset();
+		string userInput = "";
+
+		heading("Transaction input");
+		show_fixed(*entry);
+		line(50, '-');
+		cout << "Transaction title? " << endl << "> ";
+
+		getline(cin, userInput);
+
+		if (userInput == "") {
+			cout << "Please insert a title." << endl;
+			pause();
+			continue;
+
+		}
+		else {
+			entry->title.fix(userInput);
+			break;
+
+		}
+
+	}
+}
+
+void lockNotes() {
+	entry->notes.reset();
+
+	heading("Lock Field -> Notes");
+	show_fixed(*entry);
+	line(50, '-');
+	cout << "Notes? (Only press 'enter' when done, no multi-line support yet)" << endl;
+	line(50, '-');
+
+	string userInput;
+	getline(cin, userInput);
+
+	entry->notes.fix(userInput);
+}
+
+// Option 0
+void resetAll() {
+	ENTRY newEntry;
+	entry = &newEntry;
+
+}
+
+void interactiveMode() {
+	cout << "Interactive Mode";
+	// TODO: Interactive Mode
 }
 
 
@@ -64,7 +271,8 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY* entryTemplate) {
 	props = myProperties;
 
 	while (true) {
-		heading("Lock entry menu");
+		heading("Lock Field Menu");
+		show_fixed(*entry);
 		int selection = 0;
 
 		struct MENU {
@@ -253,15 +461,25 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY* entryTemplate) {
 		{
 		case 0: { // Interactive Mode
 			entry->is_anything_locked() ?
-				0 : // TODO: Reset everything 
-				0; // TODO: Enter interactive mode
+				resetAll() : // Reset everything 
+				interactiveMode(); // TODO: Enter interactive mode
 			break;
 
 		}
 		case 1: { // Transaction Type
-			entry->type.isFixed ?
-				resetTransactionType() :
+			if (entry->type.isFixed) {
+				entry->type.reset();
+
+				entry->transCat.reset();
+				entry->transChild.reset();
+
+				entry->accCat.reset();
+				entry->accChild.reset();
+
+			}
+			else {
 				lockTransactionType();
+			}
 			break;
 
 		}
@@ -416,56 +634,57 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY* entryTemplate) {
 				entry->mins.reset();
 			}
 			else {
-			}// TODO: Enter interactive mode
+				dtInteractive();
+			}
 			break;
 
 		}
-		case 61: {
+		case 61: { // Lock year
 			entry->year.isFixed ?
 				entry->year.reset() :
-				emptyVoidFunction(); // TODO: Enter interactive mode
+				lockYear();
 			break;
 
 		}
-		case 62: {
+		case 62: { // Lock month
 			entry->month.isFixed ?
 				entry->month.reset() :
-				emptyVoidFunction(); // TODO: Enter interactive mode
+				lockMonth();
 			break;
 
 		}
-		case 63: {
+		case 63: { // Lock day
 			entry->day.isFixed ?
 				entry->day.reset() :
-				emptyVoidFunction(); // TODO: Enter interactive mode
+				lockDay();
 			break;
 
 		}
-		case 64: {
+		case 64: { // Lock hour
 			entry->hour.isFixed ?
 				entry->hour.reset() :
-				emptyVoidFunction(); // TODO: Enter interactive mode
+				lockHour();
 			break;
 
 		}
-		case 65: {
+		case 65: { // Lock mins
 			entry->mins.isFixed ?
 				entry->mins.reset() :
-				emptyVoidFunction(); // TODO: Enter interactive mode
+				lockMins();
 			break;
 
 		}
-		case 7: {
+		case 7: { // Lock title
 			entry->title.isFixed ?
 				entry->title.reset() :
-				emptyVoidFunction(); // TODO: Enter interactive mode
+				lockTitle();
 			break;
 
 		}
-		case 71: {
+		case 71: { // Lock notes
 			entry->notes.isFixed ?
 				entry->notes.reset() :
-				emptyVoidFunction(); // TODO: Enter interactive mode
+				lockNotes();
 			break;
 
 		}
@@ -485,6 +704,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY* entryTemplate) {
 			pause();
 			break;
 		}
-
+		pause();
 	}
+
 }

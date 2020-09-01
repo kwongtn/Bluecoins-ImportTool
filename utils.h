@@ -161,7 +161,7 @@ inline T1 inputNumber(bool prompter = true, bool forceInput = true) {
 		getline(cin, myString);
 
 		if (myString == "" && !forceInput) {
-			return -1000;
+			return -100000;
 		}
 
 		try

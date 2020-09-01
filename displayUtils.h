@@ -52,6 +52,11 @@ inline string return_dt_string(ENTRY myEntry) {
 
 // Returns all current inputted items in entry.
 inline void show_fixed(ENTRY myEntry) {
+	if (!myEntry.is_anything_locked()) {
+		cout << "Nothing is locked yet." << endl;
+		return;
+	}
+
 	if (myEntry.title.isFixed) {
 		cout << "Title: " << myEntry.title.value << endl;
 
