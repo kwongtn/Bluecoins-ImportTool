@@ -4,6 +4,7 @@
 #include "BluecoinsImportTool.h"
 
 void fixedEntryMenu(json, ENTRY*);
+ENTRY entryTemplate;
 
 int countEntry = 0,
 countDiscard = 0;
@@ -130,7 +131,7 @@ int main() {
 
 			}
 			else {
-				inputted(entry);
+				show_inputted(entry);
 
 			}
 			system("pause");

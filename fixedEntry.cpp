@@ -1,5 +1,6 @@
 #include "entryDataStruct.h"
 #include "utils.h"
+#include "displayUtils.h"
 
 const int FIXED_MENU_SIZE = 10;
 

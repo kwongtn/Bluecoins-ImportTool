@@ -3,15 +3,10 @@
 // or project specific include files.
 
 #include "utils.h"
-#include "json.hpp"
-using json = nlohmann::json;
+#include "displayUtils.h"
+#include "./entryDataStruct.h"
+ENTRY entry;
 
-#include <iostream>
-#include <cstring>
-#include <fstream>
-#include <iomanip>
-
-using namespace std;
 
 const string defaultJsonFileName = "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\ktn_new.json";
 bool splitTransac = false,
@@ -27,9 +22,6 @@ jsonFilename = "";
 // Used to store all properties in the json file.
 json properties;
 
-#include "./entryDataStruct.h"
-
-ENTRY entry;
 
 // Utility functions:
 
@@ -60,147 +52,8 @@ void reset() {
 // Some arbituary introduction to the program during launch.
 void introduction() {
 
-}
 
-
-// Returns all current inputted items in entry.
-void inputted(ENTRY myEntry) {
-	if (myEntry.title.isUsed) {
-		cout << "Title: " << myEntry.title.value << endl;
-
-	}
-
-	if (myEntry.type.isUsed) {
-		cout << "Type: " << myEntry.type.value << endl;
-
-	}
-
-	if (myEntry.transCat.isUsed) {
-		cout << "Category: " << myEntry.transCat.value;
-
-		if (myEntry.transChild.isUsed) {
-			cout << " -> " << myEntry.transChild.value;
-
-		}
-		else {
-			cout << " -> ?";
-
-		}
-
-		cout << endl;
-
-	}
-
-	if (myEntry.sourceAccCat.isUsed) {
-		cout << "Source Account: " << myEntry.sourceAccCat.value;
-
-		if (myEntry.sourceAccChild.isUsed) {
-			cout << " -> " << myEntry.sourceAccChild.value;
-
-		}
-		else {
-			cout << " -> ?";
-
-		}
-
-		cout << endl;
-	}
-
-	if (myEntry.destAccCat.isUsed) {
-		cout << "Destination Account: " << myEntry.destAccCat.value;
-
-		if (myEntry.destAccChild.isUsed) {
-			cout << " -> " << myEntry.destAccChild.value;
-
-		}
-		else {
-			cout << " -> ?";
-
-		}
-
-		cout << endl;
-
-	}
-
-	if (myEntry.accCat.isUsed) {
-		cout << "Account: " << myEntry.accCat.value;
-
-		if (myEntry.accChild.isUsed) {
-			cout << " -> " << myEntry.accChild.value;
-
-		}
-		else {
-			cout << "-> ?";
-
-		}
-		cout << endl;
-
-	}
-
-	if (myEntry.year.isUsed) {
-		cout << "Date (YYYY/MM/DD): " << return_fixed_digits(myEntry.year.value, 4) << "/";
-
-		if (myEntry.month.isUsed) {
-			cout << return_fixed_digits(myEntry.month.value, 2) << "/";
-		}
-		else {
-			cout << "--" << "/";
-		}
-
-		if (myEntry.day.isUsed) {
-			cout << return_fixed_digits(myEntry.day.value, 2) << endl;
-
-		}
-		else {
-			cout << "--" << endl;
-
-		}
-
-	}
-
-	if (myEntry.hour.isUsed) {
-		cout << "Time (HH:MM): " << return_fixed_digits(myEntry.hour.value, 2) << ":";
-
-		if (myEntry.mins.isUsed) {
-			cout << return_fixed_digits(myEntry.mins.value, 2) << endl;
-
-		}
-		else {
-			cout << "--" << endl;
-		}
-
-	}
-
-	if (myEntry.amount.isUsed) {
-		cout << "Amount: " << fixed << showpoint << setprecision(2) << myEntry.amount.value << endl;
-
-	}
-
-	if (myEntry.status.isUsed) {
-		cout << "Status: ";
-		if (myEntry.status.value == 'R') {
-			cout << "Reconciled";
-		}
-		else if (myEntry.status.value == 'C') {
-			cout << "Cleared";
-		}
-		else {
-			cout << "<None>";
-		}
-		cout << endl;
-
-	}
-
-	if (myEntry.label.isUsed) {
-		cout << "Label: " << myEntry.label.value << endl;
-
-	}
-
-	if (myEntry.notes.isUsed) {
-		cout << "\nNotes:\n" << myEntry.notes.value << endl << endl;
-
-	}
-
+	pause();
 }
 
 // Outputs all properties and their respective values.
@@ -419,7 +272,7 @@ Title_input:
 		tempEntry.title.reset_input();
 
 		heading("Transaction input");
-		inputted(tempEntry);
+		show_inputted(tempEntry);
 		cout << "Transaction title? " << endl << "> ";
 
 		getline(cin, userInput);
@@ -450,7 +303,7 @@ Type_input:
 		tempEntry.type.reset_input();
 
 		heading("Transaction input");
-		inputted(tempEntry);
+		show_inputted(tempEntry);
 		outArray(false);
 		cout << endl << left << setw(5) << "5" << "Transfer" << endl;
 
@@ -488,7 +341,7 @@ Type_input:
 			tempEntry.sourceAccCat.reset_input();
 
 			heading("Transaction input: Transfer -> Select Source Account");
-			inputted(tempEntry);
+			show_inputted(tempEntry);
 			outArray(true, 0);
 
 			cout << "Source Account Type? ";
@@ -517,7 +370,7 @@ Type_input:
 			tempEntry.sourceAccChild.reset_input();
 
 			heading("Transaction input: Transfer -> Select Source Account");
-			inputted(tempEntry);
+			show_inputted(tempEntry);
 			outArray(true, 0, sourceParent_index);
 
 			cout << "Source Account Child? ";
@@ -546,7 +399,7 @@ Type_input:
 			tempEntry.destAccCat.reset_input();
 
 			heading("Transaction input: Transfer -> Select Destination Account");
-			inputted(tempEntry);
+			show_inputted(tempEntry);
 			outArray(true, 0);
 
 			cout << "Destination Account Type? ";
@@ -575,7 +428,7 @@ Type_input:
 			tempEntry.destAccChild.reset_input();
 
 			heading("Transaction input: Transfer -> Select Destination Account");
-			inputted(tempEntry);
+			show_inputted(tempEntry);
 			outArray(true, 0, destParent_index);
 			cout << "Destination Account Child? ";
 			userInput = inputNumber<int>();
@@ -607,7 +460,7 @@ Type_input:
 			tempEntry.transCat.reset_input();
 
 			heading("Transaction input");
-			inputted(tempEntry);
+			show_inputted(tempEntry);
 			outArray(false, type_index);
 
 			cout << "Category? ";
@@ -637,7 +490,7 @@ Type_input:
 			tempEntry.transChild.reset_input();
 
 			heading("Transaction input");
-			inputted(tempEntry);
+			show_inputted(tempEntry);
 			outArray(false, type_index, sourceParent_index);
 
 			cout << "Category Child? ";
@@ -667,7 +520,7 @@ Type_input:
 			tempEntry.accCat.reset_input();
 
 			heading("Transaction input");
-			inputted(tempEntry);
+			show_inputted(tempEntry);
 			outArray(true, 0);
 
 			cout << "Account Type? ";
@@ -697,7 +550,7 @@ Type_input:
 			tempEntry.accChild.reset_input();
 
 			heading("Transaction input");
-			inputted(tempEntry);
+			show_inputted(tempEntry);
 			outArray(true, 0, sourceParent_index);
 
 			cout << "Account Child? ";
@@ -731,7 +584,7 @@ Year_input:
 		tempEntry.year.reset_input();
 
 		heading("Transaction input");
-		inputted(tempEntry);
+		show_inputted(tempEntry);
 		line(50, '-');
 		cout << "Date & time input: " << endl;
 		cout << "Year? ";
@@ -763,7 +616,7 @@ Month_input:
 		tempEntry.month.reset_input();
 
 		heading("Transaction input");
-		inputted(tempEntry);
+		show_inputted(tempEntry);
 		line(50, '-');
 		cout << "Date & time input: " << endl;
 		cout << "Month? ";
@@ -794,7 +647,7 @@ Day_input:
 		tempEntry.day.reset_input();
 
 		heading("Transaction input");
-		inputted(tempEntry);
+		show_inputted(tempEntry);
 		line(50, '-');
 		cout << "Date & time input: " << endl;
 		cout << "Day? ";
@@ -825,7 +678,7 @@ Hour_input:
 		tempEntry.hour.reset_input();
 
 		heading("Transaction input");
-		inputted(tempEntry);
+		show_inputted(tempEntry);
 		line(50, '-');
 		cout << "Date & time input: " << endl;
 		cout << "Hour? ";
@@ -856,7 +709,7 @@ Min_input:
 		tempEntry.mins.reset_input();
 
 		heading("Transaction input");
-		inputted(tempEntry);
+		show_inputted(tempEntry);
 		line(50, '-');
 		cout << "Date & time input: " << endl;
 		cout << "Mins? ";
@@ -889,7 +742,7 @@ Amount_input:
 		tempEntry.amount.reset_input();
 
 		heading("Transaction input");
-		inputted(tempEntry);
+		show_inputted(tempEntry);
 		line(50, '-');
 		cout << "Amount? ";
 
@@ -919,7 +772,7 @@ Notes_input:
 		tempEntry.notes.reset_input();
 
 		heading("Transaction input");
-		inputted(tempEntry);
+		show_inputted(tempEntry);
 		line(50, '-');
 		cout << "Notes? (Only press 'enter' when done, no multi-line support yet)" << endl;
 		line(50, '-');
@@ -940,7 +793,7 @@ Status_input:
 		tempEntry.status.reset_input();
 
 		heading("Transaction input");
-		inputted(tempEntry);
+		show_inputted(tempEntry);
 		menuHeading();
 		cout << left << setw(5) << "R" << "Reconciled" << endl;
 		cout << left << setw(5) << "C" << "Cleared" << endl;
@@ -980,7 +833,7 @@ Status_input:
 		entry = tempEntry;
 
 		heading("Transaction input -> Entry Review");
-		inputted(tempEntry);
+		show_inputted(tempEntry);
 		line(50, '-');
 		cout << "Commit changes? (y / n / -1) : ";
 		getline(cin, userInput);

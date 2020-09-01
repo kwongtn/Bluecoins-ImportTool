@@ -156,6 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BluecoinsImportTool.h" />
+    <ClInclude Include="displayUtils.h" />
     <ClInclude Include="entryDataStruct.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="utils.h" />
