@@ -230,18 +230,3 @@ inline std::string return_current_time_and_date()
 
 
 inline void emptyVoidFunction() {};
-
-#define USER_INPUT_STRING_RETURN \
-	if(userInput == "-1234"){ \
-		return 9; \
-	}
-
-#define USER_INPUT_NUMBER_RETURN \
-	if(userInput == -1234){ \
-		return 9; \
-	}
-
-#define USER_INPUT_NUMBER_RETURN_NULL \
-	if(userInput == -1234){ \
-		return; \
-	}
