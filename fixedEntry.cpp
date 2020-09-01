@@ -471,6 +471,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 			break;
 
 		}
+
 		case 1: { // Transaction Type
 			if (templateEntry.type.isFixed) {
 				templateEntry.type.reset();
@@ -513,7 +514,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 				break;
 			}
 
-			if ((templateEntry.type.value != "Transfer") && !templateEntry.transCat.isFixed) {
+			if ((templateEntry.type.value != "Transfer") || !templateEntry.transCat.isFixed) {
 				goto InvalidSelection;
 			}
 			else {
@@ -547,7 +548,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 				break;
 			}
 
-			if ((templateEntry.type.value != "Transfer") && !templateEntry.accCat.isFixed) {
+			if ((templateEntry.type.value != "Transfer") || !templateEntry.accCat.isFixed) {
 				goto InvalidSelection;
 			}
 			else {
@@ -565,7 +566,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 				break;
 			}
 
-			if ((templateEntry.type.value != "Expense") || (templateEntry.type.value != "Income")) {
+			if ((templateEntry.type.value != "Expense") && (templateEntry.type.value != "Income")) {
 				goto InvalidSelection;
 			}
 			else {
@@ -582,7 +583,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 				break;
 			}
 
-			if ((templateEntry.type.value != "Expense") || (templateEntry.type.value != "Income")
+			if (((templateEntry.type.value != "Expense") && (templateEntry.type.value != "Income"))
 				|| !templateEntry.sourceAccCat.isFixed) {
 				goto InvalidSelection;
 			}
@@ -601,7 +602,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 				break;
 			}
 
-			if ((templateEntry.type.value != "Expense") || (templateEntry.type.value != "Income")) {
+			if ((templateEntry.type.value != "Expense") && (templateEntry.type.value != "Income")) {
 				goto InvalidSelection;
 			}
 			else {
@@ -618,7 +619,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 				break;
 			}
 
-			if ((templateEntry.type.value != "Expense") || (templateEntry.type.value != "Income")
+			if (((templateEntry.type.value != "Expense") && (templateEntry.type.value != "Income"))
 				|| !templateEntry.destAccChild.isFixed) {
 				goto InvalidSelection;
 			}
