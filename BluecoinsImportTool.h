@@ -35,82 +35,26 @@ ENTRY entry;
 
 // Resets all entry to initial values.
 void reset() {
-	if (!entry.type.isFixed) {
-		entry.type.isUsed = false;
-		entry.type.value = "";
-	}
-	if (!entry.transCat.isFixed) {
-		entry.transCat.isUsed = false;
-		entry.transCat.value = "";
-	}
-	if (!entry.transChild.isFixed) {
-		entry.transChild.isUsed = false;
-		entry.transChild.value = "";
-	}
-	if (!entry.accCat.isFixed) {
-		entry.accCat.isUsed = false;
-		entry.accCat.value = "";
-	}
-	if (!entry.accChild.isFixed) {
-		entry.accChild.isUsed = false;
-		entry.accChild.value = "";
-	}
-	if (!entry.year.isFixed) {
-		entry.year.isUsed = false;
-		entry.year.value = 0;
-	}
-	if (!entry.month.isFixed) {
-		entry.month.isUsed = false;
-		entry.month.value = 0;
-	}
-	if (!entry.day.isFixed) {
-		entry.day.isUsed = false;
-		entry.day.value = 0;
-	}
-	if (!entry.hour.isFixed) {
-		entry.hour.isUsed = false;
-		entry.hour.value = 0;
-	}
-	if (!entry.mins.isFixed) {
-		entry.mins.isUsed = false;
-		entry.mins.value = 0;
-	}
-	if (!entry.amount.isFixed) {
-		entry.amount.isUsed = false;
-		entry.amount.value = 0;
-	}
-	if (!entry.title.isFixed) {
-		entry.title.isUsed = false;
-		entry.title.value = "";
-	}
-	if (!entry.notes.isFixed) {
-		entry.notes.isUsed = false;
-		entry.notes.value = "";
-	}
-	if (!entry.status.isFixed) {
-		entry.status.isUsed = false;
-		entry.status.value = '\0';
-	}
-	if (!entry.label.isFixed) {
-		entry.label.isUsed = false;
-		entry.label.value = "";
-	}
-	if (!entry.sourceAccCat.isFixed) {
-		entry.sourceAccCat.isUsed = false;
-		entry.sourceAccCat.value = "";
-	}
-	if (!entry.sourceAccChild.isFixed) {
-		entry.sourceAccChild.isUsed = false;
-		entry.sourceAccChild.value = "";
-	}
-	if (!entry.destAccCat.isFixed) {
-		entry.destAccCat.isUsed = false;
-		entry.destAccCat.value = "";
-	}
-	if (!entry.destAccChild.isFixed) {
-		entry.destAccChild.isUsed = false;
-		entry.destAccChild.value = "";
-	}
+	entry.type.reset_input();
+	entry.transCat.reset_input();
+	entry.transChild.reset_input();
+	entry.accCat.reset_input();
+	entry.accChild.reset_input();
+	entry.year.reset_input();
+	entry.month.reset_input();
+	entry.day.reset_input();
+	entry.hour.reset_input();
+	entry.mins.reset_input();
+	entry.amount.reset_input();
+	entry.title.reset_input();
+	entry.notes.reset_input();
+	entry.status.reset_input();
+	entry.label.reset_input();
+	entry.sourceAccCat.reset_input();
+	entry.sourceAccChild.reset_input();
+	entry.destAccCat.reset_input();
+	entry.destAccChild.reset_input();
+
 }
 
 // Some arbituary introduction to the program during launch.

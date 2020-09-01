@@ -12,14 +12,30 @@ struct ENTRY {
 		T1 value;
 		bool isUsed = false;
 		bool isFixed = false;
-		void reset() {
-			// Resets te value to the default of that datatype
-			T1 tempValue;
-			value = tempValue;
 
+		// Resets the value to the default of that datatype
+		void reset() {
+			T1 tempValue{};
+			value = {};
 			isUsed = false;
 			isFixed = false;
 		}
+
+		void set(T1 userInput) {
+			value = userInput;
+			isUsed = true;
+		}
+
+		// Resets value, isUsed
+		void reset_input() {
+			if (!isFixed) {
+				T1 tempValue{};
+				value = {};
+				isUsed = false;
+
+			}
+		}
+
 	};
 	// Transaction type
 	DATA_ROW<string> type;
