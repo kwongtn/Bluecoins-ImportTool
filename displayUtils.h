@@ -2,6 +2,40 @@
 
 #include "entryDataStruct.h"
 
+inline string return_dt_string(ENTRY myEntry) {
+	string dtString = "";
+
+	myEntry.year.isFixed ?
+		dtString += return_fixed_digits(entry->year.value, 4) :
+		dtString += "----";
+
+	dtString += "/";
+
+	myEntry.month.isFixed ?
+		dtString += return_fixed_digits(entry->month.value, 2) :
+		dtString += "--";
+
+	dtString += "/";
+
+	myEntry.day.isFixed ?
+		dtString += return_fixed_digits(entry->day.value, 2) :
+		dtString += "--";
+
+	dtString += " ";
+
+	myEntry.hour.isFixed ?
+		dtString += return_fixed_digits(entry->hour.value, 2) :
+		dtString += "--";
+
+	dtString += ":";
+
+	myEntry.mins.isFixed ?
+		dtString += return_fixed_digits(entry->mins.value, 2) :
+		dtString += "--";
+
+	return dtString;
+}
+
 inline std::string return_fixed_digits(int number, int digits = 2) {
 	std::string temp = "";
 	for (int i = 0; i < digits; i++) {
@@ -13,7 +47,6 @@ inline std::string return_fixed_digits(int number, int digits = 2) {
 
 	return temp;
 }
-
 
 // Returns all current inputted items in entry.
 inline void show_fixed(ENTRY myEntry) {
@@ -89,41 +122,11 @@ inline void show_fixed(ENTRY myEntry) {
 
 	}
 
-	if (myEntry.year.isUsed) {
-		cout << "Date (YYYY/MM/DD): " << return_fixed_digits(myEntry.year.value, 4) << "/";
-
-		if (myEntry.month.isUsed) {
-			cout << return_fixed_digits(myEntry.month.value, 2) << "/";
-		}
-		else {
-			cout << "--" << "/";
-		}
-
-		if (myEntry.day.isUsed) {
-			cout << return_fixed_digits(myEntry.day.value, 2) << endl;
-
-		}
-		else {
-			cout << "--" << endl;
-
-		}
-
+	if (myEntry.is_dateTime_locked()) {
+		cout << "Datetime (YYYY/MM/DD HH:MM): " << return_dt_string(myEntry) << endl;
 	}
 
-	if (myEntry.hour.isUsed) {
-		cout << "Time (HH:MM): " << return_fixed_digits(myEntry.hour.value, 2) << ":";
-
-		if (myEntry.mins.isUsed) {
-			cout << return_fixed_digits(myEntry.mins.value, 2) << endl;
-
-		}
-		else {
-			cout << "--" << endl;
-		}
-
-	}
-
-	if (myEntry.amount.isUsed) {
+	if (myEntry.amount.isFixed) {
 		cout << "Amount: " << fixed << showpoint << setprecision(2) << myEntry.amount.value << endl;
 
 	}
@@ -229,36 +232,7 @@ inline void show_inputted(ENTRY myEntry) {
 	}
 
 	if (myEntry.year.isUsed) {
-		cout << "Date (YYYY/MM/DD): " << return_fixed_digits(myEntry.year.value, 4) << "/";
-
-		if (myEntry.month.isUsed) {
-			cout << return_fixed_digits(myEntry.month.value, 2) << "/";
-		}
-		else {
-			cout << "--" << "/";
-		}
-
-		if (myEntry.day.isUsed) {
-			cout << return_fixed_digits(myEntry.day.value, 2) << endl;
-
-		}
-		else {
-			cout << "--" << endl;
-
-		}
-
-	}
-
-	if (myEntry.hour.isUsed) {
-		cout << "Time (HH:MM): " << return_fixed_digits(myEntry.hour.value, 2) << ":";
-
-		if (myEntry.mins.isUsed) {
-			cout << return_fixed_digits(myEntry.mins.value, 2) << endl;
-
-		}
-		else {
-			cout << "--" << endl;
-		}
+		cout << "Datetime (YYYY/MM/DD HH:MM): " << return_dt_string(myEntry);
 
 	}
 

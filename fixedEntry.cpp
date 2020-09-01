@@ -194,44 +194,9 @@ void fixedEntryMenu(json myProperties, ENTRY* myEntry) {
 		menu.push_back({ 0, "" });
 
 		// Date time (Interactive)
-		if (entry->is_dateTime_locked()) {
-			string dtString = "";
-
-			entry->year.isFixed ?
-				dtString += return_fixed_digits(entry->year.value, 4) :
-				dtString += "----";
-
-			dtString += "/";
-
-			entry->month.isFixed ?
-				dtString += return_fixed_digits(entry->month.value, 2) :
-				dtString += "--";
-
-			dtString += "/";
-
-			entry->day.isFixed ?
-				dtString += return_fixed_digits(entry->day.value, 2) :
-				dtString += "--";
-
-			dtString += " ";
-
-			entry->hour.isFixed ?
-				dtString += return_fixed_digits(entry->hour.value, 2) :
-				dtString += "--";
-
-			dtString += ":";
-
-			entry->mins.isFixed ?
-				dtString += return_fixed_digits(entry->mins.value, 2) :
-				dtString += "--";
-
-			menu.push_back({ 6, "[!] Reset Datetime, Current: " + dtString });
-
-		}
-		else {
+		entry->is_dateTime_locked() ?
+			menu.push_back({ 6, "[!] Reset Datetime, Current: " + return_dt_string(*entry) }) :
 			menu.push_back({ 6, "Lock Datetime (Interactive)" });
-
-		}
 
 		entry->year.isFixed ?
 			menu.push_back({ 61, "[!] Reset Year, Current: " + entry->year.value }) :
