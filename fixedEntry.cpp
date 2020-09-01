@@ -58,8 +58,9 @@ void resetTransactionType() {
 	entry->accChild.reset();
 }
 
-void fixedEntryMenu(json myProperties, ENTRY* myEntry) {
-	entry = myEntry;
+
+ENTRY fixedEntryMenu(json myProperties, ENTRY* entryTemplate) {
+	entry = entryTemplate;
 	props = myProperties;
 
 	while (true) {
@@ -476,7 +477,7 @@ void fixedEntryMenu(json myProperties, ENTRY* myEntry) {
 
 		}
 		case 9:
-			return;
+			return *entry;
 			break;
 		InvalidSelection:
 		default:
