@@ -261,8 +261,6 @@ int entryInput() {
 		destParent_index = 0,
 		destChild_index = 0;
 
-	bool illegal = true;
-
 	// User input : Short Description
 Title_input:
 	while (true) {

@@ -7,6 +7,16 @@ const int FIXED_MENU_SIZE = 10;
 ENTRY templateEntry;
 json props;
 
+int
+type_index = 0, // To describe type of transaction
+accParent_index = 0, // To describe source parent / category
+accChild_index = 0, // To describe source child account
+// Only used in transfers
+sourceParent_index = 0,
+sourceChild_index = 0,
+destParent_index = 0,
+destChild_index = 0;
+
 void outArray(bool, int type = -1, int cat = -1);
 
 void lockTransactionType() {
@@ -25,16 +35,13 @@ void lockTransactionType() {
 		switch (userInput) {
 		case 1:
 		case 2:
+			type_index = userInput;
 			templateEntry.type.value = returnString(props["presetLists"][userInput]["type"]);
 			break;
 		case 5:
-			templateEntry.type.value = "Transfer";
-			templateEntry.transCat.value = "(Transfer)";
-			templateEntry.transChild.value = "(Transfer)";
-			templateEntry.transCat.isUsed = true;
-			templateEntry.transCat.isFixed = true;
-			templateEntry.transChild.isUsed = true;
-			templateEntry.transChild.isFixed = true;
+			templateEntry.type.fix("Transfer");
+			templateEntry.transCat.fix("(Transfer)");
+			templateEntry.transChild.fix("(Transfer)");
 			break;
 		default:
 			cout << "Illegal action!" << endl;
@@ -48,6 +55,45 @@ void lockTransactionType() {
 	}
 }
 
+// Expenses & Income
+void lockTransCat() {
+	templateEntry.transCat.reset();
+	templateEntry.transChild.reset();
+}
+
+void lockTransChild() {
+	templateEntry.transChild.reset();
+}
+
+void lockAccCat() {
+	templateEntry.accCat.reset();
+	templateEntry.accChild.reset();
+}
+
+void lockAccChild() {
+	templateEntry.accChild.reset();
+}
+
+// Transfers
+void lockTransferSourceCategory() {
+	templateEntry.sourceAccCat.reset();
+	templateEntry.sourceAccChild.reset();
+}
+
+void lockTransferSourceChild() {
+	templateEntry.sourceAccChild.reset();
+}
+
+void lockTransferDestinationCategory() {
+	templateEntry.destAccCat.reset();
+	templateEntry.destAccChild.reset();
+}
+
+void lockTransferDestinationChild() {
+	templateEntry.destAccChild.reset();
+}
+
+// Common
 void lockYear() {
 	while (true) {
 		templateEntry.year.reset();
@@ -251,6 +297,43 @@ void lockNotes() {
 	getline(cin, userInput);
 
 	templateEntry.notes.fix(userInput);
+}
+
+void lockStatus() {
+	while (true) {
+		templateEntry.status.reset_input();
+		string userInput = "";
+
+		heading("Transaction input");
+		show_fixed(templateEntry);
+		menuHeading();
+		cout << left << setw(5) << "R" << "Reconciled" << endl;
+		cout << left << setw(5) << "C" << "Cleared" << endl;
+		cout << left << setw(5) << "0" << "<None>" << endl;
+		cout << "Status? ";
+
+		getline(cin, userInput);
+
+		if (userInput == "R" || userInput == "r") {
+			templateEntry.status.set('R');
+			break;
+
+		}
+		else if (userInput == "C" || userInput == "c") {
+			templateEntry.status.set('C');
+			break;
+
+		}
+		else if (userInput == "0") {
+			templateEntry.status.set('\0');
+			break;
+		}
+		else {
+			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
+		}
+	}
 }
 
 // Option 0
@@ -501,7 +584,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 				goto InvalidSelection;
 			}
 			else {
-				// TODO: Do Stuff -- transCat
+				lockTransCat();
 
 			}
 			break;
@@ -518,7 +601,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 				goto InvalidSelection;
 			}
 			else {
-				// TODO: Do Stuff -- transChild
+				lockTransChild();
 
 			}
 			break;
@@ -536,7 +619,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 				goto InvalidSelection;
 			}
 			else {
-				// TODO: Do Stuff -- transCat
+				lockAccCat();
 
 			}
 			break;
@@ -552,7 +635,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 				goto InvalidSelection;
 			}
 			else {
-				// TODO: Do Stuff -- accChild
+				lockAccChild();
 
 			}
 			break;
@@ -570,7 +653,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 				goto InvalidSelection;
 			}
 			else {
-				// TODO: Do Stuff -- sourceAccCat
+				lockTransferSourceCategory();
 
 			}
 			break;
@@ -588,7 +671,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 				goto InvalidSelection;
 			}
 			else {
-				// TODO: Do Stuff -- sourceAccCat
+				lockTransferSourceChild();
 
 			}
 			break;
@@ -606,7 +689,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 				goto InvalidSelection;
 			}
 			else {
-				// TODO: Do Stuff -- destAccCat
+				lockTransferDestinationCategory();
 
 			}
 			break;
@@ -624,7 +707,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 				goto InvalidSelection;
 			}
 			else {
-				// TODO: Do Stuff -- destAccChild
+				lockTransferDestinationChild();
 
 			}
 			break;
