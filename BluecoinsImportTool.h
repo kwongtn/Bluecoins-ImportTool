@@ -416,7 +416,7 @@ Title_input:
 		string userInput = "";
 
 		// To cancel changes done by current section, if being called back.
-		tempEntry.title.isUsed = false;
+		tempEntry.title.reset_input();
 
 		heading("Transaction input");
 		inputted(tempEntry);
@@ -432,8 +432,7 @@ Title_input:
 
 		}
 		else {
-			tempEntry.title.value = userInput;
-			tempEntry.title.isUsed = true;
+			tempEntry.title.set(userInput);
 			break;
 
 		}
@@ -446,9 +445,9 @@ Type_input:
 		int userInput = 0;
 
 		// To cancel changes done by current section, if being called back.
-		tempEntry.transCat.isUsed = false;
-		tempEntry.transChild.isUsed = false;
-		tempEntry.type.isUsed = false;
+		tempEntry.transCat.reset_input();
+		tempEntry.transChild.reset_input();
+		tempEntry.type.reset_input();
 
 		heading("Transaction input");
 		inputted(tempEntry);
@@ -475,12 +474,9 @@ Type_input:
 	if (type_index == 5) {
 		heading("Transaction input: Transfer");
 		// Transfer cases
-		tempEntry.transCat.value = "(Transfer)";
-		tempEntry.transChild.value = "(Transfer)";
-		tempEntry.type.value = "Transfer";
-		tempEntry.transCat.isUsed = true;
-		tempEntry.transChild.isUsed = true;
-		tempEntry.type.isUsed = true;
+		tempEntry.transCat.set("(Transfer)");
+		tempEntry.transChild.set("(Transfer)");
+		tempEntry.type.set("Transfer");
 
 		//To determine source account
 		// User input : Account Type
@@ -489,7 +485,7 @@ Type_input:
 			int userInput = 0;
 
 			// To cancel changes done by current section, if being called back.
-			tempEntry.sourceAccCat.isUsed = false;
+			tempEntry.sourceAccCat.reset_input();
 
 			heading("Transaction input: Transfer -> Select Source Account");
 			inputted(tempEntry);
@@ -510,8 +506,7 @@ Type_input:
 				continue;
 			}
 		}
-		tempEntry.sourceAccCat.value = returnString(properties["presetLists"][0]["catList"][sourceParent_index]["cat"]);
-		tempEntry.sourceAccCat.isUsed = true;
+		tempEntry.sourceAccCat.set(returnString(properties["presetLists"][0]["catList"][sourceParent_index]["cat"]));
 
 		// User input : Account
 	TransferSourceAcc_input:
@@ -519,7 +514,7 @@ Type_input:
 			int userInput = 0;
 
 			// To cancel changes done by current section, if being called back.
-			tempEntry.sourceAccChild.isUsed = false;
+			tempEntry.sourceAccChild.reset_input();
 
 			heading("Transaction input: Transfer -> Select Source Account");
 			inputted(tempEntry);
@@ -540,8 +535,7 @@ Type_input:
 				continue;
 			}
 		}
-		tempEntry.sourceAccChild.value = returnString(properties["presetLists"][0]["catList"][sourceParent_index]["child"][sourceChild_index]["childName"]);
-		tempEntry.sourceAccChild.isUsed = true;
+		tempEntry.sourceAccChild.set(returnString(properties["presetLists"][0]["catList"][sourceParent_index]["child"][sourceChild_index]["childName"]));
 
 		// User input : Account Type
 	TransferDestAccType_input:
@@ -549,7 +543,7 @@ Type_input:
 			int userInput = 0;
 
 			// To cancel changes done by current section, if being called back.
-			tempEntry.destAccCat.isUsed = false;
+			tempEntry.destAccCat.reset_input();
 
 			heading("Transaction input: Transfer -> Select Destination Account");
 			inputted(tempEntry);
@@ -570,8 +564,7 @@ Type_input:
 				continue;
 			}
 		}
-		tempEntry.destAccCat.value = returnString(properties["presetLists"][0]["catList"][destParent_index]["cat"]);
-		tempEntry.destAccCat.isUsed = true;
+		tempEntry.destAccCat.set(returnString(properties["presetLists"][0]["catList"][destParent_index]["cat"]));
 
 		// User input : Account
 	TransferDestAcc_input:
@@ -579,7 +572,7 @@ Type_input:
 			int userInput = 0;
 
 			// To cancel changes done by current section, if being called back.
-			tempEntry.destAccChild.isUsed = false;
+			tempEntry.destAccChild.reset_input();
 
 			heading("Transaction input: Transfer -> Select Destination Account");
 			inputted(tempEntry);
@@ -599,14 +592,11 @@ Type_input:
 				continue;
 			}
 		}
-		tempEntry.destAccChild.value = returnString(properties["presetLists"][0]["catList"][destParent_index]["child"][destChild_index]["childName"]);
-		tempEntry.destAccChild.isUsed = true;
-
+		tempEntry.destAccChild.set(returnString(properties["presetLists"][0]["catList"][destParent_index]["child"][destChild_index]["childName"]));
 
 	}
 	else {
-		tempEntry.type.value = returnString(properties["presetLists"][type_index]["type"]);
-		tempEntry.type.isUsed = true;
+		tempEntry.type.set(returnString(properties["presetLists"][type_index]["type"]));
 
 		// User input : Expense / Income Parent Category
 	TransCat_input:
@@ -614,7 +604,7 @@ Type_input:
 			int userInput = 0;
 
 			// To cancel changes done by current section, if being called back.
-			tempEntry.transCat.isUsed = false;
+			tempEntry.transCat.reset_input();
 
 			heading("Transaction input");
 			inputted(tempEntry);
@@ -636,8 +626,7 @@ Type_input:
 			}
 
 		}
-		tempEntry.transCat.value = returnString(properties["presetLists"][type_index]["catList"][sourceParent_index]["cat"]);
-		tempEntry.transCat.isUsed = true;
+		tempEntry.transCat.set(returnString(properties["presetLists"][type_index]["catList"][sourceParent_index]["cat"]));
 
 		// User input : Expense / Income Category
 	TransType_input:
@@ -645,7 +634,7 @@ Type_input:
 			int userInput = 0;
 
 			// To cancel changes done by current section, if being called back.
-			tempEntry.transChild.isUsed = false;
+			tempEntry.transChild.reset_input();
 
 			heading("Transaction input");
 			inputted(tempEntry);
@@ -667,8 +656,7 @@ Type_input:
 			}
 
 		}
-		tempEntry.transChild.value = returnString(properties["presetLists"][type_index]["catList"][sourceParent_index]["child"][sourceChild_index]["childName"]);
-		tempEntry.transChild.isUsed = true;
+		tempEntry.transChild.set(returnString(properties["presetLists"][type_index]["catList"][sourceParent_index]["child"][sourceChild_index]["childName"]));
 
 		// User input : Account Type
 	AccCat_input:
@@ -676,7 +664,7 @@ Type_input:
 			int userInput = 0;
 
 			// To cancel changes done by current section, if being called back.
-			tempEntry.accCat.isUsed = false;
+			tempEntry.accCat.reset_input();
 
 			heading("Transaction input");
 			inputted(tempEntry);
@@ -698,8 +686,7 @@ Type_input:
 			}
 
 		}
-		tempEntry.accCat.value = returnString(properties["presetLists"][0]["catList"][sourceParent_index]["cat"]);
-		tempEntry.accCat.isUsed = true;
+		tempEntry.accCat.set(returnString(properties["presetLists"][0]["catList"][sourceParent_index]["cat"]));
 
 		// User input : Account
 	AccType_input:
@@ -707,7 +694,7 @@ Type_input:
 			int userInput = 0;
 
 			// To cancel changes done by current section, if being called back.
-			tempEntry.accChild.isUsed = false;
+			tempEntry.accChild.reset_input();
 
 			heading("Transaction input");
 			inputted(tempEntry);
@@ -729,8 +716,7 @@ Type_input:
 			}
 
 		}
-		tempEntry.accChild.value = returnString(properties["presetLists"][0]["catList"][sourceParent_index]["child"][sourceChild_index]["childName"]);
-		tempEntry.accChild.isUsed = true;
+		tempEntry.accChild.set(returnString(properties["presetLists"][0]["catList"][sourceParent_index]["child"][sourceChild_index]["childName"]));
 
 	}
 
@@ -742,7 +728,7 @@ Year_input:
 		int userInput = 0;
 
 		// To cancel changes done by current section, if being called back.
-		tempEntry.year.isUsed = false;
+		tempEntry.year.reset_input();
 
 		heading("Transaction input");
 		inputted(tempEntry);
@@ -755,8 +741,7 @@ Year_input:
 		else if (userInput == -1) { goto AccType_input; }
 
 		if (userInput > 0) {
-			tempEntry.year.value = userInput;
-			tempEntry.year.isUsed = true;
+			tempEntry.year.set(userInput);
 			break;
 
 		}
@@ -775,7 +760,7 @@ Month_input:
 		int userInput = 0;
 
 		// To cancel changes done by current section, if being called back.
-		tempEntry.month.isUsed = false;
+		tempEntry.month.reset_input();
 
 		heading("Transaction input");
 		inputted(tempEntry);
@@ -787,8 +772,7 @@ Month_input:
 		USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto Year_input; }
 
 		if (userInput > 0 && userInput <= 12) {
-			tempEntry.month.value = userInput;
-			tempEntry.month.isUsed = true;
+			tempEntry.month.set(userInput);
 			break;
 
 		}
@@ -807,7 +791,7 @@ Day_input:
 		int userInput = 0;
 
 		// To cancel changes done by current section, if being called back.
-		tempEntry.day.isUsed = false;
+		tempEntry.day.reset_input();
 
 		heading("Transaction input");
 		inputted(tempEntry);
@@ -819,8 +803,7 @@ Day_input:
 		USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto Month_input; }
 
 		if (userInput > 0 && userInput <= 31) {
-			tempEntry.day.value = userInput;
-			tempEntry.day.isUsed = true;
+			tempEntry.day.set(userInput);
 			break;
 
 		}
@@ -839,7 +822,7 @@ Hour_input:
 		int userInput = 0;
 
 		// To cancel changes done by current section, if being called back.
-		tempEntry.hour.isUsed = false;
+		tempEntry.hour.reset_input();
 
 		heading("Transaction input");
 		inputted(tempEntry);
@@ -851,8 +834,7 @@ Hour_input:
 		USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto Day_input; }
 
 		if (userInput >= 0 && userInput <= 23) {
-			tempEntry.hour.value = userInput;
-			tempEntry.hour.isUsed = true;
+			tempEntry.hour.set(userInput);
 			break;
 
 		}
@@ -871,7 +853,7 @@ Min_input:
 		int userInput = 0;
 
 		// To cancel changes done by current section, if being called back.
-		tempEntry.mins.isUsed = false;
+		tempEntry.mins.reset_input();
 
 		heading("Transaction input");
 		inputted(tempEntry);
@@ -883,8 +865,7 @@ Min_input:
 		USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto Hour_input; }
 
 		if (userInput >= 0 && userInput <= 59) {
-			tempEntry.mins.value = userInput;
-			tempEntry.mins.isUsed = true;
+			tempEntry.mins.set(userInput);
 			break;
 
 		}
@@ -905,7 +886,7 @@ Amount_input:
 		double userInput = 0;
 
 		// To cancel changes done by current section, if being called back.
-		tempEntry.amount.isUsed = false;
+		tempEntry.amount.reset_input();
 
 		heading("Transaction input");
 		inputted(tempEntry);
@@ -916,8 +897,7 @@ Amount_input:
 		USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto Min_input; }
 
 		if (userInput >= 0) {
-			tempEntry.amount.value = userInput;
-			tempEntry.amount.isUsed = true;
+			tempEntry.amount.set(userInput);
 			break;
 
 		}
@@ -936,7 +916,7 @@ Notes_input:
 		string userInput = "";
 
 		// To cancel changes done by current section, if being called back.
-		tempEntry.notes.isUsed = false;
+		tempEntry.notes.reset_input();
 
 		heading("Transaction input");
 		inputted(tempEntry);
@@ -947,8 +927,7 @@ Notes_input:
 		getline(cin, userInput);
 		USER_INPUT_STRING_RETURN else if (userInput == "-1") { goto Amount_input; }
 
-		tempEntry.notes.value = userInput;
-		tempEntry.notes.isUsed = true;
+		tempEntry.notes.set(userInput);
 		break;
 	}
 
@@ -958,7 +937,7 @@ Status_input:
 		string userInput = "";
 
 		// To cancel changes done by current section, if being called back.
-		tempEntry.status.isUsed = false;
+		tempEntry.status.reset_input();
 
 		heading("Transaction input");
 		inputted(tempEntry);
@@ -972,30 +951,28 @@ Status_input:
 		USER_INPUT_STRING_RETURN else if (userInput == "-1") { goto Notes_input; }
 
 		if (userInput == "R" || userInput == "r") {
-			tempEntry.status.value = 'R';
+			tempEntry.status.set('R');
 			break;
 
 		}
 		else if (userInput == "C" || userInput == "c") {
-			tempEntry.status.value = 'C';
+			tempEntry.status.set('C');
 			break;
 
 		}
 		else {
-			tempEntry.status.value = '\0';
+			tempEntry.status.set('\0');
 			break;
 		}
 
 	}
-	tempEntry.status.isUsed = true;
 
 	// System generate : Label
 	time_t rawtime = time(&rawtime);
 	struct tm now;
 	localtime_s(&now, &rawtime);
 	int thisYear = now.tm_year + 1900;
-	tempEntry.label.value = "Import " + to_string(thisYear) + return_fixed_digits(now.tm_mon, 2);
-	tempEntry.label.isUsed = true;
+	tempEntry.label.set("Import " + to_string(thisYear) + return_fixed_digits(now.tm_mon, 2));
 
 	// Review entry, then press key to return commit intent.
 	while (true) {
