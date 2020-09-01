@@ -1,22 +1,6 @@
-
 #pragma once
-#include <iostream>
-#include <iomanip>
-#include <cstring>
-#include <vector>
-#include <sstream>
-#include <windows.h>
-#include <cstdlib>
-#include <chrono>
-#include <math.h>
 
-using ::std::cout;
-using ::std::cin;
-using ::std::left;
-using ::std::endl;
-
-#include "json.hpp"
-using json = nlohmann::json;
+#include "includeHeaders.h"
 
 inline void line(int j = 50, char k = '=', bool nextLineAtEnd = true) {
 	for (int i = 0; i < j; i++) {
@@ -244,17 +228,6 @@ inline std::string return_current_time_and_date()
 	return ss.str();
 }
 
-inline std::string return_fixed_digits(int number, int digits = 2) {
-	std::string temp = "";
-	for (int i = 0; i < digits; i++) {
-		if (number < pow(10, i)) {
-			temp = temp + "0";
-		}
-	}
-	temp += std::to_string(number);
-
-	return temp;
-}
 
 inline void emptyVoidFunction() {};
 
