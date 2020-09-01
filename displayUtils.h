@@ -2,40 +2,6 @@
 
 #include "entryDataStruct.h"
 
-inline string return_dt_string(ENTRY myEntry) {
-	string dtString = "";
-
-	myEntry.year.isFixed ?
-		dtString += return_fixed_digits(entry->year.value, 4) :
-		dtString += "----";
-
-	dtString += "/";
-
-	myEntry.month.isFixed ?
-		dtString += return_fixed_digits(entry->month.value, 2) :
-		dtString += "--";
-
-	dtString += "/";
-
-	myEntry.day.isFixed ?
-		dtString += return_fixed_digits(entry->day.value, 2) :
-		dtString += "--";
-
-	dtString += " ";
-
-	myEntry.hour.isFixed ?
-		dtString += return_fixed_digits(entry->hour.value, 2) :
-		dtString += "--";
-
-	dtString += ":";
-
-	myEntry.mins.isFixed ?
-		dtString += return_fixed_digits(entry->mins.value, 2) :
-		dtString += "--";
-
-	return dtString;
-}
-
 inline std::string return_fixed_digits(int number, int digits = 2) {
 	std::string temp = "";
 	for (int i = 0; i < digits; i++) {
@@ -48,22 +14,58 @@ inline std::string return_fixed_digits(int number, int digits = 2) {
 	return temp;
 }
 
+
+inline string return_dt_string(ENTRY myEntry) {
+	string dtString = "";
+
+	myEntry.year.isFixed ?
+		dtString += return_fixed_digits(myEntry.year.value, 4) :
+		dtString += "----";
+
+	dtString += "/";
+
+	myEntry.month.isFixed ?
+		dtString += return_fixed_digits(myEntry.month.value, 2) :
+		dtString += "--";
+
+	dtString += "/";
+
+	myEntry.day.isFixed ?
+		dtString += return_fixed_digits(myEntry.day.value, 2) :
+		dtString += "--";
+
+	dtString += " ";
+
+	myEntry.hour.isFixed ?
+		dtString += return_fixed_digits(myEntry.hour.value, 2) :
+		dtString += "--";
+
+	dtString += ":";
+
+	myEntry.mins.isFixed ?
+		dtString += return_fixed_digits(myEntry.mins.value, 2) :
+		dtString += "--";
+
+	return dtString;
+}
+
+
 // Returns all current inputted items in entry.
 inline void show_fixed(ENTRY myEntry) {
-	if (myEntry.title.isUsed) {
+	if (myEntry.title.isFixed) {
 		cout << "Title: " << myEntry.title.value << endl;
 
 	}
 
-	if (myEntry.type.isUsed) {
+	if (myEntry.type.isFixed) {
 		cout << "Type: " << myEntry.type.value << endl;
 
 	}
 
-	if (myEntry.transCat.isUsed) {
+	if (myEntry.transCat.isFixed) {
 		cout << "Category: " << myEntry.transCat.value;
 
-		if (myEntry.transChild.isUsed) {
+		if (myEntry.transChild.isFixed) {
 			cout << " -> " << myEntry.transChild.value;
 
 		}
@@ -76,10 +78,10 @@ inline void show_fixed(ENTRY myEntry) {
 
 	}
 
-	if (myEntry.sourceAccCat.isUsed) {
+	if (myEntry.sourceAccCat.isFixed) {
 		cout << "Source Account: " << myEntry.sourceAccCat.value;
 
-		if (myEntry.sourceAccChild.isUsed) {
+		if (myEntry.sourceAccChild.isFixed) {
 			cout << " -> " << myEntry.sourceAccChild.value;
 
 		}
@@ -91,10 +93,10 @@ inline void show_fixed(ENTRY myEntry) {
 		cout << endl;
 	}
 
-	if (myEntry.destAccCat.isUsed) {
+	if (myEntry.destAccCat.isFixed) {
 		cout << "Destination Account: " << myEntry.destAccCat.value;
 
-		if (myEntry.destAccChild.isUsed) {
+		if (myEntry.destAccChild.isFixed) {
 			cout << " -> " << myEntry.destAccChild.value;
 
 		}
@@ -107,10 +109,10 @@ inline void show_fixed(ENTRY myEntry) {
 
 	}
 
-	if (myEntry.accCat.isUsed) {
+	if (myEntry.accCat.isFixed) {
 		cout << "Account: " << myEntry.accCat.value;
 
-		if (myEntry.accChild.isUsed) {
+		if (myEntry.accChild.isFixed) {
 			cout << " -> " << myEntry.accChild.value;
 
 		}
@@ -131,7 +133,7 @@ inline void show_fixed(ENTRY myEntry) {
 
 	}
 
-	if (myEntry.status.isUsed) {
+	if (myEntry.status.isFixed) {
 		cout << "Status: ";
 		if (myEntry.status.value == 'R') {
 			cout << "Reconciled";
@@ -146,17 +148,19 @@ inline void show_fixed(ENTRY myEntry) {
 
 	}
 
-	if (myEntry.label.isUsed) {
+	if (myEntry.label.isFixed) {
 		cout << "Label: " << myEntry.label.value << endl;
 
 	}
 
-	if (myEntry.notes.isUsed) {
+	if (myEntry.notes.isFixed) {
 		cout << "\nNotes:\n" << myEntry.notes.value << endl << endl;
 
 	}
 
 }
+
+
 // Displays all current inputted items in entry.
 inline void show_inputted(ENTRY myEntry) {
 	if (myEntry.title.isUsed) {
