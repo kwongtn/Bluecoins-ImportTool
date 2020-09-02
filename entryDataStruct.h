@@ -11,6 +11,7 @@ struct ENTRY {
 		T1 value;
 		bool isUsed = false;
 		bool isFixed = false;
+		int fixedIndex = -1;
 
 		// Resets the value to the default of that datatype
 		void reset() {
@@ -18,6 +19,7 @@ struct ENTRY {
 			value = {};
 			isUsed = false;
 			isFixed = false;
+			fixedIndex = -1;
 		}
 
 		void set(T1 userInput) {

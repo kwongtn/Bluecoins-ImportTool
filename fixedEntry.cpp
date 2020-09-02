@@ -18,22 +18,23 @@ ENTRY templateEntry;
 json props;
 
 int
-type_index = 0, // To describe type of transaction
-transParent_index = 0, // To describe transaction parent ("Car")
-transChild_index = 0, // To describe transaction child ("Fuel")
-accParent_index = 0, // To describe source parent / category
-accChild_index = 0, // To describe source child account
+type_index = -1, // To describe type of transaction
+transParent_index = -1, // To describe transaction parent ("Car")
+transChild_index = -1, // To describe transaction child ("Fuel")
+accParent_index = -1, // To describe source parent / category
+accChild_index = -1, // To describe source child account
 // Only used in transfers
-sourceParent_index = 0,
-sourceChild_index = 0,
-destParent_index = 0,
-destChild_index = 0;
+sourceParent_index = -1,
+sourceChild_index = -1,
+destParent_index = -1,
+destChild_index = -1;
 
 void outArray(bool, int type = -1, int cat = -1);
 
 void lockTransactionType(bool bypass = false) {
-	heading("Lock Field -> Transaction Type");
+	type_index = -1;
 	while (true) {
+		heading("Lock Field -> Transaction Type");
 		int userInput = 0;
 
 		outArray(false);
