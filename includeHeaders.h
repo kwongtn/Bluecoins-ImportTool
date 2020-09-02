@@ -21,6 +21,8 @@ using json = nlohmann::json;
 
 using namespace std;
 
+const int NO_INPUT_NUM = -100000;
+
 #define USER_INPUT_STRING_RETURN \
 	if(userInput == "-1234"){ \
 		return 9; \
