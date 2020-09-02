@@ -580,7 +580,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 				break;
 			}
 
-			if (templateEntry.type.value != "Transfer") {
+			if (templateEntry.type.value == "Transfer") {
 				goto InvalidSelection;
 			}
 			else {
@@ -597,7 +597,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 				break;
 			}
 
-			if ((templateEntry.type.value != "Transfer") || !templateEntry.transCat.isFixed) {
+			if ((templateEntry.type.value == "Transfer") || !templateEntry.transCat.isFixed) {
 				goto InvalidSelection;
 			}
 			else {
@@ -615,7 +615,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 				break;
 			}
 
-			if (templateEntry.type.value != "Transfer") {
+			if (templateEntry.type.value == "Transfer") {
 				goto InvalidSelection;
 			}
 			else {
@@ -631,7 +631,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 				break;
 			}
 
-			if ((templateEntry.type.value != "Transfer") || !templateEntry.accCat.isFixed) {
+			if ((templateEntry.type.value == "Transfer") || !templateEntry.accCat.isFixed) {
 				goto InvalidSelection;
 			}
 			else {
