@@ -569,8 +569,28 @@ void resetAll() {
 }
 
 void interactiveMode() {
-	cout << "Interactive Mode";
-	// TODO: Interactive Mode
+	lockTransactionType(true);
+	if (type_index == 5) {
+		// Do transfer stuff
+		lockTransferSourceCategory();
+		if (templateEntry.sourceAccCat.isFixed) lockTransferSourceChild();
+
+		lockTransferDestinationCategory();
+		if (templateEntry.destAccCat.isFixed) lockTransferDestinationChild();
+
+	}
+	else if ((type_index == 1) || type_index == 2) {
+		// Do expenses or income stuff
+		lockTransCat();
+		if (templateEntry.transCat.isFixed) lockTransChild();
+
+		lockAccCat();
+		if (templateEntry.accCat.isFixed) lockAccChild();
+	}
+	dtInteractive();
+	lockTitle(true);
+	lockNotes(true);
+	lockStatus(true);
 }
 
 
