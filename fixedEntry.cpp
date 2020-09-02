@@ -3,12 +3,19 @@
 
 const int FIXED_MENU_SIZE = 10;
 
+#define BYPASS_COMPULSORY_INPUT_NUMBER \
+	if(bypass && (userInput == -10000)){ \
+		break; \
+	} \
+
 #include "entryDataStruct.h"
 ENTRY templateEntry;
 json props;
 
 int
 type_index = 0, // To describe type of transaction
+transParent_index = 0, // To describe transaction parent ("Car")
+transChild_index = 0, // To describe transaction child ("Fuel")
 accParent_index = 0, // To describe source parent / category
 accChild_index = 0, // To describe source child account
 // Only used in transfers
@@ -56,41 +63,251 @@ void lockTransactionType() {
 }
 
 // Expenses & Income
-void lockTransCat() {
+void lockTransCat(bool bypass = false) {
 	templateEntry.transCat.reset();
 	templateEntry.transChild.reset();
+	transParent_index = -1;
+	transChild_index = -1;
+
+	while (true) {
+		int userInput = 0;
+
+		heading("Transaction input");
+		show_fixed(templateEntry);
+		outArray(false, type_index);
+
+		cout << "Category? ";
+		userInput = inputNumber<int>();
+
+		BYPASS_COMPULSORY_INPUT_NUMBER;
+
+		if ((userInput < props["presetLists"][type_index]["catList"].size()) && (userInput >= 0)) {
+			transParent_index = userInput;
+			templateEntry.transCat.fix(returnString(props["presetLists"][type_index]["catList"][transParent_index]["cat"]));
+			break;
+		}
+		else {
+			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
+		}
+
+	}
 }
 
-void lockTransChild() {
+void lockTransChild(bool bypass = false) {
 	templateEntry.transChild.reset();
+	transChild_index = -1;
+
+	while (true) {
+		int userInput = 0;
+
+		heading("Transaction input");
+		show_fixed(templateEntry);
+		outArray(false, type_index, transParent_index);
+
+		cout << "Category Child? ";
+		userInput = inputNumber<int>(false);
+
+		BYPASS_COMPULSORY_INPUT_NUMBER;
+
+		if ((userInput < props["presetLists"][type_index]["catList"][transParent_index]["child"].size()) && (userInput >= 0)) {
+			transChild_index = userInput;
+			templateEntry.transChild.set(returnString(props["presetLists"][type_index]["catList"][transParent_index]["child"][transChild_index]["childName"]));
+			break;
+		}
+		else {
+			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
+		}
+
+	}
+
 }
 
-void lockAccCat() {
+void lockAccCat(bool bypass = false) {
 	templateEntry.accCat.reset();
 	templateEntry.accChild.reset();
+	accParent_index = -1;
+	accChild_index = -1;
+
+	while (true) {
+		int userInput = 0;
+
+		heading("Transaction input");
+		show_fixed(templateEntry);
+		outArray(true, 0);
+
+		cout << "Account Type? ";
+		userInput = inputNumber<int>(false);
+
+		BYPASS_COMPULSORY_INPUT_NUMBER;
+
+		if ((userInput < props["presetLists"][0]["catList"].size()) && (userInput >= 0)) {
+			accParent_index = userInput;
+			templateEntry.accCat.set(returnString(props["presetLists"][0]["catList"][accParent_index]["cat"]));
+			break;
+		}
+		else {
+			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
+		}
+
+	}
+
 }
 
-void lockAccChild() {
+void lockAccChild(bool bypass = false) {
 	templateEntry.accChild.reset();
+	accChild_index = -1;
+
+	while (true) {
+		int userInput = 0;
+
+		heading("Transaction input");
+		show_fixed(templateEntry);
+		outArray(true, 0, accParent_index);
+
+		cout << "Account Child? ";
+		userInput = inputNumber<int>(false);
+
+		BYPASS_COMPULSORY_INPUT_NUMBER;
+
+		if ((userInput < props["presetLists"][0]["catList"][accParent_index]["child"].size()) && (userInput >= 0)) {
+			accChild_index = userInput;
+			templateEntry.accChild.set(returnString(props["presetLists"][0]["catList"][accParent_index]["child"][accChild_index]["childName"]));
+			break;
+		}
+		else {
+			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
+		}
+
+	}
+
 }
 
 // Transfers
-void lockTransferSourceCategory() {
+void lockTransferSourceCategory(bool bypass = false) {
 	templateEntry.sourceAccCat.reset();
 	templateEntry.sourceAccChild.reset();
+	sourceParent_index = -1;
+	sourceChild_index = -1;
+
+	while (true) {
+		int userInput = 0;
+
+		heading("Transaction input: Transfer -> Select Source Account");
+		show_fixed(templateEntry);
+		outArray(true, 0);
+
+		cout << "Source Account Type? ";
+		userInput = inputNumber<int>();
+
+		BYPASS_COMPULSORY_INPUT_NUMBER;
+
+		if ((userInput < props["presetLists"][0]["catList"].size()) && (userInput >= 0)) {
+			sourceParent_index = userInput;
+			templateEntry.sourceAccCat.fix(returnString(props["presetLists"][0]["catList"][sourceParent_index]["cat"]));
+			break;
+		}
+		else {
+			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
+		}
+	}
 }
 
-void lockTransferSourceChild() {
+void lockTransferSourceChild(bool bypass = false) {
 	templateEntry.sourceAccChild.reset();
+	sourceChild_index = -1;
+
+	while (true) {
+		int userInput = 0;
+
+		heading("Transaction input: Transfer -> Select Source Account");
+		show_fixed(templateEntry);
+		outArray(true, 0, sourceParent_index);
+
+		cout << "Source Account Child? ";
+		userInput = inputNumber<int>();
+
+		BYPASS_COMPULSORY_INPUT_NUMBER;
+
+		if ((userInput < props["presetLists"][0]["catList"][sourceParent_index]["child"].size()) && (userInput >= 0)) {
+			sourceChild_index = userInput;
+			templateEntry.sourceAccChild.fix(returnString(props["presetLists"][0]["catList"][sourceParent_index]["child"][sourceChild_index]["childName"]));
+			break;
+		}
+		else {
+			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
+		}
+	}
 }
 
-void lockTransferDestinationCategory() {
+void lockTransferDestinationCategory(bool bypass = false) {
 	templateEntry.destAccCat.reset();
 	templateEntry.destAccChild.reset();
+	destParent_index = -1;
+	destChild_index = -1;
+
+	while (true) {
+		int userInput = 0;
+
+		heading("Transaction input: Transfer -> Select Destination Account");
+		show_fixed(templateEntry);
+		outArray(true, 0);
+
+		cout << "Destination Account Type? ";
+		userInput = inputNumber<int>();
+
+		BYPASS_COMPULSORY_INPUT_NUMBER;
+
+		if ((destParent_index < props["presetLists"][0]["catList"].size()) && (destParent_index >= 0)) {
+			destParent_index = userInput;
+			templateEntry.destAccCat.fix(returnString(props["presetLists"][0]["catList"][destParent_index]["cat"]));
+			break;
+		}
+		else {
+			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
+		}
+	}
 }
 
-void lockTransferDestinationChild() {
+void lockTransferDestinationChild(bool bypass = false) {
 	templateEntry.destAccChild.reset();
+	destChild_index = -1;
+
+	while (true) {
+		int userInput = 0;
+
+		heading("Transaction input: Transfer -> Select Destination Account");
+		show_fixed(templateEntry);
+		outArray(true, 0, destParent_index);
+		cout << "Destination Account Child? ";
+		userInput = inputNumber<int>();
+
+		BYPASS_COMPULSORY_INPUT_NUMBER;
+
+		if ((userInput < props["presetLists"][0]["catList"][userInput]["child"].size()) && (userInput >= 0)) {
+			destChild_index = userInput;
+			templateEntry.destAccChild.fix(returnString(props["presetLists"][0]["catList"][destParent_index]["child"][destChild_index]["childName"]));
+			break;
+		}
+		else {
+			cout << "Illegal action!" << endl;
+			system("pause");
+			continue;
+		}
+	}
 }
 
 // Common
