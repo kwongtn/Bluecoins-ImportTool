@@ -894,9 +894,12 @@ void fileFunc(string path = "", bool toAppend = false) {
 		else if ((intent == "y") || (toAppend == true)) {
 			file.open(outFilename, ios::app);
 			append = true;
+
 		}
 		else if ((intent == "n") || (toAppend == false)) {
-			file.open(outFilename);
+			file.open(outFilename, ios::trunc);
+			append = false;
+
 		}
 
 	}

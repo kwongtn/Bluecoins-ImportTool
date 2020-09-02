@@ -31,6 +31,11 @@ struct ENTRY {
 			isFixed = true;
 		}
 
+		void fix(T1 userInput, int index) {
+			fixedIndex = index;
+			fix(userInput);
+		}
+
 		// Resets value, isUsed
 		void reset_input() {
 			if (!isFixed) {
