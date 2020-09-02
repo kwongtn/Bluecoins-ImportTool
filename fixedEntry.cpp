@@ -4,9 +4,14 @@
 const int FIXED_MENU_SIZE = 10;
 
 #define BYPASS_COMPULSORY_INPUT_NUMBER \
-	if(bypass && (userInput == -10000)){ \
+	if(bypass && (userInput == NO_INPUT_NUM)){ \
 		break; \
-	} \
+	} 
+
+#define BYPASS_COMPULSORY_INPUT_STRING \
+	if(bypass && (userInput == to_string(NO_INPUT_NUM))){ \
+		return; \
+	} 
 
 #include "entryDataStruct.h"
 ENTRY templateEntry;
@@ -26,7 +31,7 @@ destChild_index = 0;
 
 void outArray(bool, int type = -1, int cat = -1);
 
-void lockTransactionType() {
+void lockTransactionType(bool bypass = false) {
 	heading("Lock Field -> Transaction Type");
 	while (true) {
 		int userInput = 0;
@@ -35,9 +40,9 @@ void lockTransactionType() {
 		cout << endl << left << setw(5) << "5" << "Transfer" << endl;
 
 		cout << endl << "Type? ";
-		userInput = inputNumber<int>();
+		userInput = inputNumber<int>(false, !bypass);
 
-		USER_INPUT_NUMBER_RETURN_NULL else if (userInput == -1) { return; }
+		BYPASS_COMPULSORY_INPUT_NUMBER;
 
 		switch (userInput) {
 		case 1:
@@ -77,7 +82,7 @@ void lockTransCat(bool bypass = false) {
 		outArray(false, type_index);
 
 		cout << "Category? ";
-		userInput = inputNumber<int>();
+		userInput = inputNumber<int>(false, !bypass);
 
 		BYPASS_COMPULSORY_INPUT_NUMBER;
 
@@ -107,7 +112,7 @@ void lockTransChild(bool bypass = false) {
 		outArray(false, type_index, transParent_index);
 
 		cout << "Category Child? ";
-		userInput = inputNumber<int>(false);
+		userInput = inputNumber<int>(false, !bypass);
 
 		BYPASS_COMPULSORY_INPUT_NUMBER;
 
@@ -140,7 +145,7 @@ void lockAccCat(bool bypass = false) {
 		outArray(true, 0);
 
 		cout << "Account Type? ";
-		userInput = inputNumber<int>(false);
+		userInput = inputNumber<int>(false, !bypass);
 
 		BYPASS_COMPULSORY_INPUT_NUMBER;
 
@@ -171,7 +176,7 @@ void lockAccChild(bool bypass = false) {
 		outArray(true, 0, accParent_index);
 
 		cout << "Account Child? ";
-		userInput = inputNumber<int>(false);
+		userInput = inputNumber<int>(false, !bypass);
 
 		BYPASS_COMPULSORY_INPUT_NUMBER;
 
@@ -205,7 +210,7 @@ void lockTransferSourceCategory(bool bypass = false) {
 		outArray(true, 0);
 
 		cout << "Source Account Type? ";
-		userInput = inputNumber<int>();
+		userInput = inputNumber<int>(false, !bypass);
 
 		BYPASS_COMPULSORY_INPUT_NUMBER;
 
@@ -234,7 +239,7 @@ void lockTransferSourceChild(bool bypass = false) {
 		outArray(true, 0, sourceParent_index);
 
 		cout << "Source Account Child? ";
-		userInput = inputNumber<int>();
+		userInput = inputNumber<int>(false, !bypass);
 
 		BYPASS_COMPULSORY_INPUT_NUMBER;
 
@@ -265,7 +270,7 @@ void lockTransferDestinationCategory(bool bypass = false) {
 		outArray(true, 0);
 
 		cout << "Destination Account Type? ";
-		userInput = inputNumber<int>();
+		userInput = inputNumber<int>(false, !bypass);
 
 		BYPASS_COMPULSORY_INPUT_NUMBER;
 
@@ -293,7 +298,7 @@ void lockTransferDestinationChild(bool bypass = false) {
 		show_fixed(templateEntry);
 		outArray(true, 0, destParent_index);
 		cout << "Destination Account Child? ";
-		userInput = inputNumber<int>();
+		userInput = inputNumber<int>(false, !bypass);
 
 		BYPASS_COMPULSORY_INPUT_NUMBER;
 
@@ -311,7 +316,7 @@ void lockTransferDestinationChild(bool bypass = false) {
 }
 
 // Common
-void lockYear() {
+void lockYear(bool bypass = true) {
 	while (true) {
 		templateEntry.year.reset();
 		int userInput = 0;
@@ -321,10 +326,9 @@ void lockYear() {
 		line(50, '-');
 		cout << "Year? ";
 
-		userInput = inputNumber<int>(false, false);
+		userInput = inputNumber<int>(false, !bypass);
 
-		// -100000 is the value returned if there are no inputs
-		if (userInput == -100000) return;
+		BYPASS_COMPULSORY_INPUT_NUMBER;
 
 		if (userInput >= 1) {
 			templateEntry.year.fix(userInput);
@@ -341,7 +345,7 @@ void lockYear() {
 	}
 }
 
-void lockMonth() {
+void lockMonth(bool bypass = true) {
 	while (true) {
 		templateEntry.month.reset();
 		int userInput = 0;
@@ -353,8 +357,7 @@ void lockMonth() {
 
 		userInput = inputNumber<int>(false, false);
 
-		// -100000 is the value returned if there are no inputs
-		if (userInput == -100000) return;
+		BYPASS_COMPULSORY_INPUT_NUMBER;
 
 		if (userInput >= 1 && userInput <= 12) {
 			templateEntry.month.fix(userInput);
@@ -371,7 +374,7 @@ void lockMonth() {
 	}
 }
 
-void lockDay() {
+void lockDay(bool bypass = true) {
 	while (true) {
 		templateEntry.day.reset();
 		int userInput = 0;
@@ -383,8 +386,7 @@ void lockDay() {
 
 		userInput = inputNumber<int>(false, false);
 
-		// -100000 is the value returned if there are no inputs
-		if (userInput == -100000) return;
+		BYPASS_COMPULSORY_INPUT_NUMBER;
 
 		if (userInput > 0 && userInput <= 31) {
 			templateEntry.day.fix(userInput);
@@ -401,7 +403,7 @@ void lockDay() {
 	}
 }
 
-void lockHour() {
+void lockHour(bool bypass = true) {
 	while (true) {
 		templateEntry.hour.reset();
 		int userInput = 0;
@@ -413,8 +415,7 @@ void lockHour() {
 
 		userInput = inputNumber<int>(false, false);
 
-		// -100000 is the value returned if there are no inputs
-		if (userInput == -100000) return;
+		BYPASS_COMPULSORY_INPUT_NUMBER;
 
 		if (userInput >= 0 && userInput <= 23) {
 			templateEntry.hour.fix(userInput);
@@ -431,7 +432,7 @@ void lockHour() {
 	}
 }
 
-void lockMins() {
+void lockMins(bool bypass = true) {
 	while (true) {
 		templateEntry.mins.reset();
 		int userInput = 0;
@@ -443,8 +444,7 @@ void lockMins() {
 
 		userInput = inputNumber<int>(false, false);
 
-		// -100000 is the value returned if there are no inputs
-		if (userInput == -100000) return;
+		BYPASS_COMPULSORY_INPUT_NUMBER;
 
 		if (userInput >= 0 && userInput <= 59) {
 			templateEntry.mins.fix(userInput);
@@ -474,7 +474,7 @@ void dtInteractive() {
 	lockMins();
 }
 
-void lockTitle() {
+void lockTitle(bool bypass = false) {
 	while (true) {
 		templateEntry.title.reset();
 		string userInput = "";
@@ -486,7 +486,9 @@ void lockTitle() {
 
 		getline(cin, userInput);
 
-		if (userInput == "") {
+		BYPASS_COMPULSORY_INPUT_STRING;
+
+		if ((userInput == "") && !bypass) {
 			cout << "Please insert a title." << endl;
 			pause();
 			continue;
@@ -501,7 +503,7 @@ void lockTitle() {
 	}
 }
 
-void lockNotes() {
+void lockNotes(bool bypass = false) {
 	templateEntry.notes.reset();
 
 	heading("Lock Field -> Notes");
@@ -513,10 +515,12 @@ void lockNotes() {
 	string userInput;
 	getline(cin, userInput);
 
+	BYPASS_COMPULSORY_INPUT_STRING;
+
 	templateEntry.notes.fix(userInput);
 }
 
-void lockStatus() {
+void lockStatus(bool bypass = false) {
 	while (true) {
 		templateEntry.status.reset_input();
 		string userInput = "";
@@ -530,6 +534,8 @@ void lockStatus() {
 		cout << "Status? ";
 
 		getline(cin, userInput);
+
+		BYPASS_COMPULSORY_INPUT_STRING;
 
 		if (userInput == "R" || userInput == "r") {
 			templateEntry.status.set('R');
