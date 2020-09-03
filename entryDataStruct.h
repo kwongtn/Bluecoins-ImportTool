@@ -64,6 +64,7 @@ struct ENTRY {
 	DATA_ROW<string> transCat, transChild;
 
 	// Account parent category & children type, only used for non-transfers
+	// E.g. Bank -> RHB Bank
 	DATA_ROW<string> accCat, accChild;
 
 	// Date data declarations

@@ -38,6 +38,9 @@ int mainMenu() {
 	if (splitTransac) {
 		menu[6].content += " [!! Enabled !!]";
 	}
+	else if (usedSplit) {
+		menu[6].content += " [Disabled]. You may want to go to option 7 to clear fields if you haven't.";
+	}
 	else {
 		menu[6].content += " [Disabled]";
 	}
@@ -62,7 +65,7 @@ int mainMenu() {
 	// To output the status of split transaction mode if there is.
 	if (splitTransac) {
 		line(50, '-', true);
-		cout << "- Please make sure that the date, time and title are the same." << endl;
+		cout << "- Please make sure that the date, time and title are the same. We recommend you to use the \'lock\' function in option 7 to do so." << endl;
 		cout << "- Using different label sets and status for each split is not currently supported. Only the first row of those will be used for each split transaction." << endl;
 		cout << "- You can only import one split transaction per csv file." << endl;
 		line(50, '-', true);
@@ -209,19 +212,19 @@ int main() {
 			}
 		}
 		catch (...) {
-			cout << "Congratulations! You found a bug!" << endl
+			cout << "Oops! You found a bug!" << endl
 				<< "Please file a bug report (issue) at the following page:" << endl
 				<< "https://github.com/kwongtn/Bluecoins-ImportTool/issues" << endl << endl
 				<< "Within the issue, please detail the things you were doing (steps, etc) when you encountered this bug." << endl << endl
 				<< "Thank you! :D";
 		}
 
+		// system("pause");
+	}
 
 		//outAllProperties();
 
 		return 0;
-		system("pause");
-	}
 }
 
 

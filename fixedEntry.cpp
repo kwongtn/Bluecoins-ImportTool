@@ -65,7 +65,7 @@ void lockTransCat(bool bypass = false) {
 	while (true) {
 		int userInput = 0;
 
-		heading("Transaction input");
+		heading("Lock Field -> Transaction Category");
 		show_fixed(templateEntry);
 		outArray(false, type_index);
 
@@ -96,7 +96,7 @@ void lockTransChild(bool bypass = false) {
 	while (true) {
 		int userInput = -1;
 
-		heading("Transaction input");
+		heading("Lock Field -> Transaction Category -> Transaction");
 		show_fixed(templateEntry);
 		outArray(false, type_index, parentIndex);
 
@@ -128,7 +128,7 @@ void lockAccCat(bool bypass = false) {
 	while (true) {
 		int userInput = -1;
 
-		heading("Transaction input");
+		heading("Lock Field -> Transaction Account Category");
 		show_fixed(templateEntry);
 		outArray(true, 0);
 
@@ -160,7 +160,7 @@ void lockAccChild(bool bypass = false) {
 	while (true) {
 		int userInput = -1;
 
-		heading("Transaction input");
+		heading("Lock Field -> Transaction Account Category -> Transaction Account");
 		show_fixed(templateEntry);
 		outArray(true, 0, parentIndex);
 
@@ -193,7 +193,7 @@ void lockTransferSourceCategory(bool bypass = false) {
 	while (true) {
 		int userInput = 0;
 
-		heading("Transaction input: Transfer -> Select Source Account");
+		heading("Lock Field -> \"Transfer\" -> Source Account Category");
 		show_fixed(templateEntry);
 		outArray(true, 0);
 
@@ -223,7 +223,7 @@ void lockTransferSourceChild(bool bypass = false) {
 	while (true) {
 		int userInput = 0;
 
-		heading("Transaction input: Transfer -> Select Source Account");
+		heading("Lock Field -> \"Transfer\" -> Source Account Category -> Source Account");
 		show_fixed(templateEntry);
 		outArray(true, 0, parentIndex);
 
@@ -252,7 +252,7 @@ void lockTransferDestinationCategory(bool bypass = false) {
 	while (true) {
 		int userInput = 0;
 
-		heading("Transaction input: Transfer -> Select Destination Account");
+		heading("Lock Field -> \"Transfer\" -> Destination Account Category");
 		show_fixed(templateEntry);
 		outArray(true, 0);
 
@@ -282,7 +282,7 @@ void lockTransferDestinationChild(bool bypass = false) {
 	while (true) {
 		int userInput = 0;
 
-		heading("Transaction input: Transfer -> Select Destination Account");
+		heading("Lock Field -> \"Transfer\" -> Destination Account Category -> Destination Account");
 		show_fixed(templateEntry);
 		outArray(true, 0, parentIndex);
 		cout << "Destination Account Child? ";
@@ -310,7 +310,7 @@ void lockYear(bool bypass = true) {
 		templateEntry.year.reset();
 		int userInput = 0;
 
-		heading("Transaction input");
+		heading("Lock Field -> Date-time -> Year");
 		show_fixed(templateEntry);
 		line(50, '-');
 		cout << "Year? ";
@@ -339,7 +339,7 @@ void lockMonth(bool bypass = true) {
 		templateEntry.month.reset();
 		int userInput = 0;
 
-		heading("Transaction input");
+		heading("Lock Field -> Date-time -> Month");
 		show_fixed(templateEntry);
 		line(50, '-');
 		cout << "Month? ";
@@ -368,7 +368,7 @@ void lockDay(bool bypass = true) {
 		templateEntry.day.reset();
 		int userInput = 0;
 
-		heading("Transaction input");
+		heading("Lock Field -> Date-time -> Day");
 		show_fixed(templateEntry);
 		line(50, '-');
 		cout << "Day? ";
@@ -397,7 +397,7 @@ void lockHour(bool bypass = true) {
 		templateEntry.hour.reset();
 		int userInput = 0;
 
-		heading("Transaction input");
+		heading("Lock Field -> Date-time -> Hour");
 		show_fixed(templateEntry);
 		line(50, '-');
 		cout << "Hour? ";
@@ -426,7 +426,7 @@ void lockMins(bool bypass = true) {
 		templateEntry.mins.reset();
 		int userInput = 0;
 
-		heading("Transaction input");
+		heading("Lock Field -> Date-time -> Minutes");
 		show_fixed(templateEntry);
 		line(50, '-');
 		cout << "Mins? ";
@@ -468,7 +468,7 @@ void lockTitle(bool bypass = false) {
 		templateEntry.title.reset();
 		string userInput = "";
 
-		heading("Transaction input");
+		heading("Lock Field -> Title");
 		show_fixed(templateEntry);
 		line(50, '-');
 		cout << "Transaction title? " << endl << "> ";
@@ -514,7 +514,7 @@ void lockStatus(bool bypass = false) {
 		templateEntry.status.reset_input();
 		string userInput = "";
 
-		heading("Transaction input");
+		heading("Lock Field -> Status");
 		show_fixed(templateEntry);
 		menuHeading();
 		cout << left << setw(5) << "R" << "Reconciled" << endl;
