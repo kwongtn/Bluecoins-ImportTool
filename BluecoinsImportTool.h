@@ -1072,7 +1072,21 @@ void writeToFile() {
 
 				jsonOutput.close();
 			}
-		}
+
+			if (properties["presetLists"][0]["catList"][entry.sourceAccCat.fixedIndex]["child"][entry.sourceAccChild.fixedIndex]["bluecoinsBal"] == properties["presetLists"][0]["catList"][entry.sourceAccCat.fixedIndex]["child"][entry.sourceAccChild.fixedIndex]["targetBal"]) {
+				cout << "Hurray! Target and bluecoins balance are now the same for: " << endl
+					<< properties["presetLists"][0]["catList"][entry.sourceAccCat.fixedIndex]["cat"] << " -> "
+					<< properties["presetLists"][0]["catList"][entry.sourceAccCat.fixedIndex]["child"][entry.sourceAccChild.fixedIndex]["childName"] << endl
+					<< "at " << sourceCurrentBalance << endl << endl;
+				pause();
+			}
+			if (properties["presetLists"][0]["catList"][entry.destAccCat.fixedIndex]["child"][entry.destAccChild.fixedIndex]["bluecoinsBal"] == properties["presetLists"][0]["catList"][entry.destAccCat.fixedIndex]["child"][entry.destAccChild.fixedIndex]["targetBal"]) {
+				cout << "Hurray! Target and bluecoins balance are now the same for: " << endl
+					<< properties["presetLists"][0]["catList"][entry.destAccCat.fixedIndex]["cat"] << " -> "
+					<< properties["presetLists"][0]["catList"][entry.destAccCat.fixedIndex]["child"][entry.destAccChild.fixedIndex]["childName"] << endl
+					<< "at " << destCurrentBalance << endl << endl;
+				pause();
+			}
 		}
 
 	}
@@ -1129,6 +1143,14 @@ void writeToFile() {
 				jsonOutput << properties.dump(properties["outFile"]["writebackJSONSpacing"]);
 
 				jsonOutput.close();
+			}
+
+			if (properties["presetLists"][0]["catList"][entry.accCat.fixedIndex]["child"][entry.accChild.fixedIndex]["bluecoinsBal"] == properties["presetLists"][0]["catList"][entry.accCat.fixedIndex]["child"][entry.accChild.fixedIndex]["targetBal"]) {
+				cout << "Hurray! Target and bluecoins balance are now the same for: " << endl
+					<< properties["presetLists"][0]["catList"][entry.accCat.fixedIndex]["cat"] << " -> "
+					<< properties["presetLists"][0]["catList"][entry.accCat.fixedIndex]["child"][entry.accChild.fixedIndex]["childName"] << endl
+					<< "at " << currentBalance << endl << endl;
+				pause();
 			}
 		}
 
