@@ -141,8 +141,7 @@ int main() {
 			case 4:
 			{
 				reset();
-				entry = entryTemplate;
-				int decision = entryInput();
+				int decision = entryInput(entryTemplate);
 				if (decision == 0) {
 					if (!file.is_open()) {
 						fileFunc();

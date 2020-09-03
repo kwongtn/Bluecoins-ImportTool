@@ -241,21 +241,24 @@ void outArray(bool isAccount = false, int type = -1, int cat = -1) {
 }
 
 /*
-* For user to input all entry information.
+	For user to input all entry information.
 	There are 3 types of codes to be returned:
 	- 0 -> Everything is good, write result to file.
 	- 1 -> Everything is good, but discard results.
 	- 9 -> User exit halfway through input.
 */
-int entryInput() {
-	// tempEntry copies from entry, to have respect to selected "fixed" fields
-	ENTRY tempEntry = entry;
+int entryInput(ENTRY entryTemplate) {
+	// tempEntry copies from template, to have respect to selected "fixed" fields
+	ENTRY tempEntry = entryTemplate;
 
 	int type_index = 0; // To describe type of transaction
+	if (tempEntry.type.isFixed) {
+		type_index = tempEntry.type.fixedIndex;
+	}
 
 	// User input : Short Description
 Title_input:
-	while (true) {
+	while (!tempEntry.title.isFixed) {
 		string userInput = "";
 
 		// To cancel changes done by current section, if being called back.
@@ -284,7 +287,7 @@ Title_input:
 
 	// User input : Type of Transaction
 Type_input:
-	while (true) {
+	while (!tempEntry.type.isFixed) {
 		int userInput = 0;
 
 		// To cancel changes done by current section, if being called back.
@@ -317,14 +320,17 @@ Type_input:
 	if (type_index == 5) {
 		heading("Transaction input: Transfer");
 		// Transfer cases
-		tempEntry.transCat.set("(Transfer)");
-		tempEntry.transChild.set("(Transfer)");
-		tempEntry.type.set("Transfer");
+		if (!tempEntry.type.isFixed) {
+			tempEntry.transCat.set("(Transfer)");
+			tempEntry.transChild.set("(Transfer)");
+			tempEntry.type.set("Transfer");
+
+		}
 
 		// To determine source account
 		// User input : Account Type
 	TransferSourceAccType_input:
-		while (true) {
+		while (!tempEntry.sourceAccCat.isFixed) {
 			int userInput = -1;
 
 			// To cancel changes done by current section, if being called back.
@@ -354,7 +360,7 @@ Type_input:
 
 		// User input : Account
 	TransferSourceAcc_input:
-		while (true) {
+		while (!tempEntry.sourceAccChild.isFixed) {
 			int userInput = -1;
 			int parentIndex = tempEntry.sourceAccCat.fixedIndex;
 
@@ -385,7 +391,7 @@ Type_input:
 
 		// User input : Account Type
 	TransferDestAccType_input:
-		while (true) {
+		while (!tempEntry.destAccCat.isFixed) {
 			int userInput = -1;
 
 			// To cancel changes done by current section, if being called back.
@@ -415,7 +421,7 @@ Type_input:
 
 		// User input : Account
 	TransferDestAcc_input:
-		while (true) {
+		while (!tempEntry.destAccChild.isFixed) {
 			int userInput = -1;
 			int parentIndex = tempEntry.destAccCat.fixedIndex;
 
@@ -449,7 +455,7 @@ Type_input:
 
 		// User input : Expense / Income Parent Category
 	TransCat_input:
-		while (true) {
+		while (!tempEntry.transCat.isFixed) {
 			int userInput = -1;
 
 			// To cancel changes done by current section, if being called back.
@@ -480,7 +486,7 @@ Type_input:
 
 		// User input : Expense / Income Category
 	TransType_input:
-		while (true) {
+		while (!tempEntry.transChild.isFixed) {
 			int userInput = -1;
 			int parentIndex = tempEntry.transCat.fixedIndex;
 
@@ -512,7 +518,7 @@ Type_input:
 
 		// User input : Account Type
 	AccCat_input:
-		while (true) {
+		while (!tempEntry.accCat.isFixed) {
 			int userInput = -1;
 
 			// To cancel changes done by current section, if being called back.
@@ -543,7 +549,7 @@ Type_input:
 
 		// User input : Account
 	AccType_input:
-		while (true) {
+		while (!tempEntry.accChild.isFixed) {
 			int userInput = 0;
 			int parentIndex = tempEntry.accCat.fixedIndex;
 
@@ -577,7 +583,7 @@ Type_input:
 
 	// User input : Year
 Year_input:
-	while (true) {
+	while (!tempEntry.year.isFixed) {
 		int userInput = 0;
 
 		// To cancel changes done by current section, if being called back.
@@ -609,7 +615,7 @@ Year_input:
 
 	// User input : Month
 Month_input:
-	while (true) {
+	while (!tempEntry.month.isFixed) {
 		int userInput = 0;
 
 		// To cancel changes done by current section, if being called back.
@@ -640,7 +646,7 @@ Month_input:
 
 	// User input : Day
 Day_input:
-	while (true) {
+	while (!tempEntry.day.isFixed) {
 		int userInput = 0;
 
 		// To cancel changes done by current section, if being called back.
@@ -671,7 +677,7 @@ Day_input:
 
 	// User input : Hour
 Hour_input:
-	while (true) {
+	while (!tempEntry.hour.isFixed) {
 		int userInput = 0;
 
 		// To cancel changes done by current section, if being called back.
@@ -702,7 +708,7 @@ Hour_input:
 
 	// User input : Mins
 Min_input:
-	while (true) {
+	while (!tempEntry.mins.isFixed) {
 		int userInput = 0;
 
 		// To cancel changes done by current section, if being called back.
@@ -735,7 +741,7 @@ Min_input:
 
 	// User input : Amount
 Amount_input:
-	while (true) {
+	while (!tempEntry.amount.isFixed) {
 		double userInput = 0;
 
 		// To cancel changes done by current section, if being called back.
@@ -765,7 +771,7 @@ Amount_input:
 
 	// User input : Notes (No multi-line)
 Notes_input:
-	while (true) {
+	while (!tempEntry.notes.isFixed) {
 		string userInput = "";
 
 		// To cancel changes done by current section, if being called back.
@@ -786,7 +792,7 @@ Notes_input:
 
 	// User input : Status
 Status_input:
-	while (true) {
+	while (!tempEntry.status.isFixed) {
 		string userInput = "";
 
 		// To cancel changes done by current section, if being called back.

@@ -43,7 +43,7 @@ void lockTransactionType(bool bypass = false) {
 			break;
 		case 5:
 			type_index = userInput;
-			templateEntry.type.fix("Transfer");
+			templateEntry.type.fix("Transfer", 5);
 			templateEntry.transCat.fix("(Transfer)");
 			templateEntry.transChild.fix("(Transfer)");
 			break;
