@@ -511,7 +511,7 @@ void lockNotes(bool bypass = false) {
 
 void lockStatus(bool bypass = false) {
 	while (true) {
-		templateEntry.status.reset_input();
+		templateEntry.status.reset();
 		string userInput = "";
 
 		heading("Lock Field -> Status");
@@ -527,17 +527,17 @@ void lockStatus(bool bypass = false) {
 		BYPASS_COMPULSORY_INPUT_STRING;
 
 		if (userInput == "R" || userInput == "r") {
-			templateEntry.status.set('R');
+			templateEntry.status.fix('R');
 			break;
 
 		}
 		else if (userInput == "C" || userInput == "c") {
-			templateEntry.status.set('C');
+			templateEntry.status.fix('C');
 			break;
 
 		}
 		else if (userInput == "0") {
-			templateEntry.status.set('\0');
+			templateEntry.status.fix('\0');
 			break;
 		}
 		else {
@@ -545,6 +545,27 @@ void lockStatus(bool bypass = false) {
 			system("pause");
 			continue;
 		}
+	}
+}
+
+void lockAmount(bool bypass = false) {
+	while (true) {
+		templateEntry.amount.reset();
+
+		double userInput = 0;
+
+		heading("Lock Field -> Status");
+		show_fixed(templateEntry);
+		line(50, '-');
+		cout << "Amount? ";
+
+		userInput = inputNumber<double>(false);
+
+		BYPASS_COMPULSORY_INPUT_NUMBER;
+
+		templateEntry.amount.fix(userInput);
+		break;
+
 	}
 }
 
@@ -577,6 +598,7 @@ void interactiveMode() {
 	dtInteractive();
 	lockTitle(true);
 	lockNotes(true);
+	lockAmount(true);
 	lockStatus(true);
 }
 
@@ -632,6 +654,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 
 		7. title
 		71. notes
+		72. amount
 		8. status
 		*/
 
@@ -757,8 +780,12 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 			menu.push_back({ 71, "[!] Reset Notes, Current: " + templateEntry.notes.value }) :
 			menu.push_back({ 71, "Lock Notes" });
 
+		templateEntry.amount.isFixed ?
+			menu.push_back({ 72, "[!] Reset Amount, Current: " + to_string(templateEntry.amount.value) }) :
+			menu.push_back({ 72, "Lock Amount" });
+
 		templateEntry.status.isFixed ?
-			menu.push_back({ 8, "[!] Reset Status, Current: " + templateEntry.status.value }) :
+			menu.push_back({ 8, "[!] Reset Status, Current: " + templateEntry.status_text() }) :
 			menu.push_back({ 8, "Lock Status" });
 
 		menu.push_back({ 0, "" });
@@ -1007,10 +1034,16 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 			break;
 
 		}
+		case 72: {
+			templateEntry.amount.isFixed ?
+				templateEntry.amount.reset() :
+				lockAmount();
+			break;
+		}
 		case 8: {
 			templateEntry.status.isFixed ?
 				templateEntry.status.reset() :
-				emptyVoidFunction(); // TODO: Enter interactive mode
+				lockStatus();
 			break;
 
 		}
