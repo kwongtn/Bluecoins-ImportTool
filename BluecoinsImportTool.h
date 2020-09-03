@@ -63,14 +63,17 @@ void outAllProperties() {
 	// If filepath property exist then load it as default path, and change behaviour accordingly
 	cout << "Current output path : " << outFilename << endl;
 	if (properties.contains("outFile")) {
-		if (properties["outFile"][0].contains("filePath")) {
-			cout << "JSON output path : " << returnString(properties["outFile"][0]["filePath"]) << endl;
+		if (properties["outFile"].contains("filePath")) {
+			cout << "JSON-Defined output path : " << returnString(properties["outFile"]["filePath"]) << endl;
 		}
-		if (properties["outFile"][0].contains("advFormat")) {
-			cout << "Advanced file type : " << properties["outFile"][0]["advFormat"] << endl;
+		if (properties["outFile"].contains("advFormat")) {
+			cout << "Advanced file type : " << properties["outFile"]["advFormat"] << endl;
 		}
-		if (properties["outFile"][0].contains("defaultAppend")) {
-			cout << "    Default is append : " << properties["outFile"][0]["defaultAppend"] << endl;
+		if (properties["outFile"].contains("defaultAppend")) {
+			cout << "    Default is append : " << properties["outFile"]["defaultAppend"] << endl;
+		}
+		if (properties["outFile"].contains("writebackChanges")) {
+			cout << "    Write-back changes : " << properties["outFile"]["writebackChanges"] << endl;
 		}
 	}
 
