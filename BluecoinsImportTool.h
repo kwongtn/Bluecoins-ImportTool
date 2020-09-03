@@ -240,8 +240,8 @@ void outArray(bool isAccount = false, int type = -1, int cat = -1) {
 	cout << endl;
 }
 
-// For user to input all entry information.
 /*
+* For user to input all entry information.
 	There are 3 types of codes to be returned:
 	- 0 -> Everything is good, write result to file.
 	- 1 -> Everything is good, but discard results.
@@ -250,16 +250,8 @@ void outArray(bool isAccount = false, int type = -1, int cat = -1) {
 int entryInput() {
 	// tempEntry copies from entry, to have respect to selected "fixed" fields
 	ENTRY tempEntry = entry;
-	// Integer for expense, income category parent and child.
 
-	// Variables that will be used to determine json index & position
-	int
-		type_index = 0, // To describe type of transaction
-		sourceParent_index = 0, // To describe parent
-		sourceChild_index = 0, // To describe child
-		// Only used in transfers
-		destParent_index = 0,
-		destChild_index = 0;
+	int type_index = 0; // To describe type of transaction
 
 	// User input : Short Description
 Title_input:
@@ -329,11 +321,11 @@ Type_input:
 		tempEntry.transChild.set("(Transfer)");
 		tempEntry.type.set("Transfer");
 
-		//To determine source account
+		// To determine source account
 		// User input : Account Type
 	TransferSourceAccType_input:
 		while (true) {
-			int userInput = 0;
+			int userInput = -1;
 
 			// To cancel changes done by current section, if being called back.
 			tempEntry.sourceAccCat.reset_input();
@@ -348,7 +340,9 @@ Type_input:
 			USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto Type_input; }
 
 			if ((userInput < properties["presetLists"][0]["catList"].size()) && (userInput >= 0)) {
-				sourceParent_index = userInput;
+				tempEntry.sourceAccCat.set(
+					returnString(properties["presetLists"][0]["catList"][userInput]["cat"]),
+					userInput);
 				break;
 			}
 			else {
@@ -357,27 +351,29 @@ Type_input:
 				continue;
 			}
 		}
-		tempEntry.sourceAccCat.set(returnString(properties["presetLists"][0]["catList"][sourceParent_index]["cat"]));
 
 		// User input : Account
 	TransferSourceAcc_input:
 		while (true) {
-			int userInput = 0;
+			int userInput = -1;
+			int parentIndex = tempEntry.sourceAccCat.fixedIndex;
 
 			// To cancel changes done by current section, if being called back.
 			tempEntry.sourceAccChild.reset_input();
 
 			heading("Transaction input: Transfer -> Select Source Account");
 			show_inputted(tempEntry);
-			outArray(true, 0, sourceParent_index);
+			outArray(true, 0, parentIndex);
 
 			cout << "Source Account Child? ";
 			userInput = inputNumber<int>();
 
 			USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto TransferSourceAccType_input; }
 
-			if ((userInput < properties["presetLists"][0]["catList"][sourceParent_index]["child"].size()) && (userInput >= 0)) {
-				sourceChild_index = userInput;
+			if ((userInput < properties["presetLists"][0]["catList"][parentIndex]["child"].size()) && (userInput >= 0)) {
+				tempEntry.sourceAccChild.set(
+					returnString(properties["presetLists"][0]["catList"][parentIndex]["child"][userInput]["childName"]),
+					userInput);
 				break;
 			}
 			else {
@@ -386,12 +382,11 @@ Type_input:
 				continue;
 			}
 		}
-		tempEntry.sourceAccChild.set(returnString(properties["presetLists"][0]["catList"][sourceParent_index]["child"][sourceChild_index]["childName"]));
 
 		// User input : Account Type
 	TransferDestAccType_input:
 		while (true) {
-			int userInput = 0;
+			int userInput = -1;
 
 			// To cancel changes done by current section, if being called back.
 			tempEntry.destAccCat.reset_input();
@@ -405,8 +400,10 @@ Type_input:
 
 			USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto TransferSourceAcc_input; }
 
-			if ((destParent_index < properties["presetLists"][0]["catList"].size()) && (destParent_index >= 0)) {
-				destParent_index = userInput;
+			if ((userInput < properties["presetLists"][0]["catList"].size()) && (userInput >= 0)) {
+				tempEntry.destAccCat.set(
+					returnString(properties["presetLists"][0]["catList"][userInput]["cat"]),
+					userInput);
 				break;
 			}
 			else {
@@ -415,26 +412,28 @@ Type_input:
 				continue;
 			}
 		}
-		tempEntry.destAccCat.set(returnString(properties["presetLists"][0]["catList"][destParent_index]["cat"]));
 
 		// User input : Account
 	TransferDestAcc_input:
 		while (true) {
-			int userInput = 0;
+			int userInput = -1;
+			int parentIndex = tempEntry.destAccCat.fixedIndex;
 
 			// To cancel changes done by current section, if being called back.
 			tempEntry.destAccChild.reset_input();
 
 			heading("Transaction input: Transfer -> Select Destination Account");
 			show_inputted(tempEntry);
-			outArray(true, 0, destParent_index);
+			outArray(true, 0, parentIndex);
 			cout << "Destination Account Child? ";
 			userInput = inputNumber<int>();
 
 			USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto TransferDestAccType_input; }
 
-			if ((userInput < properties["presetLists"][0]["catList"][userInput]["child"].size()) && (userInput >= 0)) {
-				destChild_index = userInput;
+			if ((userInput < properties["presetLists"][0]["catList"][parentIndex]["child"].size()) && (userInput >= 0)) {
+				tempEntry.destAccChild.set(
+					returnString(properties["presetLists"][0]["catList"][parentIndex]["child"][userInput]["childName"]),
+					userInput);
 				break;
 			}
 			else {
@@ -443,7 +442,6 @@ Type_input:
 				continue;
 			}
 		}
-		tempEntry.destAccChild.set(returnString(properties["presetLists"][0]["catList"][destParent_index]["child"][destChild_index]["childName"]));
 
 	}
 	else {
@@ -452,7 +450,7 @@ Type_input:
 		// User input : Expense / Income Parent Category
 	TransCat_input:
 		while (true) {
-			int userInput = 0;
+			int userInput = -1;
 
 			// To cancel changes done by current section, if being called back.
 			tempEntry.transCat.reset_input();
@@ -467,7 +465,9 @@ Type_input:
 			USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto Type_input; }
 
 			if ((userInput < properties["presetLists"][type_index]["catList"].size()) && (userInput >= 0)) {
-				sourceParent_index = userInput;
+				tempEntry.transCat.set(
+					returnString(properties["presetLists"][type_index]["catList"][userInput]["cat"]),
+					userInput);
 				break;
 			}
 			else {
@@ -477,27 +477,29 @@ Type_input:
 			}
 
 		}
-		tempEntry.transCat.set(returnString(properties["presetLists"][type_index]["catList"][sourceParent_index]["cat"]));
 
 		// User input : Expense / Income Category
 	TransType_input:
 		while (true) {
-			int userInput = 0;
+			int userInput = -1;
+			int parentIndex = tempEntry.transCat.fixedIndex;
 
 			// To cancel changes done by current section, if being called back.
 			tempEntry.transChild.reset_input();
 
 			heading("Transaction input");
 			show_inputted(tempEntry);
-			outArray(false, type_index, sourceParent_index);
+			outArray(false, type_index, parentIndex);
 
 			cout << "Category Child? ";
 			userInput = inputNumber<int>(false);
 
 			USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto TransCat_input; }
 
-			if ((userInput < properties["presetLists"][type_index]["catList"][sourceParent_index]["child"].size()) && (userInput >= 0)) {
-				sourceChild_index = userInput;
+			if ((userInput < properties["presetLists"][type_index]["catList"][parentIndex]["child"].size()) && (userInput >= 0)) {
+				tempEntry.transChild.set(
+					returnString(properties["presetLists"][type_index]["catList"][parentIndex]["child"][userInput]["childName"]),
+					userInput);
 				break;
 			}
 			else {
@@ -507,12 +509,11 @@ Type_input:
 			}
 
 		}
-		tempEntry.transChild.set(returnString(properties["presetLists"][type_index]["catList"][sourceParent_index]["child"][sourceChild_index]["childName"]));
 
 		// User input : Account Type
 	AccCat_input:
 		while (true) {
-			int userInput = 0;
+			int userInput = -1;
 
 			// To cancel changes done by current section, if being called back.
 			tempEntry.accCat.reset_input();
@@ -527,7 +528,9 @@ Type_input:
 			USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto TransType_input; }
 
 			if ((userInput < properties["presetLists"][0]["catList"].size()) && (userInput >= 0)) {
-				sourceParent_index = userInput;
+				tempEntry.accCat.set(
+					returnString(properties["presetLists"][0]["catList"][userInput]["cat"]),
+					userInput);
 				break;
 			}
 			else {
@@ -537,27 +540,27 @@ Type_input:
 			}
 
 		}
-		tempEntry.accCat.set(returnString(properties["presetLists"][0]["catList"][sourceParent_index]["cat"]));
 
 		// User input : Account
 	AccType_input:
 		while (true) {
 			int userInput = 0;
+			int parentIndex = tempEntry.accCat.fixedIndex;
 
 			// To cancel changes done by current section, if being called back.
 			tempEntry.accChild.reset_input();
 
 			heading("Transaction input");
 			show_inputted(tempEntry);
-			outArray(true, 0, sourceParent_index);
+			outArray(true, 0, parentIndex);
 
 			cout << "Account Child? ";
 			userInput = inputNumber<int>(false);
 
 			USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto AccCat_input; }
 
-			if ((userInput < properties["presetLists"][0]["catList"][sourceParent_index]["child"].size()) && (userInput >= 0)) {
-				sourceChild_index = userInput;
+			if ((userInput < properties["presetLists"][0]["catList"][parentIndex]["child"].size()) && (userInput >= 0)) {
+				tempEntry.accChild.set(returnString(properties["presetLists"][0]["catList"][parentIndex]["child"][userInput]["childName"]));
 				break;
 			}
 			else {
@@ -567,7 +570,6 @@ Type_input:
 			}
 
 		}
-		tempEntry.accChild.set(returnString(properties["presetLists"][0]["catList"][sourceParent_index]["child"][sourceChild_index]["childName"]));
 
 	}
 

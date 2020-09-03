@@ -27,6 +27,11 @@ struct ENTRY {
 			isUsed = true;
 		}
 
+		void set(T1 userInput, int index) {
+			fixedIndex = index;
+			set(userInput);
+		}
+
 		void fix(T1 userInput) {
 			value = userInput;
 			isUsed = true;
@@ -44,6 +49,7 @@ struct ENTRY {
 				T1 tempValue{};
 				value = {};
 				isUsed = false;
+				fixedIndex = -1;
 
 			}
 		}

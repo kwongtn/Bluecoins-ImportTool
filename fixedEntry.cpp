@@ -17,17 +17,7 @@ const int FIXED_MENU_SIZE = 10;
 ENTRY templateEntry;
 json props;
 
-int
-type_index = -1, // To describe type of transaction
-transParent_index = -1, // To describe transaction parent ("Car")
-transChild_index = -1, // To describe transaction child ("Fuel")
-accParent_index = -1, // To describe source parent / category
-accChild_index = -1, // To describe source child account
-// Only used in transfers
-sourceParent_index = -1,
-sourceChild_index = -1,
-destParent_index = -1,
-destChild_index = -1;
+int type_index = -1;
 
 void outArray(bool, int type = -1, int cat = -1);
 
@@ -49,7 +39,7 @@ void lockTransactionType(bool bypass = false) {
 		case 1:
 		case 2:
 			type_index = userInput;
-			templateEntry.type.value = returnString(props["presetLists"][userInput]["type"]);
+			templateEntry.type.fix(returnString(props["presetLists"][userInput]["type"]), userInput);
 			break;
 		case 5:
 			type_index = userInput;
@@ -63,8 +53,6 @@ void lockTransactionType(bool bypass = false) {
 			continue;
 		}
 
-		templateEntry.type.isUsed = true;
-		templateEntry.type.isFixed = true;
 		break;
 	}
 }
@@ -73,8 +61,6 @@ void lockTransactionType(bool bypass = false) {
 void lockTransCat(bool bypass = false) {
 	templateEntry.transCat.reset();
 	templateEntry.transChild.reset();
-	transParent_index = -1;
-	transChild_index = -1;
 
 	while (true) {
 		int userInput = 0;
@@ -89,8 +75,9 @@ void lockTransCat(bool bypass = false) {
 		BYPASS_COMPULSORY_INPUT_NUMBER;
 
 		if ((userInput < props["presetLists"][type_index]["catList"].size()) && (userInput >= 0)) {
-			transParent_index = userInput;
-			templateEntry.transCat.fix(returnString(props["presetLists"][type_index]["catList"][transParent_index]["cat"]));
+			templateEntry.transCat.fix(
+				returnString(props["presetLists"][type_index]["catList"][userInput]["cat"]),
+				userInput);
 			break;
 		}
 		else {
@@ -104,23 +91,24 @@ void lockTransCat(bool bypass = false) {
 
 void lockTransChild(bool bypass = false) {
 	templateEntry.transChild.reset();
-	transChild_index = -1;
+	int parentIndex = templateEntry.transCat.fixedIndex;
 
 	while (true) {
-		int userInput = 0;
+		int userInput = -1;
 
 		heading("Transaction input");
 		show_fixed(templateEntry);
-		outArray(false, type_index, transParent_index);
+		outArray(false, type_index, parentIndex);
 
 		cout << "Category Child? ";
 		userInput = inputNumber<int>(false, !bypass);
 
 		BYPASS_COMPULSORY_INPUT_NUMBER;
 
-		if ((userInput < props["presetLists"][type_index]["catList"][transParent_index]["child"].size()) && (userInput >= 0)) {
-			transChild_index = userInput;
-			templateEntry.transChild.fix(returnString(props["presetLists"][type_index]["catList"][transParent_index]["child"][transChild_index]["childName"]));
+		if ((userInput < props["presetLists"][type_index]["catList"][parentIndex]["child"].size()) && (userInput >= 0)) {
+			templateEntry.transChild.fix(
+				returnString(props["presetLists"][type_index]["catList"][parentIndex]["child"][userInput]["childName"]),
+				userInput);
 			break;
 		}
 		else {
@@ -136,11 +124,9 @@ void lockTransChild(bool bypass = false) {
 void lockAccCat(bool bypass = false) {
 	templateEntry.accCat.reset();
 	templateEntry.accChild.reset();
-	accParent_index = -1;
-	accChild_index = -1;
 
 	while (true) {
-		int userInput = 0;
+		int userInput = -1;
 
 		heading("Transaction input");
 		show_fixed(templateEntry);
@@ -152,8 +138,9 @@ void lockAccCat(bool bypass = false) {
 		BYPASS_COMPULSORY_INPUT_NUMBER;
 
 		if ((userInput < props["presetLists"][0]["catList"].size()) && (userInput >= 0)) {
-			accParent_index = userInput;
-			templateEntry.accCat.fix(returnString(props["presetLists"][0]["catList"][accParent_index]["cat"]));
+			templateEntry.accCat.fix(
+				returnString(props["presetLists"][0]["catList"][userInput]["cat"]),
+				userInput);
 			break;
 		}
 		else {
@@ -168,23 +155,24 @@ void lockAccCat(bool bypass = false) {
 
 void lockAccChild(bool bypass = false) {
 	templateEntry.accChild.reset();
-	accChild_index = -1;
+	int parentIndex = templateEntry.accCat.fixedIndex;
 
 	while (true) {
-		int userInput = 0;
+		int userInput = -1;
 
 		heading("Transaction input");
 		show_fixed(templateEntry);
-		outArray(true, 0, accParent_index);
+		outArray(true, 0, parentIndex);
 
 		cout << "Account Child? ";
 		userInput = inputNumber<int>(false, !bypass);
 
 		BYPASS_COMPULSORY_INPUT_NUMBER;
 
-		if ((userInput < props["presetLists"][0]["catList"][accParent_index]["child"].size()) && (userInput >= 0)) {
-			accChild_index = userInput;
-			templateEntry.accChild.fix(returnString(props["presetLists"][0]["catList"][accParent_index]["child"][accChild_index]["childName"]));
+		if ((userInput < props["presetLists"][0]["catList"][parentIndex]["child"].size()) && (userInput >= 0)) {
+			templateEntry.accChild.fix(
+				returnString(props["presetLists"][0]["catList"][parentIndex]["child"][userInput]["childName"]),
+				userInput);
 			break;
 		}
 		else {
@@ -201,8 +189,6 @@ void lockAccChild(bool bypass = false) {
 void lockTransferSourceCategory(bool bypass = false) {
 	templateEntry.sourceAccCat.reset();
 	templateEntry.sourceAccChild.reset();
-	sourceParent_index = -1;
-	sourceChild_index = -1;
 
 	while (true) {
 		int userInput = 0;
@@ -217,8 +203,9 @@ void lockTransferSourceCategory(bool bypass = false) {
 		BYPASS_COMPULSORY_INPUT_NUMBER;
 
 		if ((userInput < props["presetLists"][0]["catList"].size()) && (userInput >= 0)) {
-			sourceParent_index = userInput;
-			templateEntry.sourceAccCat.fix(returnString(props["presetLists"][0]["catList"][sourceParent_index]["cat"]));
+			templateEntry.sourceAccCat.fix(
+				returnString(props["presetLists"][0]["catList"][userInput]["cat"]),
+				userInput);
 			break;
 		}
 		else {
@@ -231,23 +218,23 @@ void lockTransferSourceCategory(bool bypass = false) {
 
 void lockTransferSourceChild(bool bypass = false) {
 	templateEntry.sourceAccChild.reset();
-	sourceChild_index = -1;
+	int parentIndex = templateEntry.sourceAccCat.fixedIndex;
 
 	while (true) {
 		int userInput = 0;
 
 		heading("Transaction input: Transfer -> Select Source Account");
 		show_fixed(templateEntry);
-		outArray(true, 0, sourceParent_index);
+		outArray(true, 0, parentIndex);
 
 		cout << "Source Account Child? ";
 		userInput = inputNumber<int>(false, !bypass);
 
 		BYPASS_COMPULSORY_INPUT_NUMBER;
 
-		if ((userInput < props["presetLists"][0]["catList"][sourceParent_index]["child"].size()) && (userInput >= 0)) {
-			sourceChild_index = userInput;
-			templateEntry.sourceAccChild.fix(returnString(props["presetLists"][0]["catList"][sourceParent_index]["child"][sourceChild_index]["childName"]));
+		if ((userInput < props["presetLists"][0]["catList"][parentIndex]["child"].size()) && (userInput >= 0)) {
+			templateEntry.sourceAccChild.fix(returnString(props["presetLists"][0]["catList"][parentIndex]["child"][userInput]["childName"]),
+				userInput);
 			break;
 		}
 		else {
@@ -261,8 +248,6 @@ void lockTransferSourceChild(bool bypass = false) {
 void lockTransferDestinationCategory(bool bypass = false) {
 	templateEntry.destAccCat.reset();
 	templateEntry.destAccChild.reset();
-	destParent_index = -1;
-	destChild_index = -1;
 
 	while (true) {
 		int userInput = 0;
@@ -276,9 +261,10 @@ void lockTransferDestinationCategory(bool bypass = false) {
 
 		BYPASS_COMPULSORY_INPUT_NUMBER;
 
-		if ((destParent_index < props["presetLists"][0]["catList"].size()) && (destParent_index >= 0)) {
-			destParent_index = userInput;
-			templateEntry.destAccCat.fix(returnString(props["presetLists"][0]["catList"][destParent_index]["cat"]));
+		if ((userInput < props["presetLists"][0]["catList"].size()) && (userInput >= 0)) {
+			templateEntry.destAccCat.fix(
+				returnString(props["presetLists"][0]["catList"][userInput]["cat"]),
+				userInput);
 			break;
 		}
 		else {
@@ -291,22 +277,23 @@ void lockTransferDestinationCategory(bool bypass = false) {
 
 void lockTransferDestinationChild(bool bypass = false) {
 	templateEntry.destAccChild.reset();
-	destChild_index = -1;
+	int parentIndex = templateEntry.destAccCat.fixedIndex;
 
 	while (true) {
 		int userInput = 0;
 
 		heading("Transaction input: Transfer -> Select Destination Account");
 		show_fixed(templateEntry);
-		outArray(true, 0, destParent_index);
+		outArray(true, 0, parentIndex);
 		cout << "Destination Account Child? ";
 		userInput = inputNumber<int>(false, !bypass);
 
 		BYPASS_COMPULSORY_INPUT_NUMBER;
 
 		if ((userInput < props["presetLists"][0]["catList"][userInput]["child"].size()) && (userInput >= 0)) {
-			destChild_index = userInput;
-			templateEntry.destAccChild.fix(returnString(props["presetLists"][0]["catList"][destParent_index]["child"][destChild_index]["childName"]));
+			templateEntry.destAccChild.fix(
+				returnString(props["presetLists"][0]["catList"][parentIndex]["child"][userInput]["childName"]),
+				userInput);
 			break;
 		}
 		else {
