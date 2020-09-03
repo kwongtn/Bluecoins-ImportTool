@@ -16,6 +16,7 @@ usedSplit = false;
 ifstream fileCheck;
 ofstream file;
 bool append = false;
+bool writebackChanges = false;
 string outFilename = "",
 jsonFilename = "";
 
@@ -93,13 +94,13 @@ void outAllProperties() {
 					cout << " (" << returnString(child["currency"]) << ") ";
 				}
 				cout << endl;
-				if (child.contains("currentBal")) {
+				if (child.contains("bluecoinsBal")) {
 					line(10, ' ', false);
-					cout << "Current Balance: " << child["currentBal"] << endl;
+					cout << "Bluecoins Balance: " << child["bluecoinsBal"] << endl;
 				}
-				if (child.contains("actualBal")) {
+				if (child.contains("targetBal")) {
 					line(10, ' ', false);
-					cout << "Actual Balance: " << child["actualBal"] << endl;
+					cout << "Target Balance: " << child["targetBal"] << endl;
 				}
 
 			}
@@ -607,19 +608,19 @@ Year_input:
 		USER_INPUT_NUMBER_RETURN else if ((type_index == 5) && (userInput == -1)) { goto TransferDestAcc_input; }
 		else if (userInput == -1) { goto AccType_input; }
 
-		if (userInput > 0) {
-			splitTransac ?
-				tempEntry.year.fix(userInput) :
-				tempEntry.year.set(userInput);
-			break;
+	if (userInput > 0) {
+		splitTransac ?
+			tempEntry.year.fix(userInput) :
+			tempEntry.year.set(userInput);
+		break;
 
-		}
-		else {
-			cout << "Illegal action!" << endl;
-			system("pause");
-			continue;
+	}
+	else {
+		cout << "Illegal action!" << endl;
+		system("pause");
+		continue;
 
-		}
+	}
 
 	}
 
@@ -773,17 +774,8 @@ Amount_input:
 		userInput = inputNumber<double>(false);
 		USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto Min_input; }
 
-		if (userInput >= 0) {
-			tempEntry.amount.set(userInput);
-			break;
-
-		}
-		else {
-			cout << "Illegal action!" << endl;
-			system("pause");
-			continue;
-
-		}
+		tempEntry.amount.set(userInput);
+		break;
 
 	}
 
@@ -964,19 +956,33 @@ void readFile() {
 
 	}
 
-	// TODO: Try-catch for read errors
-	jsonFile >> properties;
+	try {
+		jsonFile >> properties;
+
+	}
+	catch (...) {
+		cout << "JSON File Read Error. Please check using linters to make sure that the JSON is in correct form." << endl
+			<< "The program will now exit.";
+		pause();
+		exit(1);
+	}
 
 	// If filepath property exist then load it as default path, and change behaviour accordingly
 	if (properties.contains("outFile")) {
-		if (properties["outFile"][0].contains("filePath")) {
-			outFilename = returnString(properties["outFile"][0]["filePath"]);
+		if (properties["outFile"].contains("filePath")) {
+			outFilename = returnString(properties["outFile"]["filePath"]);
 		}
-		if (properties["outFile"][0].contains("defaultAppend")) {
-			append = properties["outFile"][0]["defaultAppend"];
+		if (properties["outFile"].contains("defaultAppend")) {
+			append = properties["outFile"]["defaultAppend"];
+		}
+		if (properties["outFile"].contains("writebackChanges")) {
+			writebackChanges = properties["outFile"]["writebackChanges"];
+			if (!properties["outFile"].contains("writebackJSONSpacing")) {
+				properties["outFile"]["writebackJSONSpacing"] = 4;
+			}
 		}
 
-		// TODO: Loop till there is a filename
+
 		fileFunc(outFilename, append);
 	}
 
@@ -1046,6 +1052,29 @@ void writeToFile() {
 		}
 		file << endl;
 
+		// If accounts have currentBal defined then deduct it
+		if (properties["presetLists"][0]["catList"][entry.sourceAccCat.fixedIndex]["child"][entry.sourceAccChild.fixedIndex].contains("bluecoinsBal")) {
+			double sourceCurrentBalance = properties["presetLists"][0]["catList"][entry.sourceAccCat.fixedIndex]["child"][entry.sourceAccChild.fixedIndex]["bluecoinsBal"],
+				destCurrentBalance = properties["presetLists"][0]["catList"][entry.destAccCat.fixedIndex]["child"][entry.destAccChild.fixedIndex]["bluecoinsBal"];
+
+			sourceCurrentBalance -= entry.amount.value;
+			destCurrentBalance += entry.amount.value;
+
+			properties["presetLists"][0]["catList"][entry.sourceAccCat.fixedIndex]["child"][entry.sourceAccChild.fixedIndex]["bluecoinsBal"] = sourceCurrentBalance;
+			destCurrentBalance = properties["presetLists"][0]["catList"][entry.destAccCat.fixedIndex]["child"][entry.destAccChild.fixedIndex]["bluecoinsBal"] = destCurrentBalance;
+
+			// Write changes into json file
+			if (writebackChanges) {
+				ofstream jsonOutput;
+				jsonOutput.open(jsonFilename);
+
+				jsonOutput << properties.dump(properties["outFile"]["writebackJSONSpacing"]);
+
+				jsonOutput.close();
+			}
+		}
+		}
+
 	}
 	else { // For normal use cases.
 		file << entry.type.value << ",";
@@ -1073,6 +1102,36 @@ void writeToFile() {
 			file << "split";
 		}
 		file << endl;
+
+		// If accounts have currentBal defined then deduct it
+		if (properties["presetLists"][0]["catList"][entry.accCat.fixedIndex]["child"][entry.accChild.fixedIndex].contains("bluecoinsBal")) {
+			double currentBalance = properties["presetLists"][0]["catList"][entry.accCat.fixedIndex]["child"][entry.accChild.fixedIndex]["bluecoinsBal"];
+
+			if (entry.type.value == "Expense") {
+				currentBalance -= entry.amount.value;
+
+			}
+			else if (entry.type.value == "Income") {
+				currentBalance += entry.amount.value;
+
+			}
+			else {
+				throw new string("Error");
+			}
+
+			properties["presetLists"][0]["catList"][entry.accCat.fixedIndex]["child"][entry.accChild.fixedIndex]["bluecoinsBal"] = currentBalance;
+
+			// Write changes into json file
+			if (writebackChanges) {
+				ofstream jsonOutput;
+				jsonOutput.open(jsonFilename);
+
+				jsonOutput << properties.dump(properties["outFile"]["writebackJSONSpacing"]);
+
+				jsonOutput.close();
+			}
+		}
+
 
 	}
 }
