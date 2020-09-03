@@ -75,142 +75,150 @@ int mainMenu() {
 }
 
 int main() {
-
 	// Future feature: json file creator.
 	introduction();
 
 	while (true) {
-		// If json file is empty then load.
-		if (properties.empty()) {
-			readFile();
-		}
-		heading("Main Menu");
-		cout << "Json file path   : \"" << jsonFilename << "\"" << endl;
-		cout << "Output file path : \"" << outFilename << "\"" << endl;
-
-		int selection = mainMenu();
-
-		switch (selection) {
-			// Load a new json file.
-		case 0:
-		{
-			heading("Reload JSON File");
-			cout << "Are you sure you want to clear the current json configuration and load a new one? " << endl;
-
-			if (decider()) {
-				properties.clear();
-				continue;
-
+		try {
+			// If json file is empty then load.
+			if (properties.empty()) {
+				readFile();
 			}
-			else {
-				cout << "No actions taken. ";
-				system("pause");
+			heading("Main Menu");
+			cout << "Json file path   : \"" << jsonFilename << "\"" << endl;
+			cout << "Output file path : \"" << outFilename << "\"" << endl;
 
-			}
+			int selection = mainMenu();
 
-			break;
-		}
-		// Set a new output file.
-		case 1:
-		{
-			fileFunc();
-			break;
-		}
-		// Outputs all properties.
-		case 2:
-		{
-			outAllProperties();
-			break;
-		}
-		// View last inputted entry.
-		case 3:
-		{
-			heading("View Last Entry");
-			if (countEntry == 0 && countDiscard == 0) {
-				cout << "There are no entries inputted before this." << endl;
+			switch (selection) {
+				// Load a new json file.
+			case 0:
+			{
+				heading("Reload JSON File");
+				cout << "Are you sure you want to clear the current json configuration and load a new one? " << endl;
 
-			}
-			else {
-				show_inputted(entry);
-
-			}
-			system("pause");
-			break;
-		}
-		// Creates a new entry.
-		case 4:
-		{
-			reset();
-			entry = entryTemplate;
-			int decision = entryInput();
-			if (decision == 0) {
-				if (!file.is_open()) {
-					fileFunc();
-				}
-				writeToFile();
-				append = true;
-				cout << "\nWritten to file. ";
-				countEntry++;
-				splitTransac ? usedSplit = true : 0;
-				system("pause");
-			}
-			else if (decision == 1) {
-				cout << "\nEntry discarded. ";
-				countDiscard++;
-				system("pause");
-			}
-			break;
-		}
-		// To toggle split transaction mode
-		case 6:
-		{
-			if (!splitTransac && usedSplit) {
-				cout << "Only one split transaction can be used per CSV file. Are you sure you want to continue?" << endl;
 				if (decider()) {
+					properties.clear();
+					continue;
+
+				}
+				else {
+					cout << "No actions taken. ";
+					system("pause");
+
+				}
+
+				break;
+			}
+			// Set a new output file.
+			case 1:
+			{
+				fileFunc();
+				break;
+			}
+			// Outputs all properties.
+			case 2:
+			{
+				outAllProperties();
+				break;
+			}
+			// View last inputted entry.
+			case 3:
+			{
+				heading("View Last Entry");
+				if (countEntry == 0 && countDiscard == 0) {
+					cout << "There are no entries inputted before this." << endl;
+
+				}
+				else {
+					show_inputted(entry);
+
+				}
+				system("pause");
+				break;
+			}
+			// Creates a new entry.
+			case 4:
+			{
+				reset();
+				entry = entryTemplate;
+				int decision = entryInput();
+				if (decision == 0) {
+					if (!file.is_open()) {
+						fileFunc();
+					}
+					writeToFile();
+					append = true;
+					cout << "\nWritten to file. ";
+					countEntry++;
+					splitTransac ? usedSplit = true : 0;
+					system("pause");
+				}
+				else if (decision == 1) {
+					cout << "\nEntry discarded. ";
+					countDiscard++;
+					system("pause");
+				}
+				break;
+			}
+			// To toggle split transaction mode
+			case 6:
+			{
+				if (!splitTransac && usedSplit) {
+					cout << "Only one split transaction can be used per CSV file. Are you sure you want to continue?" << endl;
+					if (decider()) {
+						splitTransac = true;
+					}
+					else {
+						break;
+					}
+
+				}
+				else if (!splitTransac) {
 					splitTransac = true;
 				}
 				else {
-					break;
+					splitTransac = false;
 				}
-
+				break;
 			}
-			else if (!splitTransac) {
-				splitTransac = true;
+			case 7:
+			{
+				entryTemplate = fixedEntryMenu(properties, entryTemplate);
+				break;
 			}
-			else {
-				splitTransac = false;
+
+			case 9:
+			{
+				heading("Exit");
+				cout << "Thank you for using the bluecoins import tool. Throughout this session, you have: " << endl;
+				cout << endl;
+				cout << "Inserted " << countEntry << " entries." << endl;
+				cout << "Discarded " << countDiscard << " entries." << endl;
+				cout << endl;
+
+				system("pause");
+				exit(0);
 			}
-			break;
+
+			default:
+				break;
+			}
 		}
-		case 7:
-		{
-			entryTemplate = fixedEntryMenu(properties, entryTemplate);
-			break;
+		catch (...) {
+			cout << "Congratulations! You found a bug!" << endl
+				<< "Please file a bug report (issue) at the following page:" << endl
+				<< "https://github.com/kwongtn/Bluecoins-ImportTool/issues" << endl << endl
+				<< "Within the issue, please detail the things you were doing (steps, etc) when you encountered this bug." << endl << endl
+				<< "Thank you! :D";
 		}
 
-		case 9:
-		{
-			heading("Exit");
-			cout << "Thank you for using the bluecoins import tool. Throughout this session, you have: " << endl;
-			cout << endl;
-			cout << "Inserted " << countEntry << " entries." << endl;
-			cout << "Discarded " << countDiscard << " entries." << endl;
-			cout << endl;
 
-			system("pause");
-			exit(0);
-		}
+		//outAllProperties();
 
-		default:
-			break;
-		}
+		return 0;
+		system("pause");
 	}
-
-
-	//outAllProperties();
-
-	return 0;
-	system("pause");
 }
 
 
