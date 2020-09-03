@@ -123,5 +123,17 @@ struct ENTRY {
 
 		return false;
 	}
+
+	string status_text() {
+		if (status.value == 'R') {
+			return "Reconciled";
+		}
+		else if (status.value == 'C') {
+			return "Cleared";
+		}
+		else {
+			return "<None>";
+		}
+	}
 };
 

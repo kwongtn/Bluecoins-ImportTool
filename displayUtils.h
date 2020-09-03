@@ -139,17 +139,7 @@ inline void show_fixed(ENTRY myEntry) {
 	}
 
 	if (myEntry.status.isFixed) {
-		cout << "Status: ";
-		if (myEntry.status.value == 'R') {
-			cout << "Reconciled";
-		}
-		else if (myEntry.status.value == 'C') {
-			cout << "Cleared";
-		}
-		else {
-			cout << "<None>";
-		}
-		cout << endl;
+		cout << "Status: " << myEntry.status_text() << endl;
 
 	}
 
@@ -252,17 +242,7 @@ inline void show_inputted(ENTRY myEntry) {
 	}
 
 	if (myEntry.status.isUsed) {
-		cout << "Status: ";
-		if (myEntry.status.value == 'R') {
-			cout << "Reconciled";
-		}
-		else if (myEntry.status.value == 'C') {
-			cout << "Cleared";
-		}
-		else {
-			cout << "<None>";
-		}
-		cout << endl;
+		cout << "Status: " << myEntry.status_text() << endl;
 
 	}
 
