@@ -150,7 +150,11 @@ int main() {
 					append = true;
 					cout << "\nWritten to file. ";
 					countEntry++;
-					splitTransac ? usedSplit = true : 0;
+					if (splitTransac) {
+						usedSplit = true;
+						entryTemplate = syncFixed(entry, entryTemplate);
+					}
+
 					system("pause");
 				}
 				else if (decision == 1) {

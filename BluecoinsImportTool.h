@@ -298,14 +298,14 @@ Type_input:
 		heading("Transaction input");
 		show_inputted(tempEntry);
 		outArray(false);
-		cout << endl << left << setw(5) << "5" << "Transfer" << endl;
+		if (!splitTransac) { cout << endl << left << setw(5) << "5" << "Transfer" << endl; }
 
 		cout << endl << "Type? ";
 		userInput = inputNumber<int>();
 
 		USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto Title_input; }
 
-		if ((userInput == 1) || (userInput == 2) || (userInput == 5)) {
+		if ((userInput == 1) || (userInput == 2) || ((userInput == 5) && !splitTransac)) {
 			type_index = userInput;
 			break;
 		}
@@ -316,8 +316,8 @@ Type_input:
 		}
 	}
 
-	// If transaction type is transfer
-	if (type_index == 5) {
+	// If transaction type is transfer -- split transactions never come here
+	if ((type_index == 5) && !splitTransac) {
 		heading("Transaction input: Transfer");
 		// Transfer cases
 		if (!tempEntry.type.isFixed) {
@@ -451,7 +451,12 @@ Type_input:
 
 	}
 	else {
-		tempEntry.type.set(returnString(properties["presetLists"][type_index]["type"]));
+		if (!tempEntry.type.isFixed) {
+			splitTransac ?
+				tempEntry.type.fix(returnString(properties["presetLists"][type_index]["type"]), type_index) :
+				tempEntry.type.set(returnString(properties["presetLists"][type_index]["type"]));
+
+		}
 
 		// User input : Expense / Income Parent Category
 	TransCat_input:
@@ -600,7 +605,9 @@ Year_input:
 		else if (userInput == -1) { goto AccType_input; }
 
 		if (userInput > 0) {
-			tempEntry.year.set(userInput);
+			splitTransac ?
+				tempEntry.year.fix(userInput) :
+				tempEntry.year.set(userInput);
 			break;
 
 		}
@@ -631,7 +638,9 @@ Month_input:
 		USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto Year_input; }
 
 		if (userInput > 0 && userInput <= 12) {
-			tempEntry.month.set(userInput);
+			splitTransac ?
+				tempEntry.month.fix(userInput) :
+				tempEntry.month.set(userInput);
 			break;
 
 		}
@@ -662,7 +671,9 @@ Day_input:
 		USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto Month_input; }
 
 		if (userInput > 0 && userInput <= 31) {
-			tempEntry.day.set(userInput);
+			splitTransac ?
+				tempEntry.day.fix(userInput) :
+				tempEntry.day.set(userInput);
 			break;
 
 		}
@@ -693,7 +704,9 @@ Hour_input:
 		USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto Day_input; }
 
 		if (userInput >= 0 && userInput <= 23) {
-			tempEntry.hour.set(userInput);
+			splitTransac ?
+				tempEntry.hour.fix(userInput) :
+				tempEntry.hour.set(userInput);
 			break;
 
 		}
@@ -724,7 +737,9 @@ Min_input:
 		USER_INPUT_NUMBER_RETURN else if (userInput == -1) { goto Hour_input; }
 
 		if (userInput >= 0 && userInput <= 59) {
-			tempEntry.mins.set(userInput);
+			splitTransac ?
+				tempEntry.mins.fix(userInput) :
+				tempEntry.mins.set(userInput);
 			break;
 
 		}
@@ -810,17 +825,23 @@ Status_input:
 		USER_INPUT_STRING_RETURN else if (userInput == "-1") { goto Notes_input; }
 
 		if (userInput == "R" || userInput == "r") {
-			tempEntry.status.set('R');
+			splitTransac ?
+				tempEntry.status.fix('R') :
+				tempEntry.status.set('R');
 			break;
 
 		}
 		else if (userInput == "C" || userInput == "c") {
-			tempEntry.status.set('C');
+			splitTransac ?
+				tempEntry.status.fix('C') :
+				tempEntry.status.set('C');
 			break;
 
 		}
 		else {
-			tempEntry.status.set('\0');
+			splitTransac ?
+				tempEntry.status.fix('\0') :
+				tempEntry.status.set('\0');
 			break;
 		}
 
@@ -1053,3 +1074,85 @@ void writeToFile() {
 	}
 }
 
+// Synchronize fixed stuff between 2 entries, prioritizing source 1
+ENTRY syncFixed(ENTRY source1, ENTRY source2) {
+	ENTRY result;
+
+	source1.type.isFixed ?
+		result.type.fix(source1.type.value, source1.type.fixedIndex) :
+		result.type.fix(source2.type.value, source2.type.fixedIndex);
+
+	source1.transCat.isFixed ?
+		result.transCat.fix(source1.transCat.value, source1.transCat.fixedIndex) :
+		result.transCat.fix(source2.transCat.value, source2.transCat.fixedIndex);
+
+	source1.transChild.isFixed ?
+		result.transChild.fix(source1.transChild.value, source1.transChild.fixedIndex) :
+		result.transChild.fix(source2.transChild.value, source2.transChild.fixedIndex);
+
+	source1.accCat.isFixed ?
+		result.accCat.fix(source1.accCat.value, source1.accCat.fixedIndex) :
+		result.accCat.fix(source2.accCat.value, source2.accCat.fixedIndex);
+
+	source1.accChild.isFixed ?
+		result.accChild.fix(source1.accChild.value, source1.accChild.fixedIndex) :
+		result.accChild.fix(source2.accChild.value, source2.accChild.fixedIndex);
+
+	source1.year.isFixed ?
+		result.year.fix(source1.year.value, source1.year.fixedIndex) :
+		result.year.fix(source2.year.value, source2.year.fixedIndex);
+
+	source1.month.isFixed ?
+		result.month.fix(source1.month.value, source1.month.fixedIndex) :
+		result.month.fix(source2.month.value, source2.month.fixedIndex);
+
+	source1.day.isFixed ?
+		result.day.fix(source1.day.value, source1.day.fixedIndex) :
+		result.day.fix(source2.day.value, source2.day.fixedIndex);
+
+	source1.hour.isFixed ?
+		result.hour.fix(source1.hour.value, source1.hour.fixedIndex) :
+		result.hour.fix(source2.hour.value, source2.hour.fixedIndex);
+
+	source1.mins.isFixed ?
+		result.mins.fix(source1.mins.value, source1.mins.fixedIndex) :
+		result.mins.fix(source2.mins.value, source2.mins.fixedIndex);
+
+	source1.amount.isFixed ?
+		result.amount.fix(source1.amount.value, source1.amount.fixedIndex) :
+		result.amount.fix(source2.amount.value, source2.amount.fixedIndex);
+
+	source1.title.isFixed ?
+		result.title.fix(source1.title.value, source1.title.fixedIndex) :
+		result.title.fix(source2.title.value, source2.title.fixedIndex);
+
+	source1.notes.isFixed ?
+		result.notes.fix(source1.notes.value, source1.notes.fixedIndex) :
+		result.notes.fix(source2.notes.value, source2.notes.fixedIndex);
+
+	source1.label.isFixed ?
+		result.label.fix(source1.label.value, source1.label.fixedIndex) :
+		result.label.fix(source2.label.value, source2.label.fixedIndex);
+
+	source1.status.isFixed ?
+		result.status.fix(source1.status.value, source1.status.fixedIndex) :
+		result.status.fix(source2.status.value, source2.status.fixedIndex);
+
+	source1.sourceAccCat.isFixed ?
+		result.sourceAccCat.fix(source1.sourceAccCat.value, source1.sourceAccCat.fixedIndex) :
+		result.sourceAccCat.fix(source2.sourceAccCat.value, source2.sourceAccCat.fixedIndex);
+
+	source1.sourceAccChild.isFixed ?
+		result.sourceAccChild.fix(source1.sourceAccChild.value, source1.sourceAccChild.fixedIndex) :
+		result.sourceAccChild.fix(source2.sourceAccChild.value, source2.sourceAccChild.fixedIndex);
+
+	source1.destAccCat.isFixed ?
+		result.destAccCat.fix(source1.destAccCat.value, source1.destAccCat.fixedIndex) :
+		result.destAccCat.fix(source2.destAccCat.value, source2.destAccCat.fixedIndex);
+
+	source1.destAccChild.isFixed ?
+		result.destAccChild.fix(source1.destAccChild.value, source1.destAccChild.fixedIndex) :
+		result.destAccChild.fix(source2.destAccChild.value, source2.destAccChild.fixedIndex);
+
+	return result;
+}
