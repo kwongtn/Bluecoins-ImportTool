@@ -18,31 +18,31 @@ inline std::string return_fixed_digits(int number, int digits = 2) {
 inline string return_dt_string(ENTRY myEntry) {
 	string dtString = "";
 
-	myEntry.year.isFixed ?
+	myEntry.year.isUsed ?
 		dtString += return_fixed_digits(myEntry.year.value, 4) :
 		dtString += "----";
 
 	dtString += "/";
 
-	myEntry.month.isFixed ?
+	myEntry.month.isUsed ?
 		dtString += return_fixed_digits(myEntry.month.value, 2) :
 		dtString += "--";
 
 	dtString += "/";
 
-	myEntry.day.isFixed ?
+	myEntry.day.isUsed ?
 		dtString += return_fixed_digits(myEntry.day.value, 2) :
 		dtString += "--";
 
 	dtString += " ";
 
-	myEntry.hour.isFixed ?
+	myEntry.hour.isUsed ?
 		dtString += return_fixed_digits(myEntry.hour.value, 2) :
 		dtString += "--";
 
 	dtString += ":";
 
-	myEntry.mins.isFixed ?
+	myEntry.mins.isUsed ?
 		dtString += return_fixed_digits(myEntry.mins.value, 2) :
 		dtString += "--";
 
@@ -240,8 +240,9 @@ inline void show_inputted(ENTRY myEntry) {
 
 	}
 
-	if (myEntry.year.isUsed) {
+	if (myEntry.year.isUsed || myEntry.is_dateTime_locked()) {
 		cout << "Datetime (YYYY/MM/DD HH:MM): " << return_dt_string(myEntry);
+		cout << endl;
 
 	}
 

@@ -881,7 +881,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 				break;
 			}
 
-			if ((templateEntry.type.value != "Expense") && (templateEntry.type.value != "Income")) {
+			if (templateEntry.type.value != "Transfer") {
 				goto InvalidSelection;
 			}
 			else {
@@ -898,8 +898,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 				break;
 			}
 
-			if (((templateEntry.type.value != "Expense") && (templateEntry.type.value != "Income"))
-				|| !templateEntry.sourceAccCat.isFixed) {
+			if (templateEntry.type.value != "Transfer" || !templateEntry.sourceAccCat.isFixed) {
 				goto InvalidSelection;
 			}
 			else {
@@ -917,7 +916,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 				break;
 			}
 
-			if ((templateEntry.type.value != "Expense") && (templateEntry.type.value != "Income")) {
+			if (templateEntry.type.value != "Transfer") {
 				goto InvalidSelection;
 			}
 			else {
@@ -934,8 +933,7 @@ ENTRY fixedEntryMenu(json myProperties, ENTRY entryTemplate) {
 				break;
 			}
 
-			if (((templateEntry.type.value != "Expense") && (templateEntry.type.value != "Income"))
-				|| !templateEntry.destAccChild.isFixed) {
+			if (templateEntry.type.value != "Transfer" || !templateEntry.destAccChild.isFixed) {
 				goto InvalidSelection;
 			}
 			else {

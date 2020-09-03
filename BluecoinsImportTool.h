@@ -53,7 +53,7 @@ void reset() {
 void introduction() {
 
 
-	pause();
+	// pause();
 }
 
 // Outputs all properties and their respective values.
