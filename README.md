@@ -172,12 +172,6 @@ Copyright &copy; 2013-2019 [Niels Lohmann](http://nlohmann.me/) , <mail@nlohmann
 
 
 ## Future functionality
-### Backlog tool
-Will be completed in the near future, json file will be future proofed for advanced json support.
-The backlog tool will enable users to define current balance (balance as recorded in the bluecoins app) and actual balance (balance in the real world). As transactions are being input, the current balance will be updated accordingly in memory and in the json file. The goal is for the user to match both the current and actual balance.
-
-### Placeholder support
-Transaction creator to match current balance and actual balance.
 
 ### Softcode default json file location
 Selecting "d" on the json file selection page will no longer be required to be hardcoded. Default path will be defined as ".\Bluecoins-Import.json".
@@ -185,17 +179,11 @@ Selecting "d" on the json file selection page will no longer be required to be h
 ### Defaulting file output location
 If nothing is specified in the json file and user inputs "d", the file will be created at the current directory.
 
-### Preset Titles & Templates
-The user will be able to preset commonly used titles in the json file, and during runtime define templates for input.
-
 ### Advanced json support
 To be announced, depending on project popularity.
 
 ### Prompted json file creation
 Depending the popularity of this project, a tool may be created to facilitate this use case. You are always welcome to fork my project.
-
-### Alert after targetBal and bluecoinsBal are the same  
-To have another way of telling the user
 
 ### Option to stop userinput after targetBal and bluecoinsBal are the same  
 Well... To prevent users from accidentally inputting more than the file can handle?
