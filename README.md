@@ -32,11 +32,42 @@ http://www.bluecoinsapp.com/import-guide/
 
 ## json file terminology
 - `jsonType` simply means the type of the json file, there are `simple` and `advanced`. For more details refer to the [bluecoins import guide](http://www.bluecoinsapp.com/import-guide/).
-- `outFile` *(optional)* describes the output file, which its members `filePath` signify the csv file path and `defaultAppend` determines if the default action is to append the existing file. `writeConfirm` determines if write confirmation has to be done.
+- `outFile` (optional) describes the output file, where its members :
+  - `filePath` signify the csv file path 
+  - `defaultAppend` determines if the default action is to append the existing file.
+  - `noConfirmation` determines if we commit to csv writing without asking for confirmation.
+  - `writebackChanges` determines if we want to update `bluecoinsBal` after each transaction is done. This is a destructive operation that overwrites the file if everything in memory.
+  - `writebackJSONSpacing` determines the spacing when we writeback the JSON file.
 - `presetLists` is an array of objects consisting of `account type` and `category list`
-- `type` is the type of account/transaction. Can be any value, but recommended values are `Account`, `Expense`, `Income`. You must have at least one category and child for each type.
-- `cat` is the main category
-- `child` is the child category 
+- `type` is the type of account/transaction. Can be any value, but recommended values are `Account`, `Expense`, `Income`. You must have at least one category and child for each type. The first element in the `presetLists` array must be describing account.
+- `cat` describes the main category (E.g. `Bank` (For accounts), `Car` (For expenses) etc.)
+- `child` is the child category, where more details are described:
+  - `childName` is the name of the child category (E.g. `Savings Account` (For accounts -> Bank), `Fuel` (For expenses -> Car))
+  - `currency` not used for this version, but is placed in for compatibility with future "advanced" CSV file creation.
+  -  `bluecoinsBal` is a reference to the existing balance in the BlueCoins app. You are recommended to update this before inputting any entries. New entries will be deducted/added towards this value if `writebackChanges` is enabled.
+  - `targetBal` is to provide a check, to see if the inputs have hit the target balance. Useful for people that do lots of backlog entries.
+
+### Data Dictionary  
+Added this section cause I've learnt in uni and cause it would be easier for you to know what went wrong in your configuration.
+
+| Name/Key | Data Type | Optional? | Sample Input |
+| --- | --- | --- | --- |
+| jsonType | string | ✅ | "Simple" | 
+| outFile | object | ✅ | {   } |
+| outFile:defaultAppend | boolean | ✅ | true/false |
+| outFile:filepath | string | ✅ | "D:\\PathName\\something.csv" |
+| outFile:noConfirmation | boolean | ✅ | true/false |
+| outFile:writebackChanges | boolean | ✅ | true/false |
+| outFile:writebackJSONSpacing | integer | ✅ | 1, 2, 3... |
+| presetLists | array | ❌ | [ { }, ... ] |
+| presetLists[]type | string | ❌ | "Account", "Income", "Expense" |
+| presetLists[]catList | array | ❌ | [ { }, ... ] |
+| presetLists[]catList[]cat | string | ❌ | "Bank", "Cash"... |  
+| presetLists[]catList[]child | array | ❌ | [ { }, ... ] |
+| presetLists[]catList[]child[]bluecoinsBal | double | ✅ | 1000.00 |
+| presetLists[]catList[]child[]childName | string | ❌ | "Savings Account" ... |
+| presetLists[]catList[]child[]currency | string | ✅ | "MYR", "USD"... |
+| presetLists[]catList[]child[]targetBal | double | ✅ | 1000.00 |
 
 
 ## Creating the json file
@@ -45,47 +76,44 @@ http://www.bluecoinsapp.com/import-guide/
 As of version 2.0, the json file will be unified for a single format that encompasses simple and advanced file type. It also has sections for backlogging support. 
 This is a sample file for a the json configuration. `a`(or, `account`) must be the first object in the `presetLists` array.
 
-```
+```json
 {
     "outFile":[
     {
-        "advFormat" : true / false,
-        "filePath" : "<Your csv file path>",
-        "defaultAppend" : true / false,
-        "writeConfirm" : true
+        "defaultAppend": true / false,,
+        "filePath": "<Your csv file path>"
+        "noConfirmation": true / false,
+        "writebackChanges": true / false,
+        "writebackJSONSpacing": 4
     }
     ],
     "presetLists":[
         {    
-            "type" : "a",
+            "type" : "a / e / i",
             "catList" : [
                 {
                     "cat" : "Category1",
                     "child" : [
-                        "Child1.1",
-                        "Child1.2"
+                        {
+                            "childName" : "Child1.1",
+                            "currency" : "MYR",
+                            "bluecoinsBal" : 2000.00,
+                            "targetBal": 1876.55
+                        },{
+                            "childName" : "Child1.2",
+                            "currency" : "USD",
+                            "bluecoinsBal" : 2000.00,
+                            "targetBal" : 1000.00
+                        }
                     ]
                 }
             ]
-        },
-        {
-            "type" : "e / i",
-            "catList" : [
-                {
-                    "cat" : "Category2",
-                    "child" : [
-                        "Child2.1",
-                        "Child2.2"
-                    ]
-                }
-            ]
+        }
     ]
 }
 ```
 You may also refer to "./Tests/ktn.json" for a real life sample file.
 
-#### (Future) Prompted json file creation
-Depending the popularity of this project, a tool may be created to facilitate this use case. You are always welcome to fork my project.
 
 ## Specifying default path
 If you are compiling yourself, you may edit in your default path that you use to store your json and csv file so that you are not required to manual key in every time:
@@ -98,26 +126,31 @@ const string defaultJsonFileName = "<Your path>";
 
 ## Split Transaction Support
 Starting from v1.3, there will be support for split transactions. Just toggle option no. 6 at the main menu. You will see an extra section of text when the option is toggled to "true".
-- Do take note that for split transactions to work, the following need to be the same. Future versions of the program will add functionality to lock in required lock-in : 
-  - Transaction Type
-  - Title
-  - Date, Time
-- Using different label sets or status for each split is not currently supported. Only those from the first row will be used for each split transaction
+- <strike>Do take note that for split transactions to work, the following need to be the same. Future versions of the program will add functionality to lock in required lock-in, namely Transaction Type, Title, Date, Time</strike> Functionality added in v2.0 .
+- Using different title, label sets or status for each split is not currently supported. Only those from the first row will be used for each split transaction
 
 ## No support / not tested
 - Compilers other than the one default in Visual Studio 2019
 - CMake. Not tried yet.
 
-## Project Milestones
-- 23 July 2019, v1.3 released
-- 6 July 2019, Development for v2.0 started at branch "development"
-- 5 July 2019, v1.2 released
-- 1 July 2019, v1.1 released
-- 27 June 2019, Project announcement to the BlueCoins Community
-- 26 June 2019, Transfers logic completed
-- 24 June 2019, Overall completed
-- 21 June 2019, json file standard decided
-- 16 June 2019, Project Started
+## Project Milestones  
+
+| Dates | Description |
+| --- | --- |
+| 7 September 2020 | v2.0 released |
+| 26 August 2020 | Development for v2.0 resumed at branch "development" |
+| 23 July 2019 | v1.3 released |
+| 6 July 2019 | Development for v2.0 started at branch "development" |
+| 5 July 2019 | v1.2 released |
+| 1 July 2019 | v1.1 released |
+| 27 June 2019 | Project announcement to the BlueCoins Community |
+| 26 June 2019 | Transfers logic completed |
+| 24 June 2019 | Overall completed |
+| 21 June 2019 | json file standard decided |
+| 16 June 2019 | Project Started |
+
+## Known Issues
+- "-1" to go back to previous fields does not work for locked fields. <strike>A little lazy to fix it cause it'll probably require much code rewriting. Aand I'm lazy.</strike> Probably will be fixed in v2.x .
 
 ## License
 
@@ -160,3 +193,9 @@ To be announced, depending on project popularity.
 
 ### Prompted json file creation
 Depending the popularity of this project, a tool may be created to facilitate this use case. You are always welcome to fork my project.
+
+### Alert after targetBal and bluecoinsBal are the same  
+To have another way of telling the user
+
+### Option to stop userinput after targetBal and bluecoinsBal are the same  
+Well... To prevent users from accidentally inputting more than the file can handle?
