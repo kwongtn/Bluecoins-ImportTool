@@ -498,11 +498,11 @@ void lockNotes(bool bypass = false) {
 	heading("Lock Field -> Notes");
 	show_fixed(templateEntry);
 	line(50, '-');
-	cout << "Notes? (Only press 'enter' when done, no multi-line support yet)" << endl;
+	cout << "Notes? (Multi-line available. Input \" to save and exit note-ing mode.)" << endl;
 	line(50, '-');
 
 	string userInput;
-	getline(cin, userInput);
+	getline(cin, userInput, '\"');
 
 	BYPASS_COMPULSORY_INPUT_STRING;
 
