@@ -129,6 +129,9 @@ Starting from v1.3, there will be support for split transactions. Just toggle op
 - <strike>Do take note that for split transactions to work, the following need to be the same. Future versions of the program will add functionality to lock in required lock-in, namely Transaction Type, Title, Date, Time</strike> Functionality added in v2.0 .
 - Using different title, label sets or status for each split is not currently supported. Only those from the first row will be used for each split transaction
 
+## Special Usage
+- During entry input, enter "-1" to go to the previous field, and "-1234" to abandon current inputs and exit to main menu.
+
 ## No support / not tested
 - Compilers other than the one default in Visual Studio 2019
 - CMake. Not tried yet.
