@@ -790,10 +790,10 @@ Notes_input:
 		heading("Transaction input");
 		show_inputted(tempEntry);
 		line(50, '-');
-		cout << "Notes? (Only press 'enter' when done, no multi-line support yet)" << endl;
+		cout << "Notes? (Multi-line available. Input \" to save and exit note-ing mode.)" << endl;
 		line(50, '-');
 
-		getline(cin, userInput);
+		getline(cin, userInput, '\"');
 		USER_INPUT_STRING_RETURN else if (userInput == "-1") { goto Amount_input; }
 
 		tempEntry.notes.set(userInput);
@@ -996,60 +996,69 @@ void readFile() {
 void writeToFile() {
 	// If user selects to append or is not first entry then will not output this line.
 	if (!append) {
-		file << "(1)Type,(2)Date,(3)Item or Payee,(4)Amount,(5)Parent Category,(6)Category,(7)Account Type,(8)Account,(9)Notes,(10) Label,(11) Status,(12) Split" << endl;
+		file << "\"(1)Type\",\"(2)Date\",\"(3)Item or Payee\",\"(4)Amount\",\"(5)Parent Category\",\"(6)Category\",\"(7)Account Type\",\"(8)Account\",\"(9)Notes\",\"(10) Label\",\"(11) Status\",\"(12) Split\"" << endl;
 	}
 
 	// There are different logics for transfers and normal transactions.
 	if (entry.type.value == "Transfer") {
 		// Source Account
-		file << "Transfer" << ",";
-		file << right << setfill('0')
-			<< setw(2) << entry.month.value << "/"
-			<< setw(2) << entry.day.value << "/"
+		file << "\"";
+		file << "Transfer";
+		file << "\"" << ",";
+
+		file << "\"";
+		file << entry.month.value << "/"
+			<< entry.day.value << "/"
 			<< entry.year.value << " "
-			<< setw(2) << entry.hour.value << ":"
-			<< setw(2) << entry.mins.value << ","
-			<< setfill(' ');
-		file << entry.title.value << ",";
-		file << entry.amount.value * -1 << ",";
-		file << "(Transfer)" << ",";
-		file << "(Transfer)" << ",";
-		file << entry.sourceAccCat.value << ",";
-		file << entry.sourceAccChild.value << ",";
-		file << entry.notes.value << ",";
-		file << entry.label.value << ",";
+			<< entry.hour.value << ":"
+			<< entry.mins.value;
+		file << "\"" << ",";
+
+		file  << "\"" << entry.title.value << "\",";
+		file  << "\"" << entry.amount.value * -1 << "\",";
+		file  << "\"" << "(Transfer)" << "\",";
+		file  << "\"" << "(Transfer)" << "\",";
+		file  << "\"" << entry.sourceAccCat.value << "\",";
+		file  << "\"" << entry.sourceAccChild.value << "\",";
+		file  << "\"" << entry.notes.value << "\",";
+		file  << "\"" << entry.label.value << "\",";
+
+		file << "\"";
 		if (entry.status.value != '\0') {
 			file << entry.status.value;
 		}
-		file << ",";
-		if (splitTransac) {
-			file << "split";
-		}
+		file << "\"" << ",";
+		file << "\"\"";
 		file << endl;
+
 		// Destination Account
-		file << "Transfer" << ",";
-		file << right << setfill('0')
-			<< setw(2) << entry.month.value << "/"
-			<< setw(2) << entry.day.value << "/"
+		file << "\"";
+		file << "Transfer";
+		file << "\"" << ",";
+
+		file << "\"";
+		file << entry.month.value << "/"
+			<< entry.day.value << "/"
 			<< entry.year.value << " "
-			<< setw(2) << entry.hour.value << ":"
-			<< setw(2) << entry.mins.value << ","
-			<< setfill(' ');
-		file << entry.title.value << ",";
-		file << entry.amount.value << ",";
-		file << "(Transfer)" << ",";
-		file << "(Transfer)" << ",";
-		file << entry.destAccCat.value << ",";
-		file << entry.destAccChild.value << ",";
-		file << entry.notes.value << ",";
-		file << entry.label.value << ",";
+			<< entry.hour.value << ":"
+			<< entry.mins.value;
+		file << "\"" << ",";
+
+		file  << "\"" << entry.title.value << "\",";
+		file  << "\"" << entry.amount.value * -1 << "\",";
+		file  << "\"" << "(Transfer)" << "\",";
+		file  << "\"" << "(Transfer)" << "\",";
+		file  << "\"" << entry.destAccCat.value << "\",";
+		file  << "\"" << entry.destAccChild.value << "\",";
+		file  << "\"" << entry.notes.value << "\",";
+		file  << "\"" << entry.label.value << "\",";
+
+		file << "\"";
 		if (entry.status.value != '\0') {
 			file << entry.status.value;
 		}
-		file << ",";
-		if (splitTransac) {
-			file << "split";
-		}
+		file << "\"" << ",";
+		file << "\"\"";
 		file << endl;
 
 		// If accounts have currentBal defined then deduct it
@@ -1091,30 +1100,36 @@ void writeToFile() {
 
 	}
 	else { // For normal use cases.
-		file << entry.type.value << ",";
-		file << right << setfill('0')
-			<< setw(2) << entry.month.value << "/"
-			<< setw(2) << entry.day.value << "/"
-			<< entry.year.value << " "
-			<< setw(2) << entry.hour.value << ":"
-			<< setw(2) << entry.mins.value << ","
-			<< setfill(' ');
+		file << "\"" << entry.type.value << "\",";
 
-		file << entry.title.value << ",";
-		file << entry.amount.value << ",";
-		file << entry.transCat.value << ",";
-		file << entry.transChild.value << ",";
-		file << entry.accCat.value << ",";
-		file << entry.accChild.value << ",";
-		file << entry.notes.value << ",";
-		file << entry.label.value << ",";
+		file << "\"";
+		file << entry.month.value << "/"
+			<< entry.day.value << "/"
+			<< entry.year.value << " "
+			<< entry.hour.value << ":"
+			<< entry.mins.value;
+		file << "\"" << ",";
+
+		file  << "\"" << entry.title.value << "\",";
+		file  << "\"" << entry.amount.value * -1 << "\",";
+		file  << "\"" << entry.transCat.value << "\",";
+		file  << "\"" << entry.transChild.value << "\",";
+		file  << "\"" << entry.accCat.value << "\",";
+		file  << "\"" << entry.accChild.value << "\",";
+		file  << "\"" << entry.notes.value << "\",";
+		file  << "\"" << entry.label.value << "\",";
+
+		file << "\"";
 		if (entry.status.value != '\0') {
 			file << entry.status.value;
 		}
-		file << ",";
+		file << "\"" << ",";
+
+		file << "\"";
 		if (splitTransac) {
 			file << "split";
 		}
+		file << "\"";
 		file << endl;
 
 		// If accounts have currentBal defined then deduct it
