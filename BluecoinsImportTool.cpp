@@ -46,7 +46,7 @@ int mainMenu() {
 	}
 
 	menu[7].count = 7;
-	menu[7].content = "Toggle fixed entries status (WIP)";
+	menu[7].content = "Toggle fixed entries status";
 
 	menu[9].count = 9;
 	menu[9].content = "Exit";
