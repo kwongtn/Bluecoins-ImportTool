@@ -1025,14 +1025,14 @@ void writeToFile() {
 			<< entry.mins.value;
 		file << "\"" << ",";
 
-		file  << "\"" << entry.title.value << "\",";
-		file  << "\"" << entry.amount.value * -1 << "\",";
-		file  << "\"" << "(Transfer)" << "\",";
-		file  << "\"" << "(Transfer)" << "\",";
-		file  << "\"" << entry.sourceAccCat.value << "\",";
-		file  << "\"" << entry.sourceAccChild.value << "\",";
-		file  << "\"" << entry.notes.value << "\",";
-		file  << "\"" << entry.label.value << "\",";
+		file << "\"" << entry.title.value << "\",";
+		file << "\"" << entry.amount.value * -1 << "\",";
+		file << "\"" << "(Transfer)" << "\",";
+		file << "\"" << "(Transfer)" << "\",";
+		file << "\"" << entry.sourceAccCat.value << "\",";
+		file << "\"" << entry.sourceAccChild.value << "\",";
+		file << "\"" << entry.notes.value << "\",";
+		file << "\"" << entry.label.value << "\",";
 
 		file << "\"";
 		if (entry.status.value != '\0') {
@@ -1055,14 +1055,14 @@ void writeToFile() {
 			<< entry.mins.value;
 		file << "\"" << ",";
 
-		file  << "\"" << entry.title.value << "\",";
-		file  << "\"" << entry.amount.value * -1 << "\",";
-		file  << "\"" << "(Transfer)" << "\",";
-		file  << "\"" << "(Transfer)" << "\",";
-		file  << "\"" << entry.destAccCat.value << "\",";
-		file  << "\"" << entry.destAccChild.value << "\",";
-		file  << "\"" << entry.notes.value << "\",";
-		file  << "\"" << entry.label.value << "\",";
+		file << "\"" << entry.title.value << "\",";
+		file << "\"" << entry.amount.value * -1 << "\",";
+		file << "\"" << "(Transfer)" << "\",";
+		file << "\"" << "(Transfer)" << "\",";
+		file << "\"" << entry.destAccCat.value << "\",";
+		file << "\"" << entry.destAccChild.value << "\",";
+		file << "\"" << entry.notes.value << "\",";
+		file << "\"" << entry.label.value << "\",";
 
 		file << "\"";
 		if (entry.status.value != '\0') {
@@ -1121,14 +1121,14 @@ void writeToFile() {
 			<< entry.mins.value;
 		file << "\"" << ",";
 
-		file  << "\"" << entry.title.value << "\",";
-		file  << "\"" << entry.amount.value * -1 << "\",";
-		file  << "\"" << entry.transCat.value << "\",";
-		file  << "\"" << entry.transChild.value << "\",";
-		file  << "\"" << entry.accCat.value << "\",";
-		file  << "\"" << entry.accChild.value << "\",";
-		file  << "\"" << entry.notes.value << "\",";
-		file  << "\"" << entry.label.value << "\",";
+		file << "\"" << entry.title.value << "\",";
+		file << "\"" << entry.amount.value * -1 << "\",";
+		file << "\"" << entry.transCat.value << "\",";
+		file << "\"" << entry.transChild.value << "\",";
+		file << "\"" << entry.accCat.value << "\",";
+		file << "\"" << entry.accChild.value << "\",";
+		file << "\"" << entry.notes.value << "\",";
+		file << "\"" << entry.label.value << "\",";
 
 		file << "\"";
 		if (entry.status.value != '\0') {
