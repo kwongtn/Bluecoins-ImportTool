@@ -10,7 +10,8 @@ ENTRY entry;
 
 const string defaultJsonFileName = "D:\\WinLibrary\\Documents\\GIT-Code\\Bluecoins-ImportTool\\Tests\\ktn_new.json";
 bool splitTransac = false,
-usedSplit = false;
+usedSplit = false,
+multiLine = false;
 
 // Global variables related with file output.
 ifstream fileCheck;
@@ -790,10 +791,20 @@ Notes_input:
 		heading("Transaction input");
 		show_inputted(tempEntry);
 		line(50, '-');
-		cout << "Notes? (Multi-line available. Input \" to save and exit note-ing mode.)" << endl;
-		line(50, '-');
 
-		getline(cin, userInput, '\"');
+		if (multiLine) {
+			cout << "Notes? (Multi-line mode on. Input \" then enter to save and exit note-ing mode.)" << endl;
+			line(50, '-');
+
+			getline(cin, userInput, '\"');
+		}
+		else {
+			cout << "Notes? (Multi-line mode off. Enter to save and exit note-ing mode.)" << endl;
+			line(50, '-');
+
+			getline(cin, userInput);
+		}
+
 		USER_INPUT_STRING_RETURN else if (userInput == "-1") { goto Amount_input; }
 
 		tempEntry.notes.set(userInput);

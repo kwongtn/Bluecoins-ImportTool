@@ -23,7 +23,7 @@ inline void clearScreen() {
 inline void heading(std::string additional = "") {
 	system("cls");
 	cout << "############################################################" << endl;
-	cout << "##         Bluecoins Import Tool v2.1 by KwongTN         ###" << endl;
+	cout << "##         Bluecoins Import Tool v2.2 by KwongTN         ###" << endl;
 	cout << "############################################################" << endl << endl;
 
 	if (additional != "") {

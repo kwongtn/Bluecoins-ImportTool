@@ -9,7 +9,7 @@ ENTRY entryTemplate;
 int countEntry = 0,
 countDiscard = 0;
 
-const int menusize = 10;
+const int menusize = 11;
 
 // Main menu for program.
 int mainMenu() {
@@ -48,8 +48,17 @@ int mainMenu() {
 	menu[7].count = 7;
 	menu[7].content = "Toggle fixed entries status";
 
-	menu[9].count = 9;
-	menu[9].content = "Exit";
+	menu[8].count = 8;
+	menu[8].content = "Toggle multi-line notes";
+	if (multiLine) {
+		menu[8].content += " [Enabled]";
+	}
+	else {
+		menu[8].content += " [Disabled]";
+	}
+
+	menu[10].count = 10;
+	menu[10].content = "Exit";
 
 	// Output menu.
 	menuHeading();
@@ -193,8 +202,11 @@ int main() {
 				entryTemplate = fixedEntryMenu(properties, entryTemplate);
 				break;
 			}
-
-			case 9:
+			case 8: {
+				multiLine = !multiLine;
+				break;
+			}
+			case 10:
 			{
 				heading("Exit");
 				cout << "Thank you for using the bluecoins import tool. Throughout this session, you have: " << endl;
@@ -222,9 +234,9 @@ int main() {
 		// system("pause");
 	}
 
-		//outAllProperties();
+	//outAllProperties();
 
-		return 0;
+	return 0;
 }
 
 
