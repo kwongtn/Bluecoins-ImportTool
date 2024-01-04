@@ -1,7 +1,8 @@
 repo_name: kwongtn/Bluecoins-ImportTool
 report_id: 2bc0fcfad6ab889d04da526cd8fb45e7
+version: 0.1
 repo_type: Public
-timestamp: '2023-11-09T16:14:51+00:00'
+timestamp: '2024-01-04T15:05:18+00:00'
 requested_by: kwongtn
 provider: github
 branch: master
@@ -16,6 +17,7 @@ tools:
   category: Languages & Frameworks
   sub_category: Languages
   image_url: https://img.stackshare.io/service/1049/cplusplus.png
+  detection_source_url: https://github.com/kwongtn/Bluecoins-ImportTool
   detection_source: Repo Metadata
 - name: Git
   description: Fast, scalable, distributed revision control system
@@ -25,6 +27,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Version Control System
   image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source_url: https://github.com/kwongtn/Bluecoins-ImportTool
   detection_source: Repo Metadata
 - name: Visual Studio
   description: State-of-the-art tools and services that you can use to create great
@@ -35,6 +38,7 @@ tools:
   category: Build, Test, Deploy
   sub_category: Integrated Development Environment
   image_url: https://img.stackshare.io/service/1451/SR2hUhQN.png
+  detection_source_url: https://github.com/kwongtn/Bluecoins-ImportTool/blob/master/BluecoinsImportTool.sln
   detection_source: BluecoinsImportTool.sln
   last_updated_by: KwongTN
   last_updated_on: 2019-06-18 03:37:10.000000000 Z
